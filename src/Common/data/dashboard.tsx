@@ -1,5 +1,6 @@
+
+import React, { ReactElement } from 'react';
 import { Goal, MousePointerClick, MousePointerSquare, Rocket } from 'lucide-react';
-import { ReactElement } from 'react';
 
 // Images
 import avatar1 from "assets/images/users/avatar-1.png";

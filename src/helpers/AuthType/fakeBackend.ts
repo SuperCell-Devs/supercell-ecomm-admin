@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
@@ -21,7 +22,7 @@ import {
   UserListViewData,
   GridViewData,
   ListViewData,
-  ProductGridViewData,
+  // ProductGridViewData,
   LeaveManageHRData,
   EmployeeSalaryData,
   AttendanceData,
@@ -34,7 +35,7 @@ import {
   InvoiceList
 } from "Common/data";
 
-let users = [
+const users = [
   {
     uid: 1,
     username: "admin",
@@ -49,38 +50,38 @@ const fakeBackend = () => {
   const mock = new MockAdapter(axios, { onNoMatch: "passthrough" });
 
   // login
-  mock.onPost(url.POST_FAKE_LOGIN).reply(config => {
-    const user = JSON.parse(config["data"]);
+  // mock.onPost(url.POST_FAKE_LOGIN).reply(config => {
+  //   const user = JSON.parse(config["data"]);
 
-    const validUser = users.filter(
-      usr => usr.email === user.email && usr.password === user.password
-    );
+  //   const validUser = users.filter(
+  //     usr => usr.email === user.email && usr.password === user.password
+  //   );
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (validUser["length"] === 1) {
-          resolve([200, validUser[0]]);
-        } else {
-          reject([
-            "Username and password are invalid. Please enter correct username and password",
-          ]);
-        }
-      });
-    });
-  });
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (validUser["length"] === 1) {
+  //         resolve([200, validUser[0]]);
+  //       } else {
+  //         reject([
+  //           "Username and password are invalid. Please enter correct username and password",
+  //         ]);
+  //       }
+  //     });
+  //   });
+  // });
 
   // register
-  mock.onPost(url.POST_FAKE_REGISTER).reply((config: any) => {
-    const user = JSON.parse(config["data"]);
+  // mock.onPost(url.POST_FAKE_REGISTER).reply((config: any) => {
+  //   const user = JSON.parse(config["data"]);
 
-    users.push(user);
+  //   users.push(user);
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve([200, user]);
-      });
-    });
-  });
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve([200, user]);
+  //     });
+  //   });
+  // });
 
   // edit profile
   mock.onPost(url.POST_EDIT_PROFILE).reply(config => {
@@ -92,10 +93,10 @@ const fakeBackend = () => {
       setTimeout(() => {
         if (validUser["length"] === 1) {
 
-          let objIndex;
+          
 
           //Find index of specific object using findIndex method.
-          objIndex = users.findIndex(obj => obj.uid === user.idx);
+          const objIndex = users.findIndex(obj => obj.uid === user.idx);
           //Update object's name property.
           users[objIndex].username = user.username;
 
@@ -154,7 +155,7 @@ const fakeBackend = () => {
 
     const one = config.headers;
 
-    let finalToken = one?.Authorization;
+    const finalToken = one?.Authorization;
 
     const validUser = users.filter(usr => usr.uid === user.idx);
 
@@ -163,10 +164,10 @@ const fakeBackend = () => {
         // Verify Jwt token from header.Authorization
         if (finalToken === accessToken) {
           if (validUser["length"] === 1) {
-            let objIndex;
+
 
             //Find index of specific object using findIndex method.
-            objIndex = users.findIndex(obj => obj.uid === user.idx);
+            const objIndex = users.findIndex(obj => obj.uid === user.idx);
 
             //Update object's name property.
             users[objIndex].username = user.username;
@@ -586,58 +587,58 @@ const fakeBackend = () => {
     });
   });
 
-  // Grid View
-  mock.onGet(url.GET_PRODUCT_GRID).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (ProductGridViewData) {
-          // Passing fake JSON data as response
-          resolve([200, ProductGridViewData]);
-        } else {
-          reject([400, "cannot get data"]);
-        }
-      });
-    });
-  });
+  // // Grid View
+  // mock.onGet(url.GET_PRODUCT_GRID).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (ProductGridViewData) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, ProductGridViewData]);
+  //       } else {
+  //         reject([400, "cannot get data"]);
+  //       }
+  //     });
+  //   });
+  // });
 
-  mock.onPost(url.ADD_PRODUCT_GRID).reply((event: any) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (event && event.data) {
-          // Passing fake JSON data as response
-          resolve([200, event.data]);
-        } else {
-          reject([400, "cannot add data"]);
-        }
-      });
-    });
-  });
+  // mock.onPost(url.ADD_PRODUCT_GRID).reply((event: any) => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (event && event.data) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, event.data]);
+  //       } else {
+  //         reject([400, "cannot add data"]);
+  //       }
+  //     });
+  //   });
+  // });
 
-  mock.onPatch(url.UPDATE_PRODUCT_GRID).reply((event: any) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (event && event.data) {
-          // Passing fake JSON data as response
-          resolve([200, event.data]);
-        } else {
-          reject([400, "cannot update data"]);
-        }
-      });
-    });
-  });
+  // mock.onPatch(url.UPDATE_PRODUCT_GRID).reply((event: any) => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (event && event.data) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, event.data]);
+  //       } else {
+  //         reject([400, "cannot update data"]);
+  //       }
+  //     });
+  //   });
+  // });
 
-  mock.onDelete(url.DELETE_PRODUCT_GRID).reply((config: any) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (config && config.headers) {
-          // Passing fake JSON data as response
-          resolve([200, config.headers.data]);
-        } else {
-          reject([400, "cannot delete data"]);
-        }
-      });
-    });
-  });
+  // mock.onDelete(url.DELETE_PRODUCT_GRID).reply((config: any) => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (config && config.headers) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, config.headers.data]);
+  //       } else {
+  //         reject([400, "cannot delete data"]);
+  //       }
+  //     });
+  //   });
+  // });
 
   // OverView
   mock.onGet(url.GET_REVIEW).reply(() => {

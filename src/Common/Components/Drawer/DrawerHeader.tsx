@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { ElementType } from "react";
 import { useDrawerContext } from "./DrawerContext";
 

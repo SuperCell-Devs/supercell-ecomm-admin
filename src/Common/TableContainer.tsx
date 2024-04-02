@@ -213,6 +213,7 @@ const TableContainer = ({
                             asc: ' ',
                             desc: ' ',
                           }
+                          // eslint-disable-next-line no-unexpected-multiline
                           [header.column.getIsSorted() as string] ?? null}
                           {header.column.getCanFilter() ? (
                             <div>

@@ -1,8 +1,8 @@
 // REGISTER
-export const POST_FAKE_REGISTER = "/auth/signup";
+export const POST_REGISTER = "/User/Register";
 
 // LOGIN
-export const POST_FAKE_LOGIN = "/auth/signin";
+export const POST_LOGIN = "/Auth/Login";
 export const POST_FAKE_JWT_LOGIN = "/post-jwt-login";
 export const POST_FAKE_PASSWORD_FORGET = "/auth/forgot-password";
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd";
@@ -50,16 +50,44 @@ export const DELETE_SELLERS = "/delete-sellers";
 
 // Products
 // List View
-export const GET_PRODUCT_LIST = "/get-product-list";
-export const ADD_PRODUCT_LIST = "/add-product-list";
-export const UPDATE_PRODUCT_LIST = "/edit-product-list";
-export const DELETE_PRODUCT_LIST = "/delete-product-list";
+export const GET_PRODUCT_LIST = "/Products";
+export const ADD_PRODUCT_LIST = "/Products";
+export const UPDATE_PRODUCT_LIST = "/Products";
+export const DELETE_PRODUCT_LIST = "/Products";
 
-// Grid View
-export const GET_PRODUCT_GRID = "/get-product-grid";
-export const ADD_PRODUCT_GRID = "/add-product-grid";
-export const UPDATE_PRODUCT_GRID = "/edit-product-grid";
-export const DELETE_PRODUCT_GRID = "/delete-product-grid";
+// Brands
+export const GET_BRANDS_LIST = "/Brands";
+export const ADD_BRANDS_LIST = "/Brands";
+export const UPDATE_BRANDS_LIST = "/Brands";
+export const DELETE_BRANDS_LIST = "/Brands";
+
+// Country
+export const GET_COUNTRYS_LIST = "/Country";
+export const ADD_COUNTRYS_LIST = "/Country";
+export const UPDATE_COUNTRYS_LIST = "/Country";
+export const DELETE_COUNTRYS_LIST = "/Country";
+
+// Province
+export const GET_PROVINCE_LIST = "/Province";
+export const ADD_PROVINCE_LIST = "/Province";
+export const UPDATE_PROVINCE_LIST = "/Province";
+export const DELETE_PROVINCE_LIST = "/Province";
+
+// Districts
+export const GET_DISTRICT_LIST = "/District";
+export const ADD_DISTRICT_LIST = "/District";
+export const UPDATE_DISTRICT_LIST = "/District";
+export const DELETE_DISTRICT_LIST = "/District";
+
+// File upload
+export const UPLOAD_FILE = "/File";
+
+
+// // Grid View
+// export const GET_PRODUCT_GRID = "/get-product-grid";
+// export const ADD_PRODUCT_GRID = "/add-product-grid";
+// export const UPDATE_PRODUCT_GRID = "/edit-product-grid";
+// export const DELETE_PRODUCT_GRID = "/delete-product-grid";
 
 // Overview
 export const GET_REVIEW = "/get-review";

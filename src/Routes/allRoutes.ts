@@ -18,8 +18,8 @@ import MultiMonthStack from "pages/Calendar/MultiMonthStack";
 
 // Ecommerce
 import ListView from "pages/Ecommerce/Products/ListView";
-import GridView from "pages/Ecommerce/Products/GridView";
-import Overview from "pages/Ecommerce/Products/Overview";
+// import GridView from "pages/Ecommerce/Products/GridView";
+// import Overview from "pages/Ecommerce/Products/Overview";
 import AddNew from "pages/Ecommerce/Products/AddNew";
 import ShoppingCart from "pages/Ecommerce/ShoppingCart";
 import Checkout from "pages/Ecommerce/Checkout";
@@ -115,7 +115,7 @@ import BasicTable from "pages/Components/Table/Basic";
 import ReactDataTable from "pages/Components/Table/ReactTable";
 import RemixIcon from "pages/Components/Icons/Remix";
 import LucidIcon from "pages/Components/Icons/Lucide";
-import MapsGoogle from "pages/Components/MapsGoogle";
+// import MapsGoogle from "pages/Components/MapsGoogle";
 import MapsLeaflet from "pages/Components/MapsLeaflet";
 
 //Charts
@@ -196,6 +196,36 @@ import Pricing from "pages/Pages/Pricing";
 import Faqs from "pages/Pages/Faqs";
 import ContactUs from "pages/Pages/ContactUs";
 
+// Import product views
+import ProductsAddNew from "Common/platform/products/add";
+import ProductsEdit from "Common/platform/products/edit";
+import ProductsListView from "Common/platform/products";
+// import ProductsOverview from "Common/platform/products/overview";
+
+// Import vendor views
+import VendorAddNew from "Common/platform/vendors/add";
+import VendorEdit from "Common/platform/vendors/edit";
+import VendorListView from "Common/platform/vendors";
+
+// Import brand views
+import BrandAddNew from "Common/platform/brands/add";
+import BrandEdit from "Common/platform/brands/edit";
+import BrandListView from "Common/platform/brands";
+
+// Import country views
+import CountryAddNew from "Common/platform/country/add";
+import CountryEdit from "Common/platform/country/edit";
+import CountryListView from "Common/platform/country";
+
+// Import district views
+import DistrictAddNew from "Common/platform/district/add";
+import DistrictEdit from "Common/platform/district/edit";
+import DistrictListView from "Common/platform/district";
+import ProvinceListView from "Common/platform/province";
+import ProvinceAddNew from "Common/platform/province/add";
+import ProvinceEdit from "Common/platform/province/edit";
+import CategoryListView from "Common/platform/category";
+
 interface RouteObject {
   path: string;
   component: React.ComponentType<any>; // Use React.ComponentType to specify the type of the component
@@ -203,6 +233,46 @@ interface RouteObject {
 }
 
 const authProtectedRoutes: Array<RouteObject> = [
+  // System routes start here
+
+  // Products
+  { path: "/products", component: ProductsListView },
+  { path: "/products-add", component: ProductsAddNew },
+  { path: "/products-edit/:id", component: ProductsEdit },
+  // { path: "/products/overview/", component: ProductsOverview },
+
+  // country
+  { path: "/country", component: CountryListView },
+  { path: "/country-add", component: CountryAddNew },
+  { path: "/country-edit/:id", component: CountryEdit },
+
+  // districts
+  { path: "/district", component: DistrictListView },
+  { path: "/district-add", component: DistrictAddNew },
+  { path: "/district-edit/:id", component: DistrictEdit },
+
+  // Category
+  { path: "/category", component: CategoryListView },
+  { path: "/category-add", component: DistrictAddNew },
+  { path: "/category-edit/:id", component: DistrictEdit },
+
+  // brand
+  { path: "/brands", component: BrandListView },
+  { path: "/brands-add", component: BrandAddNew },
+  { path: "/brands-edit/:id", component: BrandEdit },
+
+  // vendor
+  { path: "/vendors", component: VendorListView },
+  { path: "/vendors-add", component: VendorAddNew },
+  { path: "/vendors-edit/:id", component: VendorEdit },
+
+  // Province
+  { path: "/province", component: ProvinceListView },
+  { path: "/province-add", component: ProvinceAddNew },
+  { path: "/province-edit/:id", component: ProvinceEdit },
+
+  // System routes end here
+
   // Dashboard
   { path: "/", component: Ecommerce },
   { path: "/dashboard", component: Ecommerce },
@@ -270,9 +340,8 @@ const authProtectedRoutes: Array<RouteObject> = [
   { path: "/icons-lucide", component: LucidIcon },
 
   // Map
-  { path: "/maps-google", component: MapsGoogle },
+  // { path: "/maps-google", component: MapsGoogle },
   { path: "/maps-leaflet", component: MapsLeaflet },
-
 
   //Charts
   { path: "/charts-apex-area", component: AreaCharts },
@@ -307,8 +376,8 @@ const authProtectedRoutes: Array<RouteObject> = [
 
   // Ecommerce
   { path: "/apps-ecommerce-product-list", component: ListView },
-  { path: "/apps-ecommerce-product-grid", component: GridView },
-  { path: "/apps-ecommerce-product-overview", component: Overview },
+  // { path: "/apps-ecommerce-product-grid", component: GridView },
+  // { path: "/apps-ecommerce-product-overview", component: Overview },
   { path: "/apps-ecommerce-product-create", component: AddNew },
   { path: "/apps-ecommerce-cart", component: ShoppingCart },
   { path: "/apps-ecommerce-checkout", component: Checkout },
@@ -418,12 +487,10 @@ const publicRoutes = [
   // Maintenance
   { path: "/pages-maintenance", component: Maintenance },
 
-
   // authentication
   { path: "/login", component: Login },
   { path: "/logout", component: Logout },
   { path: "/register", component: Register },
-
-]
+];
 
 export { authProtectedRoutes, publicRoutes };

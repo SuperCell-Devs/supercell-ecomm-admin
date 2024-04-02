@@ -38,7 +38,7 @@ const Dropdown = ({ as: Component = 'div', children, className, id, subitemId }:
     item.classList.add("active");
     if (!(document.documentElement.getAttribute("data-layout") === "vertical" && document.documentElement.getAttribute("data-sidebar-size") === "sm"))
       item.nextElementSibling?.classList.remove("hidden");
-    let parentCollapseDiv = item?.closest(".dropdown-content");
+    const parentCollapseDiv = item?.closest(".dropdown-content");
     const parentDropButton = parentCollapseDiv?.parentElement.firstChild;
     parentDropButton?.classList.add("active");
     parentDropButton?.classList.add("show");
@@ -70,7 +70,7 @@ const Dropdown = ({ as: Component = 'div', children, className, id, subitemId }:
       item?.classList.add("active");
       item?.classList.add("show");
 
-      let parentCollapseDiv = item?.closest(".dropdown-content");
+      const parentCollapseDiv = item?.closest(".dropdown-content");
       if (document.documentElement.getAttribute("data-layout") === "vertical" && document.documentElement.getAttribute("data-sidebar-size") !== "sm") {
         parentCollapseDiv?.classList.remove('hidden');
         parentCollapseDiv?.classList.remove('hidden');
@@ -112,9 +112,9 @@ const Dropdown = ({ as: Component = 'div', children, className, id, subitemId }:
     const pathName = process.env.PUBLIC_URL + currentPath.pathname;
     const ul: any = document.getElementById("navbar-nav");
     const items = ul.getElementsByTagName("a");
-    let itemsArray = [...items]; // converts NodeList to Array
+    const itemsArray = [...items]; // converts NodeList to Array
     removeActivation(itemsArray);
-    let matchingMenuItem = itemsArray.find((x) => {
+    const matchingMenuItem = itemsArray.find((x) => {
       return x.pathname === pathName;
     });
     if (matchingMenuItem) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import firebase from 'firebase/compat/app'
 
 // Add the Firebase products that you want to use
@@ -28,7 +29,7 @@ class FirebaseAuthBackend {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(
-          (user: any) => {
+          (_user: any) => {
             resolve(firebase.auth().currentUser);
           },
           (error: any) => {
@@ -57,7 +58,7 @@ class FirebaseAuthBackend {
   //   });
   // };
 
-  editProfileAPI = (username: any, idx: any) => {
+  editProfileAPI = (username: any, _idx: any) => {
     return new Promise((resolve, reject) => {
       const currentUser = firebase.auth().currentUser;
       if (currentUser) {
@@ -87,7 +88,7 @@ class FirebaseAuthBackend {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(
-          (user: any) => {
+          (_user: any) => {
             resolve(firebase.auth().currentUser);
           },
           (error: any) => {
@@ -187,7 +188,7 @@ class FirebaseAuthBackend {
    */
   _handleError(error: any) {
     // var errorCode = error.code;
-    var errorMessage = error.message;
+    const errorMessage = error.message;
     return errorMessage;
   }
 }

@@ -33,8 +33,8 @@ const CartDrawer = ({ show, handleDrawer }: any) => {
     }
 
     React.useEffect(() => {
-        let dis = (0.12 * subTotal);
-        let tax = (0.18 * subTotal);
+        const dis = (0.12 * subTotal);
+        const tax = (0.18 * subTotal);
 
         if (subTotal !== 0) {
             setCharge(65);

@@ -1,3 +1,4 @@
+import React from "react";
 import {
     useLocation,
     useNavigate,
@@ -6,9 +7,9 @@ import {
 
 function withRouter(Component : any) {
     function ComponentWithRouterProp(props : any) {
-        let location = useLocation();
-        let navigate = useNavigate();
-        let params = useParams();
+        const location = useLocation();
+        const navigate = useNavigate();
+        const params = useParams();
         return (
             <Component
                 {...props}

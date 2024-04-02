@@ -18,7 +18,7 @@ const loginSlice = createSlice({
     name: "login",
     initialState,
     reducers: {
-        loginSuccess(state: LoginState, action: PayloadAction<string>) {
+        loginSuccess(state: LoginState, action: PayloadAction<string | any>) {
             state.user = action.payload;
             state.success = true;
         },

@@ -1,6 +1,62 @@
-import { Award, CalendarDays, CircuitBoard, Codesandbox, FileText, LifeBuoy, LocateFixed, Mail, Map, MessageSquare, MonitorDot, PackagePlus, PictureInPicture2, PieChart, RadioTower, ScrollText, Share2, ShoppingBag, Table, Trophy, UserRound } from "lucide-react";
+import React from "react";
+import { Award, LibraryBig ,MapIcon, LandPlot, MapPinIcon, CalendarDays, CircuitBoard, Codesandbox, FileText, LifeBuoy, LocateFixed, Mail, Map, MessageSquare, MonitorDot, PackagePlus, PictureInPicture2, PieChart, RadioTower, ScrollText, Share2, ShoppingBag, Table, Trophy, UserRound } from "lucide-react";
 
 const menuData: any = [
+    {
+        label: 'Adminstrator',
+        isTitle: true,
+    },
+    {
+        id: 'products',
+        label: 'Products',
+        icon: <ShoppingBag />,
+        link: '/products',
+        parentId: 2
+    },
+    {
+        id: 'brands',
+        label: 'Brands',
+        icon: <Award />,
+        link: '/brands',
+        parentId: 2
+    },
+    {
+        id: 'vendors',
+        label: 'Vendors',
+        icon: <UserRound />,
+        link: '/vendors',
+        parentId: 2
+    },
+
+    {
+        id: 'country',
+        label: 'Country',
+        icon: <MapIcon />,
+        link: '/country',
+        parentId: 2
+    },
+    {
+        id: 'districts',
+        label: 'Districts',
+        icon: <MapPinIcon />,
+        link: '/district',
+        parentId: 2
+    },
+    {
+        id: 'province',
+        label: 'Provinces',
+        icon: <LandPlot />,
+        link: '/province',
+        parentId: 2
+    },
+    {
+        id: 'category',
+        label: 'Category',
+        icon: <LibraryBig />,
+        link: '/category',
+        parentId: 2
+    },
+
     {
         label: 'menu',
         isTitle: true,

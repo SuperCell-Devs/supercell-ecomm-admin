@@ -1,29 +1,30 @@
 import { ThunkAction } from "redux-thunk";
 import { RootState } from "slices";
 import { Action, Dispatch } from "redux";
-import { postFakeRegister } from "helpers/fakebackend_helper";
+import { postRegister as RegisterUser } from "helpers/fakebackend_helper";
 import { registerFailed, registerSuccess, resetRegister } from "./reducer";
-import { getFirebaseBackend } from "helpers/firebase_helper";
+// import { getFirebaseBackend } from "helpers/firebase_helper";
 
-interface User {
+export interface User {
     email: string;
-    username: string;
-    password: string;
+    username?: string;
+    password?: string;
+    firstName: string;
+    lastName?: string;
 }
 
 export const registerUser = (user: User
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (dispatch: Dispatch) => {
     try {
-        let response: any;
-        if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-            response = await postFakeRegister(user);
-        } else if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
+        // if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
+        const response = await RegisterUser(user);
+        // } else if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
             
-            // initialize relevant method of both Auth
-            const fireBaseBackend = getFirebaseBackend();
+        //     // initialize relevant method of both Auth
+        //     const fireBaseBackend = getFirebaseBackend();
 
-            response = fireBaseBackend.registerUser(user.email, user.password);
-        }
+        //     response = fireBaseBackend.registerUser(user.email, user.password);
+        // }
         if (response) {
             dispatch(registerSuccess(response));
         }

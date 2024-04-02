@@ -16,7 +16,7 @@ const registerSlice = createSlice({
     name: "register",
     initialState,
     reducers: {
-        registerSuccess(state: RegisterState, action: PayloadAction<string>) {
+        registerSuccess(state: RegisterState, action: PayloadAction<string | any>) {
             state.user = action.payload;
             state.success = true;
         },

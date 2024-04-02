@@ -34,8 +34,8 @@ const Header = ({ handleToggleDrawer, handleDrawer }: any) => {
     const { layoutSidebarSizeType, layoutType } = useSelector(selectLayoutProperties);
 
     const handleTopbarHamburgerIcon = () => {
-        var windowSize = document.documentElement.clientWidth;
-        let sidebarOverlay = document.getElementById("sidebar-overlay") as any;
+        const windowSize = document.documentElement.clientWidth;
+        const sidebarOverlay = document.getElementById("sidebar-overlay") as any;
 
 
         if (windowSize < 768) {
@@ -56,7 +56,7 @@ const Header = ({ handleToggleDrawer, handleDrawer }: any) => {
     useEffect(() => {
         // resize
         const handleResizeLayout = () => {
-            var windowSize = document.documentElement.clientWidth;
+            const windowSize = document.documentElement.clientWidth;
 
             if (windowSize < 768) {
                 dispatch(changeLeftsidebarSizeType("lg"));
@@ -75,8 +75,8 @@ const Header = ({ handleToggleDrawer, handleDrawer }: any) => {
 
         // out side click
         const outerSideElement = () => {
-            var windowSize = document.documentElement.clientWidth;
-            var sidebarOverlay = document.getElementById("sidebar-overlay") as any;
+            const windowSize = document.documentElement.clientWidth;
+            const sidebarOverlay = document.getElementById("sidebar-overlay") as any;
             if (sidebarOverlay) {
                 sidebarOverlay.addEventListener("click", () => {
                     if (!sidebarOverlay.classList.contains("hidden")) {
@@ -95,7 +95,7 @@ const Header = ({ handleToggleDrawer, handleDrawer }: any) => {
 
         // scroll
         const scrollNavigation = () => {
-            var scrollUp = document.documentElement.scrollTop;
+            const scrollUp = document.documentElement.scrollTop;
             if (scrollUp >= 50) {
                 document.getElementById("page-topbar")?.classList.add('is-sticky');
             } else {

@@ -25,7 +25,10 @@ export const changeLayout = (layout: any) => async (dispatch: any) => {
         // }
         changeHTMLAttribute("data-layout", layout);
         dispatch(changeLayoutAction(layout));
-    } catch (error) { }
+    } catch (error) { 
+        console.log(error);
+        
+    }
 };
 
 /**
@@ -62,7 +65,10 @@ export const changeLayoutMode = (layoutMode: any) => async (dispatch: any) => {
     try {
         changeHTMLAttribute("data-mode", layoutMode);
         dispatch(changeLayoutModeAction(layoutMode));
-    } catch (error) { }
+    } catch (error) {
+        console.log(error);
+        
+     }
 };
 
 /**
