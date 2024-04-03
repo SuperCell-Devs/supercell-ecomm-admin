@@ -225,6 +225,8 @@ import ProvinceListView from "Common/platform/province";
 import ProvinceAddNew from "Common/platform/province/add";
 import ProvinceEdit from "Common/platform/province/edit";
 import CategoryListView from "Common/platform/category";
+import CategoryEdit from "Common/platform/category/edit";
+import CategoryAddNew from "Common/platform/category/add";
 
 interface RouteObject {
   path: string;
@@ -253,8 +255,8 @@ const authProtectedRoutes: Array<RouteObject> = [
 
   // Category
   { path: "/category", component: CategoryListView },
-  { path: "/category-add", component: DistrictAddNew },
-  { path: "/category-edit/:id", component: DistrictEdit },
+  { path: "/category-add", component: CategoryAddNew },
+  { path: "/category-edit/:id", component: CategoryEdit },
 
   // brand
   { path: "/brands", component: BrandListView },

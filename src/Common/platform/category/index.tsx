@@ -19,11 +19,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import {
-    getBrandsList as onGetBrandsList,
-    // deleteBrandsList as onDeleteBrnadsList
+    getCategoryList as onGetCategoryList
 } from 'slices/thunk';
 // import filterDataBySearch from "Common/filterDataBySearch";
-import { IBrand, Paginated } from "helpers/interface/api";
+import { ICategory, Paginated } from "helpers/interface/api";
 
 const CategoryListView = () => {
 
@@ -42,12 +41,12 @@ const CategoryListView = () => {
 
     const { dataList } = useSelector(selectDataList);
         
-    const [data, setData] = useState<Paginated<IBrand[]>>();
+    const [data, setData] = useState<Paginated<ICategory[]>>();
     // const [eventData, setEventData] = useState();
     
     // Get Data
     useEffect(() => {
-        dispatch(onGetBrandsList());
+        dispatch(onGetCategoryList());
     }, [dispatch]);
 
     useEffect(() => {     
@@ -57,7 +56,7 @@ const CategoryListView = () => {
     const handleDataSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearch(value);
-        dispatch(onGetBrandsList({name: value}));
+        dispatch(onGetCategoryList({name: value}));
     }
 
     // Delete Modal
@@ -107,12 +106,12 @@ const CategoryListView = () => {
             ),
         },
         {
-            header: "Description",
-            accessorKey: "description",
+            header: "Parent",
+            accessorKey: "parent",
             enableColumnFilter: false,
             enableSorting: false,
             cell: (cell: any) => (
-                <span className="category px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-slate-100 border-slate-200 text-slate-500 dark:bg-slate-500/20 dark:border-slate-500/20 dark:text-zink-200">{cell.getValue()}</span>
+                <span className="category px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-slate-100 border-slate-200 text-slate-500 dark:bg-slate-500/20 dark:border-slate-500/20 dark:text-zink-200">{cell.getValue() ? cell.getValue().nameEn : "NA"}</span>
             ),
         },
         {
@@ -175,19 +174,7 @@ const CategoryListView = () => {
                                 <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600" />
                             </div>
                         </div>
-                        {/* <div className="xl:col-span-2">
-                            <div>
-                                <Flatpickr
-                                    className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                    options={{
-                                        dateFormat: "d M, Y",
-                                        mode: "range",
-                                    }}
-                                    placeholder='Select date'
-                                    readOnly={true}
-                                />
-                            </div>
-                        </div> */}
+                
                         <div className="lg:col-span-2 ltr:lg:text-right rtl:lg:text-left xl:col-span-2 xl:col-start-11">
                             <Link to={`/${titleSmall}-add`} type="button" 
                             className="text-white btn bg-custom-500 border-custom-500

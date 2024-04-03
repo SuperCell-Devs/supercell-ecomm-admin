@@ -1,3 +1,4 @@
 export const getImagePath = (path: string)  => {
-    return `https://ecom.suer-cell-dev.org/${path}`;
+    const attachmentPath = `https://ecom.super-cell-dev.org/${path}`;
+    return attachmentPath;
 }

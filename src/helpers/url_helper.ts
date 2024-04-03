@@ -1,3 +1,6 @@
+// Globals
+export const GLOBALS_GET = "/Global";
+
 // REGISTER
 export const POST_REGISTER = "/User/Register";
 
@@ -78,6 +81,18 @@ export const GET_DISTRICT_LIST = "/District";
 export const ADD_DISTRICT_LIST = "/District";
 export const UPDATE_DISTRICT_LIST = "/District";
 export const DELETE_DISTRICT_LIST = "/District";
+
+// Vendors
+export const GET_VENDORS_LIST = "/Vendors";
+export const ADD_VENDORS_LIST = "/Vendors";
+export const UPDATE_VENDORS_LIST = "/Vendors";
+export const DELETE_VENDORS_LIST = "/Vendors";
+
+// Category
+export const GET_CATEGORY_LIST = "/Category";
+export const ADD_CATEGORY_LIST = "/Category";
+export const UPDATE_CATEGORY_LIST = "/Category";
+export const DELETE_CATEGORY_LIST = "/Category";
 
 // File upload
 export const UPLOAD_FILE = "/File";

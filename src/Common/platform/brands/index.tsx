@@ -129,8 +129,9 @@ const BrandListView = () => {
             enableColumnFilter: false,
             enableSorting: false,
             cell: (cell: any) => {
+                const path = cell.getValue().path;
                 return (<img
-                    src={getImagePath(cell.getValue().path)}
+                    src={getImagePath(path)}
                     alt="logo"
                     className="avatar-md rounded-circle img-thumbnail"
                   />);

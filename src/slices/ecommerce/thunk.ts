@@ -32,16 +32,34 @@ import {
     getVendorsList as getVendorsListApi,
     deleteVendorsList as deleteVendorsListApi,
     updateVendorsList as updateVendorsListApi,
+    getOneVendor as getOneVendorApi,
     uploadFile as uploadFileApi,
     addProvinceList as addProvinceListApi,
     getProvinceList as getProvinceListApi, 
     getOneProvince as getOneProvinceApi,
     updateProvinceList as updateProvinceListApi,
-    deleteProvinceList as deleteProvinceListApi
+    deleteProvinceList as deleteProvinceListApi,
+    getGlobalsList as getGlobalsApi,
+    addCategoryList as addCategoryListApi,
+    getCategoryList as getCategoryListApi,
+    updateCategoryList as updateCategoryListApi,
+    getOneCategory as getOneCategoryApi 
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostDistrict, IPostVendors, IProvincePost, IUpdateCountryProps } from "helpers/interface/api";
+import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostDistrict, IPostVendors, IProvincePost, IUpdateCountryProps } from "helpers/interface/api";
+
+
+// Globals
+export const getGlobals = createAsyncThunk("ecommerce/getGlobals", async () => {
+    try {
+        const response = await getGlobalsApi();
+        return response;
+    } catch (error) {
+        return error;
+    }
+});
+
 
 export const getOrders = createAsyncThunk("ecommerce/getOrders", async () => {
     try {
@@ -143,7 +161,7 @@ export const addProductList = createAsyncThunk("ecommerce/addProductList", async
         toast.success("Data Added Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data Added Failed", { autoClose: 2000 });
+        toast.error("Operation has failed.", { autoClose: 2000 });
         return error;
     }
 });
@@ -165,6 +183,48 @@ export const deleteProductList = createAsyncThunk("ecommerce/deleteProductList",
         return response;
     } catch (error) {
         toast.error("Data deleted Failed", { autoClose: 2000 });
+        return error;
+    }
+});
+
+// Category
+export const addCategoryList = createAsyncThunk("ecommerce/addCategoryList", async (event: any) => {
+    try {
+        const response = await addCategoryListApi(event);
+        const data = response;
+        toast.success("Data Added Successfully", { autoClose: 2000 });
+        return data;
+    } catch (error) {
+        toast.error("Operation has failed.", { autoClose: 2000 });
+        return error;
+    }
+});
+
+export const getCategoryList = createAsyncThunk("ecommerce/getCategoryList", async (props? : IGetAllCategoryProps) => {
+    try {
+        const response = await getCategoryListApi(props);
+        return response;
+    } catch (error) {
+        return error;
+    }
+});
+
+export const updateCategoryList = createAsyncThunk("ecommerce/updateCategoryList", async (event: any) => {
+    try {
+        const response = await updateCategoryListApi(event);
+        const data = response;
+        toast.success("Data Updated Successfully", { autoClose: 2000 });
+        return data;
+    } catch (error) {
+        toast.error("Operartion has Failed", { autoClose: 2000 });
+        return error;
+    }
+});
+export const getOneCategory = createAsyncThunk("ecommerce/getOneCategory", async (props : IGetOneCategoryProps) => {
+    try {
+        const response = await getOneCategoryApi(props);
+        return response;
+    } catch (error) {
         return error;
     }
 });
@@ -194,7 +254,7 @@ export const addBrandsList = createAsyncThunk("ecommerce/addBrandsList", async (
         toast.success("Data Added Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data Added Failed", { autoClose: 2000 });
+        toast.error("Operation has failed.", { autoClose: 2000 });
         return error;
     }
 });
@@ -246,7 +306,7 @@ export const addCountryList = createAsyncThunk("ecommerce/addCountryList", async
         toast.success("Data Added Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data Added Failed", { autoClose: 2000 });
+        toast.error("Operation has failed.", { autoClose: 2000 });
         return error;
     }
 });
@@ -297,7 +357,7 @@ export const addDistrictList = createAsyncThunk("ecommerce/addDistrictList", asy
         toast.success("Data Added Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data Added Failed", { autoClose: 2000 });
+        toast.error("Operation has failed.", { autoClose: 2000 });
         return error;
     }
 });
@@ -332,14 +392,24 @@ export const getVendorList = createAsyncThunk("ecommerce/getVendorsList", async 
         return error;
     }
 });
+export const getOneVendor = createAsyncThunk("ecommerce/getOneVendor", async (event: IGetOneDistrictProps) => {
+    try {
+        const response = await getOneVendorApi(event);
+        return response;
+    } catch (error) {
+        return error;
+    }
+});
 export const addVendorsList = createAsyncThunk("ecommerce/addVendorsList", async (event: IPostVendors) => {
     try {
-        const response = addVendorsListApi(event);
-        const data = await response;
+        console.log(1, event);
+        
+        const response = await addVendorsListApi(event);
+        const data = response;
         toast.success("Data Added Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data Added Failed", { autoClose: 2000 });
+        toast.error("Operation has failed.", { autoClose: 2000 });
         return error;
     }
 });
@@ -401,7 +471,7 @@ export const addProvinceList = createAsyncThunk("ecommerce/addProvinceList", asy
         toast.success("Data Added Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data Added Failed", { autoClose: 2000 });
+        toast.error("Operation has failed.", { autoClose: 2000 });
         return error;
     }
 });

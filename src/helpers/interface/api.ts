@@ -20,6 +20,16 @@ export interface Paginated<T> {
  * 
  */
 
+// GLOBALS
+export interface GlobalsValue {
+  name: string;
+  value: number;
+}
+export interface IGlobals {
+  title: string;
+  values: GlobalsValue[];
+}
+
 // Brands
 
 interface IBrandLogo {
@@ -101,9 +111,9 @@ export interface IGetOneDistrictProps { id: number }
 export interface IUpdateDistrictProps { id: number, data: Partial<District> }
 
 // Vendors
-
-
-export interface IPostVendors {
+export interface IGetOneVendor { id: number }
+export interface IVendor {
+    id: number;
     name: string;
     description: string;
     email: string;
@@ -112,4 +122,31 @@ export interface IPostVendors {
     districtId: number;
     vendorType: number;
     userId: string;
-  }
+}
+export type IPostVendors = Omit<IVendor, 'id'>;
+export type IPutVendor =  Partial<IVendor>;
+export interface IGetAllVendorProps { name?: string, page?: number, pageSize?: number }
+export interface IGetOneVendorProps { id: number }
+
+
+
+
+// Category
+export interface Category {
+  nameAr?: string;
+  nameEn?: string;
+  parent?: ICategory;
+}
+export interface ICategory extends Category {
+    id: number;
+}
+export interface IPostCategory {
+  nameAr: string;
+  nameEn: string;
+  parentId: number
+}
+export type IPutCategory = Partial<IPostCategory>; 
+
+export interface IGetAllCategoryProps { parentId?: number;  name?: string, page?: number, pageSize?: number }
+export interface IGetOneCategoryProps { id: number }
+export interface IUpdateCategoryProps { id: number, data: Partial<ICategory> }

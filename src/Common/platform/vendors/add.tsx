@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { addVendorsList as onAddVendorList } from "slices/thunk";
 import { getLoggedUser } from "helpers/api_helper";
 import DropdownData from "../common/DropdownData";
+import { emailSchema, iraqMobilePhoneSchema } from "helpers/validation";
 
 
 
@@ -18,6 +19,7 @@ const VendorAddNew = () => {
 
     const dispatch = useDispatch<any>();
     const [loading, setLoading] = useState(false);
+    const [vendorType, setVendorType] = useState();
     const [district, setDistrict] = useState<number>();
 
     const user = getLoggedUser();
@@ -36,14 +38,18 @@ const VendorAddNew = () => {
                 userId: user.userId
             },
             validationSchema: Yup.object({
-                email: Yup.string().email(),
-                phoneNumber: Yup.string(),
-
+                email: emailSchema({required: false}),
+                phoneNumber: iraqMobilePhoneSchema({required: false})
             }),
     
             onSubmit: (values, {resetForm}) => {
                 setLoading(true);
-                dispatch(onAddVendorList(values));
+                const requestObject = { ...values };
+                if (district)
+                    requestObject.districtId = district;
+                if (vendorType)
+                    requestObject.vendorType = vendorType;
+                dispatch(onAddVendorList(requestObject));
                 resetForm();
                 setLoading(false);
             },
@@ -66,7 +72,7 @@ const VendorAddNew = () => {
                                 }}>
                                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
                                     <div className="xl:col-span-6">
-                                        <label htmlFor="name" className="inline-block mb-2 text-base font-medium">Name Arabic</label>
+                                        <label htmlFor="name" className="inline-block mb-2 text-base font-medium">Name</label>
                                         <input 
                                             type="text"
                                             id="name"
@@ -88,11 +94,11 @@ const VendorAddNew = () => {
 
                                     <div className="xl:col-span-6">
                                         <label htmlFor="email" className="inline-block mb-2 text-base font-medium">Email</label>
-                                        <input type="email" id="description"
+                                        <input type="email" id="email"
                                         onChange={validation.handleChange}
                                         value={validation.values.email || ""} 
                                         className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                         placeholder="Description" />
+                                         placeholder="Email" />
                                            {validation.touched.email && validation.errors.email ?  <p className="text-red-400">{validation.errors.email}</p>:null}
                                     </div>
 
@@ -119,12 +125,12 @@ const VendorAddNew = () => {
                                     <DropdownData data="districts" title="Select District" state={district} setState={setDistrict}/>
 
                                     {/* Vendor type select */}
-                                    {/* <DropdownData data/> */}
+                                    <DropdownData data="vendorType" setState={setVendorType} state={vendorType}/>
                                 </div>
                                  
                                 <div className="flex justify-end gap-2 mt-4">
                                     <button  type="submit" className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
-                                        {loading ? "..." : "Create"}
+                                        {loading ? "..." : "Create Vendor"}
                                     </button>
                                 </div>
                             </form>
