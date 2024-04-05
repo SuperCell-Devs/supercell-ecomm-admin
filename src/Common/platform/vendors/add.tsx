@@ -122,10 +122,16 @@ const VendorAddNew = () => {
                                            {validation.touched.address && validation.errors.address ?  <p className="text-red-400">{validation.errors.address}</p>:null}
                                     </div>
                                     {/* Districts select */}
-                                    <DropdownData data="districts" title="Select District" state={district} setState={setDistrict}/>
+                                      <div className="xl:col-span-3">
+                                        <label className="inline-block mb-2 text-base font-medium">Select District</label>   
+                                        <DropdownData data="districts" title="Select District" state={district} setState={setDistrict}/>
+                                    </div>
 
                                     {/* Vendor type select */}
-                                    <DropdownData data="vendorType" setState={setVendorType} state={vendorType}/>
+                                      <div className="xl:col-span-3">
+                                        <label className="inline-block mb-2 text-base font-medium">Select District</label>   
+                                        <DropdownData data="VendorType" setState={setVendorType} state={vendorType}/>
+                                    </div>
                                 </div>
                                  
                                 <div className="flex justify-end gap-2 mt-4">

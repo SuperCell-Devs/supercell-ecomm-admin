@@ -112,6 +112,14 @@ export interface IUpdateDistrictProps { id: number, data: Partial<District> }
 
 // Vendors
 export interface IGetOneVendor { id: number }
+interface DistrictWithProvince extends IDistrict {
+  province: Province;
+}
+export enum VendorType {
+  Retailer = "Retailer",
+  Reseller = "Reseller",
+  Wholesaler = "Wholesaler"
+}
 export interface IVendor {
     id: number;
     name: string;
@@ -120,11 +128,25 @@ export interface IVendor {
     phoneNumber: string;
     address: string;
     districtId: number;
-    vendorType: number;
+    district: DistrictWithProvince;
+    vendorType: VendorType;
     userId: string;
 }
-export type IPostVendors = Omit<IVendor, 'id'>;
-export type IPutVendor =  Partial<IVendor>;
+export interface IPostVendors {
+    name: string;
+    description: string;
+    email: string;
+    phoneNumber: string;
+    address: string;
+    districtId: number;
+    vendorType: number;
+    userId: string;
+} ;
+export interface IPutVendor  {
+  id: number;
+  data: Partial<IPostVendors>
+}
+
 export interface IGetAllVendorProps { name?: string, page?: number, pageSize?: number }
 export interface IGetOneVendorProps { id: number }
 

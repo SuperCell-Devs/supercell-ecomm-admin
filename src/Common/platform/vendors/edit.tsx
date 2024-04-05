@@ -4,11 +4,6 @@ import BreadCrumb from "Common/BreadCrumb";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-// Image
-// TODO: remove avatar and use system images from /attach
-import avatar2 from "assets/images/users/user-2.jpg";
-
-
 
 
 // react-redux
@@ -30,6 +25,7 @@ const VendorsEdit = () => {
     const dispatch = useDispatch<any>();
     const [data, setData] = useState<Paginated<IVendor>>();
     const [district, setDistrict] = useState<number>();
+    const [vendorType, setVendorType] = useState<number>();
     const selectDataList = createSelector(
         (state: any) => state.Ecommerce,
         (state) => ({
@@ -41,19 +37,19 @@ const VendorsEdit = () => {
     const [loading, setLoading] = useState(false);
 
     // validation
-    const validation: any = useFormik({
+    const validation = useFormik({
         // enableReinitialize : use this flag when initial values needs to be changed
         enableReinitialize: true,
 
         initialValues: {
-            name: data?.results.name || "",
-            description: data?.results.description || "",
-            email: data?.results.email || "",
-            phoneNumber: data?.results.phoneNumber || "",
-            address: data?.results.address || "",
-            districId: data?.results.districtId || "",
-            vendorType: data?.results.vendorType || "",
-            userId: data?.results.userId || "",
+            name: data?.results?.name || "",
+            description: data?.results?.description || "",
+            email: data?.results?.email || "",
+            phoneNumber: data?.results?.phoneNumber || "",
+            address: data?.results?.address || "",
+            districId: data?.results?.districtId || 1,
+            vendorType: 1,
+            userId: data?.results?.userId || "",
         },
         validationSchema: Yup.object({
             name: Yup.string(),
@@ -62,13 +58,24 @@ const VendorsEdit = () => {
             email: emailSchema({ required: false }),
             address: Yup.string(),
             districId: Yup.number(),
-            userId: Yup.number(),
-            vendorType: Yup.number(), // TODO: change to ENUM returned from backend
+            userId: Yup.string(),
+            vendorType: Yup.number()
         }),
-        onSubmit: (values, {resetForm}) => {
+        onSubmit: (values, { resetForm }) => {
             setLoading(true);
-            if(id){
-                dispatch(onUpdateVendorList({id: parseInt(id), data: values}));
+            if (id) {
+                dispatch(onUpdateVendorList({
+                    id: parseInt(id),
+                    data: {
+                    address: values.address,
+                    description: values.description,
+                    email: values.email,
+                    name: values.name,
+                    phoneNumber: values.phoneNumber,
+                    userId: values.userId,
+                    districtId: values.districId,
+                    vendorType: values.vendorType}
+                }));
                 resetForm();
                 setLoading(false);
             }
@@ -84,23 +91,27 @@ const VendorsEdit = () => {
 
     useEffect(() => {
         setDistrict(dataList?.results?.district?.id);
+        setVendorType(dataList?.results?.vendorType);
         setData(dataList);
     }, [dataList]);
 
     return (
         <React.Fragment>
-            <BreadCrumb title='Edit' pageTitle='Brands' />
+            <BreadCrumb title='Edit' pageTitle='Vendors' />
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-5">
                 <div className="xl:col-span-9">
                     <div className="card">
                         <div className="card-body">
                             <h6 className="mb-4 text-15">Edit Vendor</h6>
 
-                            <form action="#!" onSubmit={(e) => {
-                                    e.preventDefault();
-                                    validation.handleSubmit();
+                            <form
+                                onSubmit={ (e) => {
+                                        e.preventDefault()
+                                        validation.handleSubmit();  // This line will trigger form submission
                                     return false;
-                                }}>
+                                        }}
+                            
+                            >
                                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
                                     <div className="xl:col-span-6">
                                         <label htmlFor="name" className="inline-block mb-2 text-base font-medium">Name</label>
@@ -154,16 +165,29 @@ const VendorsEdit = () => {
                                     </div>
 
                                     {/* Districts select */}
+                                    <div className="xl:col-span-3">
+                                     <label className="inline-block mb-2 text-base font-medium">Select District</label>   
                                     {
                                         data && <DropdownData data="districts" title="Select District" state={district} setState={setDistrict} />
                                     }
+                                    </div>
 
-                                
+                                    {/* Vendory type select */}
+                                    <div className="xl:col-span-3">
+                                    <label className="inline-block mb-2 text-base font-medium">Select vendor type</label>
+                                    {
+                                        data && <DropdownData data="VendorType" title="Select Vendor Type" state={vendorType} setState={setVendorType}/>
+                                    }
+                                    </div>
+                                  
+
                                 </div>
 
                                  
-                                <div className="flex justify-end gap-2 mt-4">
-                                    <button  type="submit" className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
+                                 <div className="flex justify-end gap-2 mt-4">
+                                    <button
+                                        type="submit"
+                                        className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
                                         {loading ? "..." : "Edit Vendor"}
                                     </button>
                                 </div>

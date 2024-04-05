@@ -1,6 +1,6 @@
 import { User } from "slices/thunk";
 import { APIClient, AuthenticationAPIClient } from "./api_helper";
-import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps } from "./interface/api";
+import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps, IGetAllVendorProps, IPutVendor } from "./interface/api";
 import * as url from "./url_helper";
 
 const globalsApi = new APIClient();
@@ -162,9 +162,9 @@ export const getCategoryList = (props?: IGetAllCategoryProps) => categoryApi.get
 export const updateCategoryList = (props: IUpdateCategoryProps) => categoryApi.put(`${url.UPDATE_CATEGORY_LIST}/${props.id}`, props.data);
 export const getOneCategory = (props: IGetOneCategoryProps) => categoryApi.get(`${url.GET_CATEGORY_LIST}/${props.id}`, null)
 // Vendor
-export const getVendorsList = () => vendorApi.get(url.GET_VENDORS_LIST, null);
+export const getVendorsList = (props?: IGetAllVendorProps) => vendorApi.get(url.GET_VENDORS_LIST, props);
 export const addVendorsList = (data: IPostVendors) => vendorApi.create(url.ADD_VENDORS_LIST, data);
-export const updateVendorsList = (data: any) => vendorApi.update(url.UPDATE_VENDORS_LIST, data);
+export const updateVendorsList = (props: IPutVendor) => vendorApi.put(`${url.UPDATE_VENDORS_LIST}/${props.id}`, props.data);
 export const deleteVendorsList = (data: any) => vendorApi.delete(url.DELETE_VENDORS_LIST, { headers: { data } });
 export const getOneVendor = (props: IGetOneVendor) => vendorApi.get(`${url.GET_VENDORS_LIST}/${props.id}`, null)
 // File

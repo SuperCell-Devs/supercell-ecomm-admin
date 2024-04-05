@@ -47,7 +47,7 @@ import {
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostDistrict, IPostVendors, IProvincePost, IUpdateCountryProps } from "helpers/interface/api";
+import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IGetOneVendor, IPostDistrict, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps } from "helpers/interface/api";
 
 
 // Globals
@@ -172,7 +172,7 @@ export const updateProductList = createAsyncThunk("ecommerce/updateProductList",
         toast.success("Data updated Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data updated Failed", { autoClose: 2000 });
+        toast.error("Operation has failed", { autoClose: 2000 });
         return error;
     }
 });
@@ -317,7 +317,7 @@ export const updateCountryList = createAsyncThunk("ecommerce/updateCountryList",
         toast.success("Data updated Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data updated Failed", { autoClose: 2000 });
+        toast.error("Operation has failed", { autoClose: 2000 });
         return error;
     }
 });
@@ -368,7 +368,7 @@ export const updateDistrictList = createAsyncThunk("ecommerce/updateDistrictList
         toast.success("Data updated Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data updated Failed", { autoClose: 2000 });
+        toast.error("Operation has failed", { autoClose: 2000 });
         return error;
     }
 });
@@ -384,15 +384,15 @@ export const deleteDistrictList = createAsyncThunk("ecommerce/deleteDistrictList
 });
 
 // Vendor
-export const getVendorList = createAsyncThunk("ecommerce/getVendorsList", async () => {
+export const getVendorList = createAsyncThunk("ecommerce/getVendorsList", async (event?: IGetAllVendorProps) => {
     try {
-        const response = getVendorsListApi();
+        const response = await getVendorsListApi(event);
         return response;
     } catch (error) {
         return error;
     }
 });
-export const getOneVendor = createAsyncThunk("ecommerce/getOneVendor", async (event: IGetOneDistrictProps) => {
+export const getOneVendor = createAsyncThunk("ecommerce/getOneVendor", async (event: IGetOneVendor) => {
     try {
         const response = await getOneVendorApi(event);
         return response;
@@ -402,8 +402,6 @@ export const getOneVendor = createAsyncThunk("ecommerce/getOneVendor", async (ev
 });
 export const addVendorsList = createAsyncThunk("ecommerce/addVendorsList", async (event: IPostVendors) => {
     try {
-        console.log(1, event);
-        
         const response = await addVendorsListApi(event);
         const data = response;
         toast.success("Data Added Successfully", { autoClose: 2000 });
@@ -413,14 +411,14 @@ export const addVendorsList = createAsyncThunk("ecommerce/addVendorsList", async
         return error;
     }
 });
-export const updateVendorsList = createAsyncThunk("ecommerce/updateVendorsList", async (event: any) => {
+export const updateVendorsList = createAsyncThunk("ecommerce/updateVendorsList", async (event: IPutVendor) => {
     try {
-        const response = updateVendorsListApi(event);
-        const data = await response;
+        const response = await updateVendorsListApi(event);
+        const data = response;
         toast.success("Data updated Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {
-        toast.error("Data updated Failed", { autoClose: 2000 });
+        toast.error("Operation has failed", { autoClose: 2000 });
         return error;
     }
 });
