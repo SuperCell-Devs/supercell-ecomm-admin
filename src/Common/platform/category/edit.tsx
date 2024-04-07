@@ -9,11 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { createSelector } from 'reselect';
 import { 
     updateCategoryList as onUpdateCategoryList,
-    getOneCategory as onGetOneCategory,
     getCategoryList as onGetCategoryList
  } from "slices/thunk";
 import { createSelector } from "@reduxjs/toolkit";
-import {  Paginated, ICategory } from "helpers/interface/api";
+import { ICategory } from "helpers/interface/api";
 import { useParams } from "react-router-dom";
 import DropdownData from "../common/DropdownData";
 

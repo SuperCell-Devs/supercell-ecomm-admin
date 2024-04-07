@@ -26,7 +26,7 @@ import {
 } from 'slices/thunk';
 import { ToastContainer } from "react-toastify";
 // import filterDataBySearch from "Common/filterDataBySearch";
-import { GeTProductsLight, IProduct, Paginated } from "helpers/interface/api";
+import { GeTProductsLight, Paginated } from "helpers/interface/api";
 import { getImagePath } from "../helpers/getImagePath";
 
 const ProductsListView = () => {

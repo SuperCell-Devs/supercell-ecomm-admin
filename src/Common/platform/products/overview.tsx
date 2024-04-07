@@ -105,21 +105,21 @@ const ProductsOverview = () => {
 
         onSubmit: (values) => {
             if (isEdit) {
-                const updateData = {
-                    id: eventData ? eventData.id : 0,
-                    ...values,
-                };
+                // const updateData = {
+                //     id: eventData ? eventData.id : 0,
+                //     ...values,
+                // };
                 // update user
                 // dispatch(onUpdateReview(updateData));
             } else {
-                const newData = {
-                    ...values,
-                    id: (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
-                    img: userDummy,
-                    customerName: "Paula Keenan",
-                    like: "0",
-                    dislike: "0"
-                };
+                // const newData = {
+                //     ...values,
+                //     id: (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
+                //     img: userDummy,
+                //     customerName: "Paula Keenan",
+                //     like: "0",
+                //     dislike: "0"
+                // };
                 // save new user
                 // dispatch(onAddReview(newData));
             }
