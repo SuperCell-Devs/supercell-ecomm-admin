@@ -53,10 +53,10 @@ export const DELETE_SELLERS = "/delete-sellers";
 
 // Products
 // List View
-export const GET_PRODUCT_LIST = "/Products";
-export const ADD_PRODUCT_LIST = "/Products";
-export const UPDATE_PRODUCT_LIST = "/Products";
-export const DELETE_PRODUCT_LIST = "/Products";
+export const GET_PRODUCT_LIST = "/Product";
+export const ADD_PRODUCT_LIST = "/Product";
+export const UPDATE_PRODUCT_LIST = "/Product";
+export const DELETE_PRODUCT_LIST = "/Product";
 
 // Brands
 export const GET_BRANDS_LIST = "/Brands";

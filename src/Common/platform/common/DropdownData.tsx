@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { GlobalsValue, IBrand, ICategory, ICountry, IDistrict, IGlobals, Paginated, Province } from 'helpers/interface/api';
+import { GlobalsValue, IBrand, ICategory, ICountry, IDistrict, IGlobals, IVendor, Paginated, Province } from 'helpers/interface/api';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -145,6 +145,8 @@ const DynamicDataDropdown = (props: IProps) => {
                         return <option key={i} value={(e as IDistrict).id}>{(e as IDistrict).nameEn}</option>
                     case 'category': 
                         return <option key={i} value={(e as ICategory).id}>{(e as ICategory).nameEn}</option>
+                    case 'vendors': 
+                        return <option key={i} value={(e as IVendor).id}>{(e as IVendor).name}</option>
                     default:
                         return null;
                 }

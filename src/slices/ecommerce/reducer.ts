@@ -119,29 +119,22 @@ const EcommerceSlice = createSlice({
      
 
         // Products
-        // List View
         builder.addCase(getProductList.fulfilled, (state: any, action: any) => {
-            const updatedResults = [action.payload];
-            state.products = { ...state.products, results: updatedResults };
-        });
-
-        builder.addCase(addProductList.fulfilled, (state: any, action: any) => {
-            state.productList.unshift(action.payload);
-        });
-    
-        builder.addCase(updateProductList.fulfilled, (state: any, action: any) => {
-            state.productList = state.productList.map((productList: any) =>
-                productList.id === action.payload.id
-                    ? { ...productList, ...action.payload }
-                    : productList
-            );
+            state.products = action.payload;
         });
         
-        builder.addCase(deleteProductList.fulfilled, (state: any, action: any) => {
-            state.productList = state.productList.filter(
-                (productList: any) => productList.id.toString() !== action.payload.toString()
-            );
+        // builder.addCase(getOneBrand.fulfilled, (state: any, action: any) => {
+        //     state.brands = { ...state.brands, results: action.payload };
+        // });
+        
+        builder.addCase(addProductList.fulfilled, (state: any, action: any) => {
+            state.products = {...state.products, result: action.payload}
         });
+        
+        // builder.addCase(updateBrandsList.fulfilled, (state: any, action: any) => {
+        //     state.brands = { ...state.brands, results: action.payload }
+        // });
+        
 
         // brands
         builder.addCase(getBrandsList.fulfilled, (state: any, action: any) => {

@@ -47,7 +47,7 @@ import {
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IGetOneVendor, IPostDistrict, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps } from "helpers/interface/api";
+import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IGetOneVendor, IGetProductProps, IPostDistrict, IPostProduct, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps } from "helpers/interface/api";
 
 
 // Globals
@@ -146,18 +146,18 @@ export const deleteSellers = createAsyncThunk("ecommerce/deleteSellers", async (
 
 // Products
 
-export const getProductList = createAsyncThunk("ecommerce/getProductList", async () => {
+export const getProductList = createAsyncThunk("ecommerce/getProductList", async (event?: IGetProductProps) => {
     try {
-        const response = getProductListApi();
+        const response = await getProductListApi(event);
         return response;
     } catch (error) {
         return error;
     }
 });
-export const addProductList = createAsyncThunk("ecommerce/addProductList", async (event: any) => {
+export const addProductList = createAsyncThunk("ecommerce/addProductList", async (event: IPostProduct) => {
     try {
-        const response = addProductListApi(event);
-        const data = await response;
+        const response = await addProductListApi(event);
+        const data = response;
         toast.success("Data Added Successfully", { autoClose: 2000 });
         return data;
     } catch (error) {

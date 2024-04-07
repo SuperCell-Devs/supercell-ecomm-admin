@@ -172,3 +172,84 @@ export type IPutCategory = Partial<IPostCategory>;
 export interface IGetAllCategoryProps { parentId?: number;  name?: string, page?: number, pageSize?: number }
 export interface IGetOneCategoryProps { id: number }
 export interface IUpdateCategoryProps { id: number, data: Partial<ICategory> }
+
+
+// Products
+
+export enum FileImageType {
+  Original,
+  Small,
+  Medium,
+  Large
+}
+
+export enum AspectRatio {
+  _1_1,
+  _4_3,
+  _16_9,
+  _21_9
+}
+export interface ProductImage {
+  path: string;
+  imageType: FileImageType,
+  aspectRatio: AspectRatio
+}
+export interface Product {
+  nameAr: string;
+  nameEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  shortDescriptionAr: string;
+  shortDescriptionEn: string;
+  sku: string;
+  isPublished: boolean;
+  isFeatured: boolean;
+  isNew: boolean;
+  isOnSale: boolean;
+  isBestSeller: boolean;
+  isVariable: boolean;
+  price: number;
+  oldPrice: number;
+  isAvailable: boolean;
+  availableFrom: Date;
+  availableTo: Date;
+  vendorId: number;
+  images: ProductImage[],
+  brandId: number;
+}
+
+export interface IProduct extends Product {
+  id: number;
+}
+
+export interface IPostProduct extends Partial<Product> {
+  
+}
+
+export interface IUpdateProduct {
+  id: number;
+  data: Partial<IProduct>
+}
+
+export interface IGetProductProps {
+  name?: string;
+  fromPrice?: number;
+  toPrice?: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface IGetOneProductProps {
+  id: number;
+}
+
+export interface GeTProductsLight {
+  name: string;
+  image: ProductImage;
+  isNew: boolean;
+  isOnSale: boolean;
+  isBestSeller: boolean;
+  price: number;
+  isAvailable: boolean;
+  id: number;
+}

@@ -200,7 +200,7 @@ import ContactUs from "pages/Pages/ContactUs";
 import ProductsAddNew from "Common/platform/products/add";
 import ProductsEdit from "Common/platform/products/edit";
 import ProductsListView from "Common/platform/products";
-// import ProductsOverview from "Common/platform/products/overview";
+import ProductsOverview from "Common/platform/products/overview";
 
 // Import vendor views
 import VendorAddNew from "Common/platform/vendors/add";
@@ -241,7 +241,7 @@ const authProtectedRoutes: Array<RouteObject> = [
   { path: "/products", component: ProductsListView },
   { path: "/products-add", component: ProductsAddNew },
   { path: "/products-edit/:id", component: ProductsEdit },
-  // { path: "/products/overview/", component: ProductsOverview },
+  { path: "/products-overview/", component: ProductsOverview },
 
   // country
   { path: "/country", component: CountryListView },
