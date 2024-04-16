@@ -218,6 +218,37 @@ export interface Product {
   brandId: number;
 }
 
+export interface GetProduct {
+  name: string,
+  description: string,
+  shortDescription: string,
+  sku: string,
+  isPublished: boolean,
+  isFeatured: boolean,
+  isNew: boolean,
+  isOnSale: boolean,
+  isBestSeller: boolean,
+  price: number,
+  oldPrice: number,
+  isAvailable: boolean,
+  availableFrom: Date,
+  availableTo: Date,
+  isVariable: boolean,
+  images: ProductImage[],
+  vendorId: number,
+  vendor: {
+    name: string,
+    vendorType: VendorType,
+    id: number
+  },
+  brandId: number,
+  brand: {
+    name: string,
+    id: number
+  },
+  id: number
+}
+
 export interface IProduct extends Product {
   id: number;
 }

@@ -11,6 +11,7 @@ import {
     deleteSellers as deleteSellersApi,
     getProductList as getProductListApi,
     addProductList as addProductListApi,
+    getOneProduct as getOneProductApi, 
     updateProductList as updateProductListApi,
     deleteProductList as deleteProductListApi,
     addBrandsList as addBrandsListApi,
@@ -47,7 +48,7 @@ import {
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IGetOneVendor, IGetProductProps, IPostDistrict, IPostProduct, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps } from "helpers/interface/api";
+import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProductProps, IGetOneProvinceProps, IGetOneVendor, IGetProductProps, IPostDistrict, IPostProduct, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps } from "helpers/interface/api";
 
 
 // Globals
@@ -145,6 +146,15 @@ export const deleteSellers = createAsyncThunk("ecommerce/deleteSellers", async (
 
 
 // Products
+
+export const getOneProduct = createAsyncThunk("ecommerce/getOneProduct", async (props : IGetOneProductProps) => {
+    try {
+        const response = await getOneProductApi(props);
+        return response;
+    } catch (error) {
+        return error;
+    }
+});
 
 export const getProductList = createAsyncThunk("ecommerce/getProductList", async (event?: IGetProductProps) => {
     try {

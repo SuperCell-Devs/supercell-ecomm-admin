@@ -4,7 +4,8 @@ import Flatpickr from 'react-flatpickr';
 import * as Yup from 'yup';
 import {
     uploadFile as onfileUpload,
-    addProductList as onAddProductList } from "slices/thunk";
+    addProductList as onAddProductList
+} from "slices/thunk";
 import { useFormik } from "formik";
 import DropdownData from "../common/DropdownData";
 import Dropzone from "react-dropzone";
@@ -69,7 +70,7 @@ const ProductsAddNew = () => {
         }))
         // Add more validation rules for other inputs
     });
-    
+
     const formik = useFormik({
         initialValues: {
             nameAr: '',
@@ -95,34 +96,34 @@ const ProductsAddNew = () => {
             images: undefined
         },
         validationSchema: validationSchema,
-        onSubmit: async (values, { setSubmitting, setValues }) => {     
-        let images: ProductImage[] = [];
-        let productFinalValues: any = {};
-        try {
-            // Upload selected imaegs
-            const imageUploadRequest = function uploadImagefile(file: any) {
+        onSubmit: async (values, { setSubmitting, setValues }) => {
+            let images: ProductImage[] = [];
+            let productFinalValues: any = {};
+            try {
+                // Upload selected imaegs
+                const imageUploadRequest = function uploadImagefile(file: any) {
                     // Dispatch onFileUpload action
                     return dispatch(onfileUpload(file)).then((response: any) => {
                         // Assuming response contains the URL of the uploaded file
                         const imageUrl = response.payload;
                         console.log(imageUrl);
-                        
+
                         return imageUrl
                     })
                 }
-            
-            const operations = selectfiles.map((file) => imageUploadRequest(file));
-            images = (await Promise.all(operations)).map((e: string) => ({
-                path: e,
-                imageType: 1,
-                aspectRatio: 1
-            }));
-            productFinalValues.images = images;      
-        } catch (error) {
-            console.error(error);
-            toast.error("Image files upload failed.", { autoClose: 3000 });
-        }
-        // Submit form
+
+                const operations = selectfiles.map((file) => imageUploadRequest(file));
+                images = (await Promise.all(operations)).map((e: string) => ({
+                    path: e,
+                    imageType: 1,
+                    aspectRatio: 1
+                }));
+                productFinalValues.images = images;
+            } catch (error) {
+                console.error(error);
+                toast.error("Image files upload failed.", { autoClose: 3000 });
+            }
+            // Submit form
             productFinalValues = {
                 ...values,
                 ...productFinalValues,
@@ -143,12 +144,12 @@ const ProductsAddNew = () => {
         <React.Fragment>
             <BreadCrumb title='Add New' pageTitle='Products' />
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-5">
-                <div className="xl:col-span-9">
+                <div className="xl:col-span-8">
                     <div className="card">
                         <div className="card-body">
                             <h6 className="mb-4 text-15">Create Product</h6>
-                                <form onSubmit={formik.handleSubmit}>
-                                    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
+                            <form onSubmit={formik.handleSubmit}>
+                                <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
                                     <div className="xl:col-span-6">
                                         <label htmlFor="nameAr" className="inline-block mb-2 text-base font-medium">Product Name in Arabic</label>
                                         <input
@@ -156,12 +157,12 @@ const ProductsAddNew = () => {
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             value={formik.values.nameAr}
-                                        name="nameAr"
-                                        id="nameAr"
-                                        className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 ..."
-                                        placeholder="Product Name"
+                                            name="nameAr"
+                                            id="nameAr"
+                                            className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 ..."
+                                            placeholder="Product Name"
                                         />
-                                        {formik.touched.nameAr && formik.errors.nameAr ?  <p className="text-red-400">{formik.errors.nameAr}</p>:null}
+                                        {formik.touched.nameAr && formik.errors.nameAr ? <p className="text-red-400">{formik.errors.nameAr}</p> : null}
                                     </div>
                                     <div className="xl:col-span-6">
                                         <label htmlFor="nameEn" className="inline-block mb-2 text-base font-medium">Product Name in English</label>
@@ -170,9 +171,9 @@ const ProductsAddNew = () => {
                                             onBlur={formik.handleBlur}
                                             value={formik.values.nameEn}
                                             type="text" id="nameEn" name="nameEn" className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Product Name" />
-                                        {formik.touched.nameEn && formik.errors.nameEn ?  <p className="text-red-400">{formik.errors.nameEn}</p>:null}
+                                        {formik.touched.nameEn && formik.errors.nameEn ? <p className="text-red-400">{formik.errors.nameEn}</p> : null}
                                     </div>
-                                    
+
                                     <div className="xl:col-span-6">
                                         <label htmlFor="descriptionAr" className="inline-block mb-2 text-base font-medium">Product descrition in Arabic</label>
                                         <input
@@ -183,21 +184,21 @@ const ProductsAddNew = () => {
                                             onBlur={formik.handleBlur}
                                             value={formik.values.descriptionAr}
                                             className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Product Description" />
-                                               {formik.touched.nameEn && formik.errors.nameEn ?  <p className="text-red-400">{formik.errors.nameEn}</p>:null}
-                                            </div>
+                                        {formik.touched.nameEn && formik.errors.nameEn ? <p className="text-red-400">{formik.errors.nameEn}</p> : null}
+                                    </div>
 
                                     <div className="xl:col-span-6">
                                         <label htmlFor="descriptioneEn" className="inline-block mb-2 text-base font-medium">Product descrition in English</label>
-                                                <input
-                                                    type="text"
-                                                    id="descriptioneEn"
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    value={formik.values.descriptionEn}
-                                                    name="descriptioneEn"
-                                                    className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Product Description" />
-                                                   {formik.touched.descriptionAr && formik.errors.descriptionAr ?  <p className="text-red-400">{formik.errors.descriptionAr}</p>:null}
-                                            
+                                        <input
+                                            type="text"
+                                            id="descriptioneEn"
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            value={formik.values.descriptionEn}
+                                            name="descriptioneEn"
+                                            className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Product Description" />
+                                        {formik.touched.descriptionAr && formik.errors.descriptionAr ? <p className="text-red-400">{formik.errors.descriptionAr}</p> : null}
+
                                     </div>
 
                                     <div className="xl:col-span-6">
@@ -209,8 +210,8 @@ const ProductsAddNew = () => {
                                             value={formik.values.shortDescriptionAr}
                                             id="shortDescriptionAr"
                                             name="shortDescriptionAr" className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Product Short Description" />
-                                                {formik.touched.shortDescriptionAr && formik.errors.shortDescriptionAr ?  <p className="text-red-400">{formik.errors.shortDescriptionAr}</p>:null}
-                                            </div>
+                                        {formik.touched.shortDescriptionAr && formik.errors.shortDescriptionAr ? <p className="text-red-400">{formik.errors.shortDescriptionAr}</p> : null}
+                                    </div>
 
                                     <div className="xl:col-span-6">
                                         <label htmlFor="shortDescriptionEn" className="inline-block mb-2 text-base font-medium">Product short descrition in English</label>
@@ -219,26 +220,26 @@ const ProductsAddNew = () => {
                                             onBlur={formik.handleBlur}
                                             value={formik.values.shortDescriptionEn}
                                             type="text" id="shortDescriptionEn" name="shortDescriptionEn" className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Product Short Description" />
-                                        
+
                                         {formik.touched.shortDescriptionEn && formik.errors.shortDescriptionEn ? <p className="text-red-400">{formik.errors.shortDescriptionEn}</p> : null}
-                                            
-                                        </div>
-                                    
-                                    
+
+                                    </div>
+
+
                                     <div className="xl:col-span-6">
                                         <label htmlFor="sku" className="inline-block mb-2 text-base font-medium">SKU</label>
                                         <input
-                                        onChange={formik.handleChange}
+                                            onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             value={formik.values.sku}
                                             type="text" id="sku" name="sku" className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="SKU" />
-                                    
-                                                               
+
+
                                         {formik.touched.sku && formik.errors.sku ? <p className="text-red-400">{formik.errors.sku}</p> : null}
-                                            
-                                            </div>
-                                    
-                                         
+
+                                    </div>
+
+
                                     <div className="xl:col-span-6">
                                         <label htmlFor="price" className="inline-block mb-2 text-base font-medium">Price</label>
                                         <input
@@ -247,21 +248,21 @@ const ProductsAddNew = () => {
                                             value={formik.values.price}
                                             type="number" id="price" name="price" className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Price" />
                                         {formik.touched.price && formik.errors.price ? <p className="text-red-400">{formik.errors.price}</p> : null}
-                                            
-                                    
+
+
                                     </div>
-                                    
-                                         
+
+
                                     <div className="xl:col-span-6">
                                         <label htmlFor="oldPrice" className="inline-block mb-2 text-base font-medium">Old Price</label>
                                         <input
-                                        onChange={formik.handleChange}
+                                            onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             value={formik.values.oldPrice}
                                             type="number" id="oldPrice" name="oldPrice" className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Old Price" />
-                                         {formik.touched.oldPrice && formik.errors.oldPrice ? <p className="text-red-400">{formik.errors.oldPrice}</p> : null}
+                                        {formik.touched.oldPrice && formik.errors.oldPrice ? <p className="text-red-400">{formik.errors.oldPrice}</p> : null}
                                     </div>
-                                
+
                                     <div className="xl:col-span-12">
                                         <label htmlFor="qualityInput" className="inline-block mb-2 text-base font-medium">Other Options</label>
                                         <div className="flex flex-wrap justify-around items-center gap-2 w-full">
@@ -277,12 +278,12 @@ const ProductsAddNew = () => {
                                                     name="isPublished" />
                                             </div>
 
-                                               <div >
+                                            <div >
                                                 <label htmlFor="isFeatured" className="mr-2 inline-block mb-2 text-base font-medium">Is Featured</label>
                                                 <input id="isFeatured"
                                                     className="inline-block size-5 align-middle border rounded-sm appearance-none cursor-pointer bg-sky-500 border-sky-500 checked:bg-sky-500 checked:border-sky-500 disabled:opacity-75 disabled:cursor-default"
                                                     type="checkbox"
-                                                      onChange={formik.handleChange}
+                                                    onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     checked={formik.values.isFeatured}
                                                     name="isFeatured" />
@@ -293,29 +294,29 @@ const ProductsAddNew = () => {
                                                 <input id="isNew"
                                                     className="inline-block size-5 align-middle border rounded-sm appearance-none cursor-pointer bg-sky-500 border-sky-500 checked:bg-sky-500 checked:border-sky-500 disabled:opacity-75 disabled:cursor-default"
                                                     type="checkbox"
-                                                      onChange={formik.handleChange}
+                                                    onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     checked={formik.values.isNew}
                                                     name="isNew" />
                                             </div>
 
-                                               <div >
+                                            <div >
                                                 <label htmlFor="isOnSale" className="mr-2 inline-block mb-2 text-base font-medium">Is On Sale</label>
                                                 <input id="isOnSale"
                                                     className="inline-block size-5 align-middle border rounded-sm appearance-none cursor-pointer bg-sky-500 border-sky-500 checked:bg-sky-500 checked:border-sky-500 disabled:opacity-75 disabled:cursor-default"
                                                     type="checkbox"
-                                                      onChange={formik.handleChange}
+                                                    onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     checked={formik.values.isOnSale}
                                                     name="isOnSale" />
                                             </div>
 
-                                               <div >
+                                            <div >
                                                 <label htmlFor="isBestSeller" className="mr-2 inline-block mb-2 text-base font-medium">Is Best Seller</label>
                                                 <input id="isBestSeller"
                                                     className="inline-block size-5 align-middle border rounded-sm appearance-none cursor-pointer bg-sky-500 border-sky-500 checked:bg-sky-500 checked:border-sky-500 disabled:opacity-75 disabled:cursor-default"
                                                     type="checkbox"
-                                                      onChange={formik.handleChange}
+                                                    onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     checked={formik.values.isBestSeller}
                                                     name="isBestSeller" />
@@ -326,18 +327,17 @@ const ProductsAddNew = () => {
                                                 <input id="isVariable"
                                                     className="inline-block size-5 align-middle border rounded-sm appearance-none cursor-pointer bg-sky-500 border-sky-500 checked:bg-sky-500 checked:border-sky-500 disabled:opacity-75 disabled:cursor-default"
                                                     type="checkbox"
-                                                      onChange={formik.handleChange}
+                                                    onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     checked={formik.values.isVariable}
                                                     name="isVariable" />
                                             </div>
-                                         
-                                           
+
+
                                         </div>
                                     </div>
-                                        
-                                    {/* Add more inputs here */}
 
+                                    {/* Add more inputs here */}
                                     <div className="xl:col-span-6">
                                         <label className="mr-2 inline-block mb-2 text-base font-medium">Availability Date</label>
 
@@ -358,136 +358,80 @@ const ProductsAddNew = () => {
                                     </div>
                                     <div className="xl:col-span-6">
                                         <label className="mr-2 inline-block mb-2 text-base font-medium">Select Vendor type</label>
-                                         <DropdownData data="vendors" title="Select Vendor" state={vendor} setState={setVendor}/>
-                                     </div>
+                                        <DropdownData data="vendors" title="Select Vendor" state={vendor} setState={setVendor} />
+                                    </div>
 
-                                     <div className="xl:col-span-6">
-                                        <label className="mr-2 inline-block mb-2 text-base font-medium">Select Brand</label> 
+                                    <div className="xl:col-span-6">
+                                        <label className="mr-2 inline-block mb-2 text-base font-medium">Select Brand</label>
                                         <DropdownData data="brands" title="Select Brand" state={brand} setState={setBrand} />
                                     </div>
-                                    
-                                    <div className="xl:col-span-12">
-                                        <label className="mr-2 inline-block mb-2 text-base font-medium">Upload images</label>
-                                        <Dropzone
-                                            maxFiles={5}
-                                            multiple
-                                            onDrop={(acceptfiles: any) => {
-                                                handleAcceptfiles(acceptfiles);
-                                            }}>
-                                            {({ getRootProps }: any) => (
-                                                <div className="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2">
-                                                    <div className="w-full py-5 text-lg text-center dz-message needsclick" {...getRootProps()} >
-                                                        <div className="mb-3">
-                                                            <UploadCloud className="block size-12 mx-auto text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </Dropzone>
-                                        <ul className="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                            {
-                                                (selectfiles || [])?.map((file: any, index: number) => {
-                                                    return (
-                                                        <li key={index} className="mt-5" id="dropzone-preview-list2">
-                                                            <div className="border rounded border-slate-200 dark:border-zink-500">
-                                                                <div className="p-2 text-center">
-                                                                    <div>
-                                                                        <div className="p-2 mx-auto rounded-md size-14 bg-slate-100 dark:bg-zink-600">
-                                                                            <img className="block w-full h-full rounded-md" src={file.priview} alt={file.name} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="pt-3">
-                                                                        <h5 className="mb-1 text-15" data-dz-name>{file.path}</h5>
-                                                                        <p className="mb-0 text-slate-500 dark:text-zink-200" data-dz-size>{file.formattedSize}</p>
-                                                                        <strong className="error text-danger" data-dz-errormessage></strong>
-                                                                    </div>
-                                                                    <div className="mt-2">
-                                                                        <button data-dz-remove className="px-2 py-1.5 text-xs text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20" onClick={() => {
-                                                                            const newImages = [...selectfiles];
-                                                                            newImages.splice(index, 1);
-                                                                            setSelectfiles(newImages);
-                                                                        }}>Delete</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    );
-                                                })
-                                            }
-                                        </ul>
-                                   
-                                    </div>
-                                   
-                                    </div>
-                                    <div className="flex justify-end gap-2 mt-4">
-                                        <button type="reset" className="text-red-500 bg-white ...">Reset</button>
-                                        <button type="submit" className="text-white btn bg-custom-500 border-custom-500 ...">Create Product</button>
-                                    </div>
-                                </form>
-               
+
+                                </div>
+                                <div className="flex justify-end gap-2 mt-4">
+                                    <button type="submit" className="text-white btn bg-custom-500 border-custom-500 ...">Create Product</button>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
-                {/* <div className="xl:col-span-3">
-                    <div className="card sticky top-[calc(theme('spacing.header')_*_1.3)]">
-                        <div className="card-body">
-                            <h6 className="mb-4 text-15">Product Card Preview</h6>
+                {/* Product image */}
+                <div className="xl:col-span-4">
+                    <div className="card p-2">
 
-                            <div className="px-5 py-8 rounded-md bg-sky-50 dark:bg-zink-600">
-                                <img src={productImg03} alt="" className="block mx-auto h-44" />
-                            </div>
+                        <div className="xl:col-span-12">
+                            <label className="mr-2 inline-block mb-2 text-base font-medium">Upload Product image</label>
+                            <Dropzone
+                                maxFiles={5}
+                                multiple
+                                onDrop={(acceptfiles: any) => {
+                                    handleAcceptfiles(acceptfiles);
+                                }}>
+                                {({ getRootProps }: any) => (
+                                    <div className="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2">
+                                        <div className="w-full py-5 text-lg text-center dz-message needsclick" {...getRootProps()} >
+                                            <div className="mb-3">
+                                                <UploadCloud className="block size-12 mx-auto text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </Dropzone>
+                            <ul className="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
+                                {
+                                    (selectfiles || [])?.map((file: any, index: number) => {
+                                        return (
+                                            <li key={index} className="mt-5" id="dropzone-preview-list2">
+                                                <div className="border rounded border-slate-200 dark:border-zink-500">
+                                                    <div className="p-2 text-center">
+                                                        <div>
+                                                            <div className="p-2 mx-auto rounded-md size-14 bg-slate-100 dark:bg-zink-600">
+                                                                <img className="block w-full h-full rounded-md" src={file.priview} alt={file.name} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="pt-3">
+                                                            <h5 className="mb-1 text-15" data-dz-name>{file.path}</h5>
+                                                            <p className="mb-0 text-slate-500 dark:text-zink-200" data-dz-size>{file.formattedSize}</p>
+                                                            <strong className="error text-danger" data-dz-errormessage></strong>
+                                                        </div>
+                                                        <div className="mt-2">
+                                                            <button data-dz-remove className="px-2 py-1.5 text-xs text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20" onClick={() => {
+                                                                const newImages = [...selectfiles];
+                                                                newImages.splice(index, 1);
+                                                                setSelectfiles(newImages);
+                                                            }}>Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        );
+                                    })
+                                }
+                            </ul>
 
-                            <div className="mt-3">
-                                <h5 className="mb-2">$145.99 <small className="font-normal line-through">299.99</small></h5>
-                                <h6 className="mb-1 text-15">Fastcolors Typography Men</h6>
-                                <p className="text-slate-500 dark:text-zink-200">Men&apos;s Fashion</p>
-                            </div>
-                            <h6 className="mt-3 mb-2 text-15">Colors</h6>
-                            <div className="flex flex-wrap items-center gap-2">
-                                <div>
-                                    <input id="selectColorPre1" className="inline-block size-5 align-middle border rounded-full appearance-none cursor-pointer bg-sky-500 border-sky-500 checked:bg-sky-500 checked:border-sky-500 disabled:opacity-75 disabled:cursor-default" type="checkbox" value="color1" name="selectColorPre" />
-                                </div>
-                                <div>
-                                    <input id="selectColorPre2" className="inline-block size-5 align-middle bg-orange-500 border border-orange-500 rounded-full appearance-none cursor-pointer checked:bg-orange-500 checked:border-orange-500 disabled:opacity-75 disabled:cursor-default" type="checkbox" value="color2" name="selectColorPre" defaultChecked />
-                                </div>
-                                <div>
-                                    <input id="selectColorPre3" className="inline-block size-5 align-middle bg-green-500 border border-green-500 rounded-full appearance-none cursor-pointer checked:bg-green-500 checked:border-green-500 disabled:opacity-75 disabled:cursor-default" type="checkbox" value="color3" name="selectColorPre" />
-                                </div>
-                                <div>
-                                    <input id="selectColorPre4" className="inline-block size-5 align-middle bg-purple-500 border border-purple-500 rounded-full appearance-none cursor-pointer checked:bg-purple-500 checked:border-purple-500 disabled:opacity-75 disabled:cursor-default" type="checkbox" value="color4" name="selectColorPre" />
-                                </div>
-                            </div>
-
-                            <h6 className="mt-3 mb-2 text-15">Colors</h6>
-                            <div className="flex flex-wrap items-center gap-2">
-                                <div>
-                                    <input id="selectSizePreXS" className="hidden peer" type="checkbox" value="XS" name="selectSizePre" />
-                                    <label htmlFor="selectSizePreXS" className="flex items-center justify-center size-8 text-xs border rounded-md cursor-pointer border-slate-200 dark:border-zink-500 peer-checked:bg-custom-50 dark:peer-checked:bg-custom-500/20 peer-checked:border-custom-300 dark:peer-checked:border-custom-700 peer-disabled:bg-slate-50 dark:peer-disabled:bg-slate-500/15 peer-disabled:border-slate-100 dark:peer-disabled:border-slate-800 peer-disabled:cursor-default peer-disabled:text-slate-500 dark:peer-disabled:text-zink-200">XS</label>
-                                </div>
-                                <div>
-                                    <input id="selectSizePreS" className="hidden peer" type="checkbox" value="S" name="selectSizePre" />
-                                    <label htmlFor="selectSizePreS" className="flex items-center justify-center size-8 text-xs border rounded-md cursor-pointer border-slate-200 dark:border-zink-500 peer-checked:bg-custom-50 dark:peer-checked:bg-custom-500/20 peer-checked:border-custom-300 dark:peer-checked:border-custom-700 peer-disabled:bg-slate-50 dark:peer-disabled:bg-slate-500/15 peer-disabled:border-slate-100 dark:peer-disabled:border-slate-800 peer-disabled:cursor-default peer-disabled:text-slate-500 dark:peer-disabled:text-zink-200">S</label>
-                                </div>
-                                <div>
-                                    <input id="selectSizePreM" className="hidden peer" type="checkbox" value="M" name="selectSizePre" />
-                                    <label htmlFor="selectSizePreM" className="flex items-center justify-center size-8 text-xs border rounded-md cursor-pointer border-slate-200 dark:border-zink-500 peer-checked:bg-custom-50 dark:peer-checked:bg-custom-500/20 peer-checked:border-custom-300 dark:peer-checked:border-custom-700 peer-disabled:bg-slate-50 dark:peer-disabled:bg-slate-500/15 peer-disabled:border-slate-100 dark:peer-disabled:border-slate-800 peer-disabled:cursor-default peer-disabled:text-slate-500 dark:peer-disabled:text-zink-200">M</label>
-                                </div>
-                                <div>
-                                    <input id="selectSizePreL" className="hidden peer" type="checkbox" value="L" name="selectSizePre" />
-                                    <label htmlFor="selectSizePreL" className="flex items-center justify-center size-8 text-xs border rounded-md cursor-pointer border-slate-200 dark:border-zink-500 peer-checked:bg-custom-50 dark:peer-checked:bg-custom-500/20 peer-checked:border-custom-300 dark:peer-checked:border-custom-700 peer-disabled:bg-slate-50 dark:peer-disabled:bg-slate-500/15 peer-disabled:border-slate-100 dark:peer-disabled:border-slate-800 peer-disabled:cursor-default peer-disabled:text-slate-500 dark:peer-disabled:text-zink-200">L</label>
-                                </div>
-                                <div>
-                                    <input id="selectSizePreXL" className="hidden peer" type="checkbox" value="XL" name="selectSizePre" />
-                                    <label htmlFor="selectSizePreXL" className="flex items-center justify-center size-8 text-xs border rounded-md cursor-pointer border-slate-200 dark:border-zink-500 peer-checked:bg-custom-50 dark:peer-checked:bg-custom-500/20 peer-checked:border-custom-300 dark:peer-checked:border-custom-700 peer-disabled:bg-slate-50 dark:peer-disabled:bg-slate-500/15 peer-disabled:border-slate-100 dark:peer-disabled:border-slate-800 peer-disabled:cursor-default peer-disabled:text-slate-500 dark:peer-disabled:text-zink-200">XL</label>
-                                </div>
-                            </div>
-                            <div className="flex gap-2 mt-4">
-                                <button type="button" className="w-full bg-white border-dashed text-custom-500 btn border-custom-500 hover:text-custom-500 hover:bg-custom-50 hover:border-custom-600 focus:text-custom-600 focus:bg-custom-50 focus:border-custom-600 active:text-custom-600 active:bg-custom-50 active:border-custom-600 dark:bg-zink-700 dark:ring-custom-400/20 dark:hover:bg-custom-800/20 dark:focus:bg-custom-800/20 dark:active:bg-custom-800/20">Create Products</button>
-                                <button type="button" className="w-full text-white bg-purple-500 border-purple-500 btn hover:text-white hover:bg-purple-600 hover:border-purple-600 focus:text-white focus:bg-purple-600 focus:border-purple-600 focus:ring focus:ring-purple-100 active:text-white active:bg-purple-600 active:border-purple-600 active:ring active:ring-purple-100 dark:ring-purple-400/10">Draft</button>
-                            </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
             </div>
         </React.Fragment>
     );

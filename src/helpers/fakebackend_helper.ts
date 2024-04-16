@@ -1,6 +1,6 @@
 import { User } from "slices/thunk";
 import { APIClient, AuthenticationAPIClient } from "./api_helper";
-import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps, IGetAllVendorProps, IPutVendor, IGetProductProps, IPostProduct } from "./interface/api";
+import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps, IGetAllVendorProps, IPutVendor, IGetProductProps, IPostProduct, IGetOneProductProps } from "./interface/api";
 import * as url from "./url_helper";
 
 const globalsApi = new APIClient();
@@ -118,7 +118,7 @@ export const getProductList = (props?: IGetProductProps) => productsApi.get(url.
 export const addProductList = (data: IPostProduct) => productsApi.create(url.ADD_PRODUCT_LIST, data);
 export const updateProductList = (data: any) => productsApi.update(url.UPDATE_PRODUCT_LIST, data);
 export const deleteProductList = (data: any) => productsApi.delete(url.DELETE_PRODUCT_LIST, { headers: { data } });
-
+export const getOneProduct = (props: IGetOneProductProps) => productsApi.get(`${url.GET_PRODUCT_LIST}/${props.id}`, null);
 
 // Brands
 export const getBrandsList = (props? : IGetAllBrandsProps) => brandsApi.get(url.GET_BRANDS_LIST, props);

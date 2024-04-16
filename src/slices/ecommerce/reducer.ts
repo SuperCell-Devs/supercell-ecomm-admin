@@ -41,7 +41,8 @@ import {
     addCategoryList,
     getCategoryList,
     updateCategoryList,
-    getOneCategory
+    getOneCategory,
+    getOneProduct
 } from './thunk';
 
 
@@ -123,9 +124,9 @@ const EcommerceSlice = createSlice({
             state.products = action.payload;
         });
         
-        // builder.addCase(getOneBrand.fulfilled, (state: any, action: any) => {
-        //     state.brands = { ...state.brands, results: action.payload };
-        // });
+        builder.addCase(getOneProduct.fulfilled, (state: any, action: any) => {
+            state.products = { ...state.products, results: action.payload };
+        });
         
         builder.addCase(addProductList.fulfilled, (state: any, action: any) => {
             state.products = {...state.products, result: action.payload}
@@ -261,6 +262,7 @@ const EcommerceSlice = createSlice({
                 addProductList.rejected,
                 updateProductList.rejected,
                 deleteProductList.rejected,
+                getOneProduct.rejected,
                 getBrandsList.rejected,
                 updateBrandsList.rejected,
                 deleteBrandsList.rejected,
