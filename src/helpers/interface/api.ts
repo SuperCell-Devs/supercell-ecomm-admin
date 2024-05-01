@@ -131,6 +131,8 @@ export interface IVendor {
     district: DistrictWithProvince;
     vendorType: VendorType;
     userId: string;
+    logo: ImageAsset;
+  cover: ImageAsset;
 }
 export interface IPostVendors {
     name: string;
@@ -188,6 +190,12 @@ export enum AspectRatio {
   _4_3,
   _16_9,
   _21_9
+}
+
+export interface ImageAsset {
+  path: string;
+  imageType: FileImageType,
+  aspectRatio: AspectRatio
 }
 export interface ProductImage {
   path: string;

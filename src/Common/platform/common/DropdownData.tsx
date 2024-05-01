@@ -55,12 +55,12 @@ const GlobalsDropDownData = (props: IProps) => {
     return (
         <select 
             // global values are {name: string, value: number} type. return value by matching name string value 
-        value={props.state && targetedGlobalValueList?.find((e) => e.name === capitalizeFirstLetter(props.state))?.value}
+        value={props.state === "Initial" ? "Initial" : props.state && targetedGlobalValueList?.find((e) => e.name === capitalizeFirstLetter(props.state))?.value}
         onChange={
             (e) => props.setState(e.target.value)
         } 
         className="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-        <option value="">{ props.title || props.data  }</option>
+        <option value="Initial">{ props.title || props.data  }</option>
             {
                 targetedGlobalValueList?.map((e: any, i: number) => (<option key={i} value={(e as GlobalsValue).value}>{(e as GlobalsValue).name}</option>))
             }
@@ -130,7 +130,7 @@ const DynamicDataDropdown = (props: IProps) => {
             (e) => props.setState(e.target.value)
         } 
         className="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-        <option value="">{ props.title  || "Select" }</option>
+        <option value="initial">{ props.title  || "Select" }</option>
         {
             data?.results?.map((e: any, i: number) => {
 

@@ -20,6 +20,7 @@ import {
 } from 'slices/thunk';
 import { ToastContainer } from "react-toastify";
 import { IVendor, Paginated } from "helpers/interface/api";
+import { getImagePath } from "../helpers/getImagePath";
 // import filterDataBySearch from "Common/filterDataBySearch";
 
 const VendorsListView = () => {
@@ -121,7 +122,21 @@ const VendorsListView = () => {
             enableColumnFilter: false,
             enableSorting: false,
         },
-              {
+        {
+            header: "Logo",
+            accessorKey: "logo",
+            enableColumnFilter: false,
+            enableSorting: false,
+            cell: (cell: any) => {
+                const path = cell.getValue().path;
+                return (<img
+                    src={getImagePath(path)}
+                    alt="logo"
+                    className="avatar-md rounded-circle img-thumbnail"
+                  />);
+            } 
+        },
+        {
             header: "Action",
             accessorKey: "id",
             enableColumnFilter: false,

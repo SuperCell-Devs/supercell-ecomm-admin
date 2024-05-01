@@ -5,24 +5,36 @@ interface IProps {
 }
 // Define the email validation schema
 const emailSchema = (props: IProps) => {
-    const base = Yup.string()
-        .email('Invalid email format'); 
+ 
     if (props.required === true) {
-        base.required('Email is required')
+        return Yup.string()
+            .required('Email is required')
+            .email('Invalid email format')
+            .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email format');
     }
-        base.matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email format');
-    return base;
+    return Yup.string()
+        .email('Invalid email format').matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email format');
+}
+
+// Define image asset schema
+const assetSchema = () => {
+    return Yup.object().shape({
+        path: Yup.string(),
+        imageType: Yup.number().required("Image type is required"),
+        aspectRatio: Yup.number().required("Aspect Ratio type is required"),
+    });
 }
 
 // Define the mobile phone validation schema for Iraq
 const iraqMobilePhoneSchema = (props: IProps) => {
-    const base = Yup.string()
     if (props.required) {
-        base.required('Mobile phone number is required');
+        return Yup.string()
+            .required('Mobile phone number is required')
+            .matches(/^(\\+?964|0)?7[0-9]{8}$/, 'Invalid Iraqi mobile phone number');
     }
-    base.matches(/^(\\+?964|0)?7[0-9]{8}$/, 'Invalid Iraqi mobile phone number');
-    return base;
+    return Yup.string().matches(/^(\\+?964|0)?7[0-9]{8}$/, 'Invalid Iraqi mobile phone number');
+
 }
 
 
-export { emailSchema, iraqMobilePhoneSchema };
+export { emailSchema, iraqMobilePhoneSchema, assetSchema };

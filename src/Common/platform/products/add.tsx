@@ -138,8 +138,6 @@ const ProductsAddNew = () => {
         },
     });
 
-
-
     return (
         <React.Fragment>
             <BreadCrumb title='Add New' pageTitle='Products' />

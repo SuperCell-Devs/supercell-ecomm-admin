@@ -2,28 +2,51 @@ import React, { useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
 // Formik
 import * as Yup from "yup";
+import "yup-phone";
 import { useFormik } from "formik";
 
 
 // react-redux
 import { useDispatch } from 'react-redux';
 // import { createSelector } from 'reselect';
+import {
+    uploadFile as onfileUpload,
+} from "slices/thunk";
 import { addVendorsList as onAddVendorList } from "slices/thunk";
 import { getLoggedUser } from "helpers/api_helper";
 import DropdownData from "../common/DropdownData";
-import { emailSchema, iraqMobilePhoneSchema } from "helpers/validation";
+import { assetSchema, emailSchema } from "helpers/validation";
 import LoadingButton from "../common/LoadingButton";
+import { toast } from "react-toastify";
+import AssetUpload from "../common/AssetUpload";
 
 
 
 const VendorAddNew = () => {
-
+    const [selectCoverImagefiles, setselectCoverImagefiles] = useState([]);
+    const [selectLogoImagefiles, setselectLogoImagefiles] = useState([]);
+    const [logoAspectRatio, setLogoAspectRatio] = useState<number | "Initial" | undefined>();
+    const [logoImageFileType, setLogoImageFileType] = useState<number | "Initial" | undefined>();
+    const [coverAspectRatio, setCoverAspectRatio] = useState<number | "Initial" | undefined>();
+    const [coverImageFileType, setCovergImageFileType] = useState<number | "Initial" | undefined>();
     const dispatch = useDispatch<any>();
     const [loading, setLoading] = useState(false);
-    const [vendorType, setVendorType] = useState();
-    const [district, setDistrict] = useState<number>();
+    const [vendorType, setVendorType] = useState<number | "Initial" | undefined>();
+    const [district, setDistrict] = useState<number | "initial" | undefined>();
 
     const user = getLoggedUser();
+    const resetFormData = (resetForm: any) => {
+            resetForm();
+            setselectCoverImagefiles([]);
+            setselectLogoImagefiles([]);
+            setVendorType("Initial");
+            setDistrict("initial");
+            setCoverAspectRatio("Initial");
+            setCovergImageFileType("Initial");
+            setLogoAspectRatio("Initial");
+            setLogoImageFileType("Initial");
+    }
+
     // validation
     const validation: any = useFormik({
         // enableReinitialize : use this flag when initial values needs to be changed
@@ -36,26 +59,75 @@ const VendorAddNew = () => {
             address: '',
             districtId: 1,
             vendorType: 1,
-            userId: user.userId
+            userId: user.id,
+            logo: {
+                path: "",
+                aspectRatio: 1,
+                imageType: 1,
+            },
+            cover: {
+                path: "",
+                aspectRatio: 1,
+                imageType: 1,
+            }
         },
         validationSchema: Yup.object({
             email: emailSchema({ required: false }),
-            phoneNumber: iraqMobilePhoneSchema({ required: false })
+            phoneNumber: Yup.string().required("Phone number is required"),
+            districtId: Yup.number().required("District is required"),
+            vendorType: Yup.number().required("Vendor Type is required"),
+            userId: Yup.string().required("User ID is required"),
+            logo: assetSchema(),
+            cover: assetSchema()
         }),
-
-        onSubmit: (values, { resetForm }) => {
+        onSubmit: async (values, { resetForm }) => {         
             setLoading(true);
+            // Upload logo
+            if (selectLogoImagefiles?.length && selectLogoImagefiles?.length > 0) {
+                // Dispatch onFileUpload action
+                dispatch(onfileUpload(selectLogoImagefiles[0])).then((response: any) => {
+
+                    // Assuming response contains the URL of the uploaded file
+                    const imageUrl = response.payload;
+
+                    // Update the logo path in the form values
+                    validation.setFieldValue('logo.path', imageUrl);
+                    validation.setFieldValue('logo.aspectRatio', logoAspectRatio);
+                    validation.setFieldValue('logo.imageType', logoImageFileType);
+
+                }).catch(() => {
+                    // Handle error if any
+                    toast.error("File upload failed", { autoClose: 3000 });
+                });
+            }
+            // Upload cover image
+            if (selectCoverImagefiles?.length && selectCoverImagefiles?.length > 0) {
+                // Dispatch onFileUpload action
+                dispatch(onfileUpload(selectCoverImagefiles[0])).then((response: any) => {
+
+                    // Assuming response contains the URL of the uploaded file
+                    const imageUrl = response.payload;
+
+                    // Update the logo path in the form values
+                    validation.setFieldValue('cover.path', imageUrl);
+                    validation.setFieldValue('cover.aspectRatio', coverAspectRatio);
+                    validation.setFieldValue('cover.imageType', coverImageFileType);
+                }).catch(() => {
+                    // Handle error if any
+                    toast.error("File upload failed", { autoClose: 3000 });
+                });
+            }
+            // submit form
             const requestObject = { ...values };
             if (district)
-                requestObject.districtId = district;
+                requestObject.districtId = district as number;
             if (vendorType)
-                requestObject.vendorType = vendorType;
+                requestObject.vendorType = vendorType as number;
             dispatch(onAddVendorList(requestObject));
-            resetForm();
+            resetFormData(resetForm);
             setLoading(false);
         },
     });
-
 
     return (
         <React.Fragment>
@@ -66,8 +138,9 @@ const VendorAddNew = () => {
                         <div className="card-body">
                             <h6 className="mb-4 text-15">Add new Vendor</h6>
 
-                            <form action="#!" onSubmit={(e) => {
-                                e.preventDefault();
+                            <form action="#!" onSubmit={async (e) => {
+                                e.preventDefault();                              
+                                // submit
                                 validation.handleSubmit();
                                 return false;
                             }}>
@@ -130,16 +203,20 @@ const VendorAddNew = () => {
 
                                     {/* Vendor type select */}
                                     <div className="xl:col-span-3">
-                                        <label className="inline-block mb-2 text-base font-medium">Select District</label>
+                                        <label className="inline-block mb-2 text-base font-medium">Select Vendor Type</label>
                                         <DropdownData data="VendorType" setState={setVendorType} state={vendorType} />
                                     </div>
                                 </div>
 
-                                {/* <div className="flex justify-end gap-2 mt-4">
-                                    <button  type="submit" className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
-                                        {loading ? "..." : "Create Vendor"}
-                                    </button>
-                                </div> */}
+                                {/* Vendor Cover image */}
+                                <AssetUpload aspectRatio={coverAspectRatio} setAspectRatio={setCoverAspectRatio} imageFileType={coverImageFileType} setImageFileType={setCovergImageFileType} selectImagefiles={selectCoverImagefiles} setselectImagefiles={setselectCoverImagefiles}/>
+                               
+
+                                {/* Vendor logo image */}
+                                <AssetUpload aspectRatio={logoAspectRatio} setAspectRatio={setLogoAspectRatio} imageFileType={logoImageFileType} setImageFileType={setLogoImageFileType} selectImagefiles={selectLogoImagefiles} setselectImagefiles={setselectLogoImagefiles}/>
+                          
+                                
+
 
                                 <LoadingButton title="Create Venodr" loading={loading} type="submit" />
                             </form>

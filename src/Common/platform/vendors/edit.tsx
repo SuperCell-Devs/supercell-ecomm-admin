@@ -16,13 +16,21 @@ import {
 import { createSelector } from "@reduxjs/toolkit";
 import { IVendor, Paginated } from "helpers/interface/api";
 import { useParams } from "react-router-dom";
-import { emailSchema, iraqMobilePhoneSchema } from "helpers/validation";
+import { assetSchema, emailSchema, iraqMobilePhoneSchema } from "helpers/validation";
 import DropdownData from "../common/DropdownData";
 import LoadingButton from "../common/LoadingButton";
+import { getImagePath } from "../helpers/getImagePath";
+import AssetUpload from "../common/AssetUpload";
 
 
 const VendorsEdit = () => {
     const { id } = useParams();
+      const [selectCoverImagefiles, setselectCoverImagefiles] = useState([]);
+    const [selectLogoImagefiles, setselectLogoImagefiles] = useState([]);
+    const [logoAspectRatio, setLogoAspectRatio] = useState<number | "Initial" | undefined>();
+    const [logoImageFileType, setLogoImageFileType] = useState<number | "Initial" | undefined>();
+    const [coverAspectRatio, setCoverAspectRatio] = useState<number | "Initial" | undefined>();
+    const [coverImageFileType, setCovergImageFileType] = useState<number | "Initial" | undefined>();
     const dispatch = useDispatch<any>();
     const [data, setData] = useState<Paginated<IVendor>>();
     const [district, setDistrict] = useState<number>();
@@ -51,6 +59,16 @@ const VendorsEdit = () => {
             districId: data?.results?.districtId || 1,
             vendorType: 1,
             userId: data?.results?.userId || "",
+            logo: {
+                path: data?.results?.logo?.path,
+                aspectRatio: data?.results?.logo?.aspectRatio,
+                imageType: data?.results?.logo?.imageType
+            },
+            cover: {
+                path: data?.results?.cover?.path,
+                aspectRatio: data?.results?.cover?.aspectRatio,
+                imageType: data?.results?.cover?.imageType
+            }
         },
         validationSchema: Yup.object({
             name: Yup.string(),
@@ -60,7 +78,9 @@ const VendorsEdit = () => {
             address: Yup.string(),
             districId: Yup.number(),
             userId: Yup.string(),
-            vendorType: Yup.number()
+            vendorType: Yup.number(),
+            logo: assetSchema(),
+            cover: assetSchema()
         }),
         onSubmit: (values, { resetForm }) => {
             setLoading(true);
@@ -101,18 +121,16 @@ const VendorsEdit = () => {
         <React.Fragment>
             <BreadCrumb title='Edit' pageTitle='Vendors' />
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-5">
-                <div className="xl:col-span-9">
+                <div className="xl:col-span-8">
                     <div className="card">
                         <div className="card-body">
                             <h6 className="mb-4 text-15">Edit Vendor</h6>
-
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault()
                                     validation.handleSubmit();  // This line will trigger form submission
                                     return false;
                                 }}
-
                             >
                                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
                                     <div className="xl:col-span-6">
@@ -181,21 +199,58 @@ const VendorsEdit = () => {
                                             data && <DropdownData data="VendorType" title="Select Vendor Type" state={vendorType} setState={setVendorType} />
                                         }
                                     </div>
-
-
                                 </div>
+                                {/* Vendor Cover image */}
+                                <AssetUpload aspectRatio={coverAspectRatio} setAspectRatio={setCoverAspectRatio} imageFileType={coverImageFileType} setImageFileType={setCovergImageFileType} selectImagefiles={selectCoverImagefiles} setselectImagefiles={setselectCoverImagefiles}/>
+                               
 
-                                {/*                                  
-                                 <div className="flex justify-end gap-2 mt-4">
-                                    <button
-                                        type="submit"
-                                        className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
-                                        {loading ? "..." : "Edit Vendor"}
-                                    </button>
-                                </div> */}
+                                {/* Vendor logo image */}
+                                <AssetUpload aspectRatio={logoAspectRatio} setAspectRatio={setLogoAspectRatio} imageFileType={logoImageFileType} setImageFileType={setLogoImageFileType} selectImagefiles={selectLogoImagefiles} setselectImagefiles={setselectLogoImagefiles}/>
+                          
+                                
 
+                        
                                 <LoadingButton loading={loading} type="submit" title="Edit Vendor" />
                             </form>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Assets */}
+                <div className="xl:col-span-4">
+                    {/* Logo card */}
+                    <div className="card p-3">
+                        <div>
+                            <h6 className="mb-4 text-15">Logo:</h6>
+                            <div className="p-2 mx-auto rounded-md size-14 bg-slate-100 dark:bg-zink-600">
+                                <img className="block w-full h-full rounded-md" src={getImagePath(validation.values.logo.path as string)} alt={"logo"} />
+                            </div>
+                            <div className="mx-auto mt-3 flex justify-center items-center gap-x-4">
+                                <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
+                                    <span className="font-bold">Image Type:</span> {validation.values.logo.imageType}
+                                </div>
+                                 <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
+                                    <span className="font-bold">Aspect ratio</span> {validation.values.logo.aspectRatio}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Cover image */}
+                    <div className="card p-3">
+                        <div>
+                            <h6 className="mb-4 text-15">Cover image:</h6>
+                            <div className="p-2 mx-auto rounded-md size-14 bg-slate-100 dark:bg-zink-600">
+                                <img className="block w-full h-full rounded-md" src={getImagePath(validation.values.cover.path as string)} alt={"cover"} />
+                            </div>
+                            <div className="mx-auto mt-3 flex justify-center items-center gap-x-4">
+                                <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
+                                    <span className="font-bold">Image Type:</span> {validation.values.cover.imageType}
+                                </div>
+                                 <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
+                                    <span className="font-bold">Aspect ratio</span> {validation.values.cover.aspectRatio}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
