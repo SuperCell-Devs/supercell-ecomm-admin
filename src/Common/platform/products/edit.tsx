@@ -16,7 +16,6 @@ import { toast } from "react-toastify";
 import { GetProduct, Paginated, ProductImage } from "helpers/interface/api";
 import { useParams } from "react-router-dom";
 import { createSelector } from "@reduxjs/toolkit";
-import { ProductCategory } from "../common/ProductCategory";
 
 const ProductsEdit = () => {
 

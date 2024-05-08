@@ -3,53 +3,77 @@ import BreadCrumb from "Common/BreadCrumb";
 // Formik
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-
-
 // react-redux
 import { useDispatch, useSelector } from 'react-redux';
 // import { createSelector } from 'reselect';
 import {
     updateVendorsList as onUpdateVendorList,
-    getOneVendor as onGetOneVendor
+    getOneVendor as onGetOneVendor,
+    getGlobals as onGetGlobals
 } from "slices/thunk";
 import { createSelector } from "@reduxjs/toolkit";
-import { IVendor, Paginated } from "helpers/interface/api";
+import {  IVendor, Paginated, VendorType } from "helpers/interface/api";
 import { useParams } from "react-router-dom";
-import { assetSchema, emailSchema, iraqMobilePhoneSchema } from "helpers/validation";
 import DropdownData from "../common/DropdownData";
 import LoadingButton from "../common/LoadingButton";
-import { getImagePath } from "../helpers/getImagePath";
-import AssetUpload from "../common/AssetUpload";
+import VendorPreviewCard from "../common/VendorPreviewCard";
+
+
+interface IVendorPreviewProps  {
+    data?: IVendor 
+}
+const VendorPreview = (props: IVendorPreviewProps) => {
+    const { data } = props;
+    return <VendorPreviewCard
+        address={data?.address}
+        description={data?.description}
+        title={data?.name}
+        district={data?.district.nameAr}
+        email={data?.email}
+        logo={data?.logo.path}
+        phoneNumber={data?.phoneNumber}
+        vendorType={data?.vendorType}
+        cover={data?.cover.path} />
+};
 
 
 const VendorsEdit = () => {
     const { id } = useParams();
-      const [selectCoverImagefiles, setselectCoverImagefiles] = useState([]);
-    const [selectLogoImagefiles, setselectLogoImagefiles] = useState([]);
-    const [logoAspectRatio, setLogoAspectRatio] = useState<number | "Initial" | undefined>();
-    const [logoImageFileType, setLogoImageFileType] = useState<number | "Initial" | undefined>();
-    const [coverAspectRatio, setCoverAspectRatio] = useState<number | "Initial" | undefined>();
-    const [coverImageFileType, setCovergImageFileType] = useState<number | "Initial" | undefined>();
-    const dispatch = useDispatch<any>();
+
+    // State
     const [data, setData] = useState<Paginated<IVendor>>();
-    const [district, setDistrict] = useState<number>();
-    const [vendorType, setVendorType] = useState<number>();
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch<any>();
+    const [district, setDistrict] = useState();
+    const [vendorType, setVendorType] = useState();
+
+    // Selectors
     const selectDataList = createSelector(
         (state: any) => state.Ecommerce,
         (state) => ({
             dataList: state.vendors
         })
     );
-
     const { dataList } = useSelector(selectDataList);
-    const [loading, setLoading] = useState(false);
 
+    // reset form data
+    const resetFormData = (resetForm: any) => {
+        resetForm();
+        setVendorType(undefined);
+        setDistrict(undefined);
+    }
+    // map globa values 
+    // const mapGlobalValues = (globalName: string, value?: string) => {
+    //     if (value) return 1;
+    //     const list = globals?.find((e) => e.title === globalName)?.values;
+    //     const id = list?.find(e => e.name === value)?.value
+    //     return id;
+    // }
+    
     // validation
     const validation = useFormik({
         // enableReinitialize : use this flag when initial values needs to be changed
         enableReinitialize: true,
-
         initialValues: {
             name: data?.results?.name || "",
             description: data?.results?.description || "",
@@ -58,47 +82,45 @@ const VendorsEdit = () => {
             address: data?.results?.address || "",
             districId: data?.results?.districtId || 1,
             vendorType: 1,
-            userId: data?.results?.userId || "",
-            logo: {
-                path: data?.results?.logo?.path,
-                aspectRatio: data?.results?.logo?.aspectRatio,
-                imageType: data?.results?.logo?.imageType
-            },
-            cover: {
-                path: data?.results?.cover?.path,
-                aspectRatio: data?.results?.cover?.aspectRatio,
-                imageType: data?.results?.cover?.imageType
-            }
+            userId: data?.results?.userId || ""
         },
         validationSchema: Yup.object({
             name: Yup.string(),
             description: Yup.string(),
-            phoneNumber: iraqMobilePhoneSchema({ required: false }),
-            email: emailSchema({ required: false }),
+            phoneNumber: Yup.string(),
+            email: Yup.string(),
             address: Yup.string(),
             districId: Yup.number(),
             userId: Yup.string(),
-            vendorType: Yup.number(),
-            logo: assetSchema(),
-            cover: assetSchema()
+            vendorType: Yup.number()
         }),
-        onSubmit: (values, { resetForm }) => {
+        onSubmit: async (values, { resetForm }) => {
+          
             setLoading(true);
             if (id) {
-                dispatch(onUpdateVendorList({
+                 const requestObject = { ...values };
+               
+                if (district)
+                    requestObject.districId = district as number;
+                if (vendorType)
+                    requestObject.vendorType = vendorType as number;
+
+    
+                await dispatch(onUpdateVendorList({
                     id: parseInt(id),
                     data: {
-                        address: values.address,
-                        description: values.description,
-                        email: values.email,
-                        name: values.name,
-                        phoneNumber: values.phoneNumber,
-                        userId: values.userId,
-                        districtId: values.districId,
-                        vendorType: values.vendorType
-                    }
-                }));
-                resetForm();
+                        address: requestObject.address,
+                        description: requestObject.description,
+                        email: requestObject.email,
+                        name: requestObject.name,
+                        phoneNumber: requestObject.phoneNumber,
+                        districtId: requestObject.districId,
+                        userId: requestObject.userId,
+                        vendorType: requestObject.vendorType
+                        }
+                    }));
+                resetFormData(resetForm);
+                await dispatch(onGetOneVendor({ id: parseInt(id) }))
                 setLoading(false);
             }
         },
@@ -109,25 +131,35 @@ const VendorsEdit = () => {
         if (id) {
             dispatch(onGetOneVendor({ id: parseInt(id) }));
         }
+        dispatch(onGetGlobals());
     }, [dispatch, id]);
 
+    // update state from server fetched data
     useEffect(() => {
         setDistrict(dataList?.results?.district?.id);
         setVendorType(dataList?.results?.vendorType);
         setData(dataList);
     }, [dataList]);
 
+
+    
     return (
         <React.Fragment>
             <BreadCrumb title='Edit' pageTitle='Vendors' />
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-5">
+                {/* Current Assets: mobile view */}
+                <div className="sm:block md:hidden xl:col-span-4">
+                  <VendorPreview data={data?.results}/>
+                </div>
+
                 <div className="xl:col-span-8">
                     <div className="card">
                         <div className="card-body">
                             <h6 className="mb-4 text-15">Edit Vendor</h6>
                             <form
-                                onSubmit={(e) => {
-                                    e.preventDefault()
+                                action="#!"
+                                onSubmit={ async (e) => {
+                                    e.preventDefault()                                    
                                     validation.handleSubmit();  // This line will trigger form submission
                                     return false;
                                 }}
@@ -200,59 +232,17 @@ const VendorsEdit = () => {
                                         }
                                     </div>
                                 </div>
-                                {/* Vendor Cover image */}
-                                <AssetUpload aspectRatio={coverAspectRatio} setAspectRatio={setCoverAspectRatio} imageFileType={coverImageFileType} setImageFileType={setCovergImageFileType} selectImagefiles={selectCoverImagefiles} setselectImagefiles={setselectCoverImagefiles}/>
                                
-
-                                {/* Vendor logo image */}
-                                <AssetUpload aspectRatio={logoAspectRatio} setAspectRatio={setLogoAspectRatio} imageFileType={logoImageFileType} setImageFileType={setLogoImageFileType} selectImagefiles={selectLogoImagefiles} setselectImagefiles={setselectLogoImagefiles}/>
                           
-                                
-
-                        
                                 <LoadingButton loading={loading} type="submit" title="Edit Vendor" />
                             </form>
                         </div>
                     </div>
                 </div>
 
-                {/* Assets */}
-                <div className="xl:col-span-4">
-                    {/* Logo card */}
-                    <div className="card p-3">
-                        <div>
-                            <h6 className="mb-4 text-15">Logo:</h6>
-                            <div className="p-2 mx-auto rounded-md size-14 bg-slate-100 dark:bg-zink-600">
-                                <img className="block w-full h-full rounded-md" src={getImagePath(validation.values.logo.path as string)} alt={"logo"} />
-                            </div>
-                            <div className="mx-auto mt-3 flex justify-center items-center gap-x-4">
-                                <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
-                                    <span className="font-bold">Image Type:</span> {validation.values.logo.imageType}
-                                </div>
-                                 <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
-                                    <span className="font-bold">Aspect ratio</span> {validation.values.logo.aspectRatio}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Cover image */}
-                    <div className="card p-3">
-                        <div>
-                            <h6 className="mb-4 text-15">Cover image:</h6>
-                            <div className="p-2 mx-auto rounded-md size-14 bg-slate-100 dark:bg-zink-600">
-                                <img className="block w-full h-full rounded-md" src={getImagePath(validation.values.cover.path as string)} alt={"cover"} />
-                            </div>
-                            <div className="mx-auto mt-3 flex justify-center items-center gap-x-4">
-                                <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
-                                    <span className="font-bold">Image Type:</span> {validation.values.cover.imageType}
-                                </div>
-                                 <div className="px-2.5 py-0.5 text-xs font-medium inline-block rounded border transition-all duration-200 ease-linear bg-custom-100 border-transparent text-custom-500 hover:bg-custom-200 dark:bg-custom-400/20 dark:hover:bg-custom-400/30 dark:border-transparent">
-                                    <span className="font-bold">Aspect ratio</span> {validation.values.cover.aspectRatio}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                {/* Current Assets: desktop view */}
+                <div className="hidden md:block xl:col-span-4">
+                  <VendorPreview data={data?.results}/>
                 </div>
 
             </div>

@@ -26,8 +26,16 @@ export interface GlobalsValue {
   value: number;
 }
 export interface IGlobals {
-  title: string;
+  title: 'AsepectRatio' | 'FileImageTypeEnum' | 'ItemTypeEnum' | 'ShowTypeEnum' | 'VendorType'; 
   values: GlobalsValue[];
+}
+
+export enum GlobalsNames {
+  'AsepectRatio',
+  'FileImageTypeEnum',
+  'ItemTypeEnum',
+  'ShowTypeEnum',
+  'VendorType' 
 }
 
 // Brands
@@ -132,7 +140,7 @@ export interface IVendor {
     vendorType: VendorType;
     userId: string;
     logo: ImageAsset;
-  cover: ImageAsset;
+    cover: ImageAsset;
 }
 export interface IPostVendors {
     name: string;
@@ -143,10 +151,29 @@ export interface IPostVendors {
     districtId: number;
     vendorType: number;
     userId: string;
-} ;
+    logo?: {
+      path?: string;
+      aspectRatio?: number;
+      imageFileType?: number;
+    };
+    cover?: {
+      path?: string;
+      aspectRatio?: number;
+      imageFileType?: number;
+    }
+};
 export interface IPutVendor  {
   id: number;
-  data: Partial<IPostVendors>
+  data: {
+    name?: string;
+    description?: string;
+    email?: string;
+    phoneNumber?: string;
+    address?: string;
+    districtId?: number;
+    vendorType?: number;
+    userId?: string;
+  }
 }
 
 export interface IGetAllVendorProps { name?: string, page?: number, pageSize?: number }
@@ -191,16 +218,15 @@ export enum AspectRatio {
   _16_9,
   _21_9
 }
-
 export interface ImageAsset {
   path: string;
-  imageType: FileImageType,
-  aspectRatio: AspectRatio
+  imageType: "Original" | "Small" | "Medium" | "Large";
+  aspectRatio:   "_1_1" | "_4_3" | "_16_9" | "_21_9"
 }
 export interface ProductImage {
   path: string;
-  imageType: FileImageType,
-  aspectRatio: AspectRatio
+  imageType: number,
+  aspectRatio: number
 }
 export interface Product {
   nameAr: string;
@@ -239,8 +265,8 @@ export interface GetProduct {
   price: number,
   oldPrice: number,
   isAvailable: boolean,
-  availableFrom: Date,
-  availableTo: Date,
+  availableFrom: string,
+  availableTo: string,
   isVariable: boolean,
   images: ProductImage[],
   vendorId: number,

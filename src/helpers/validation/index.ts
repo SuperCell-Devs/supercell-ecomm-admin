@@ -20,9 +20,9 @@ const emailSchema = (props: IProps) => {
 const assetSchema = () => {
     return Yup.object().shape({
         path: Yup.string(),
-        imageType: Yup.number().required("Image type is required"),
-        aspectRatio: Yup.number().required("Aspect Ratio type is required"),
-    });
+        imageType: Yup.number().optional(),
+        aspectRatio: Yup.number().optional(),
+    }).optional();
 }
 
 // Define the mobile phone validation schema for Iraq
