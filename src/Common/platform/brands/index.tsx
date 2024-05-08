@@ -64,7 +64,7 @@ const BrandListView = () => {
     // const deleteToggle = () => setDeleteModal(!deleteModal);
 
     // Delete Data
-    // const onClickDelete = (cell: any) => {
+    // const onClickDelete = (cell: any) => { 
     //     setDeleteModal(true);
     //     if (cell.id) {
     //         setEventData(cell);

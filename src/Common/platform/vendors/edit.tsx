@@ -3,45 +3,77 @@ import BreadCrumb from "Common/BreadCrumb";
 // Formik
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-
-
 // react-redux
 import { useDispatch, useSelector } from 'react-redux';
 // import { createSelector } from 'reselect';
 import {
     updateVendorsList as onUpdateVendorList,
-    getOneVendor as onGetOneVendor
+    getOneVendor as onGetOneVendor,
+    getGlobals as onGetGlobals
 } from "slices/thunk";
 import { createSelector } from "@reduxjs/toolkit";
-import { IVendor, Paginated } from "helpers/interface/api";
+import {  IVendor, Paginated, VendorType } from "helpers/interface/api";
 import { useParams } from "react-router-dom";
-import { emailSchema, iraqMobilePhoneSchema } from "helpers/validation";
 import DropdownData from "../common/DropdownData";
 import LoadingButton from "../common/LoadingButton";
+import VendorPreviewCard from "../common/VendorPreviewCard";
+
+
+interface IVendorPreviewProps  {
+    data?: IVendor 
+}
+const VendorPreview = (props: IVendorPreviewProps) => {
+    const { data } = props;
+    return <VendorPreviewCard
+        address={data?.address}
+        description={data?.description}
+        title={data?.name}
+        district={data?.district.nameAr}
+        email={data?.email}
+        logo={data?.logo.path}
+        phoneNumber={data?.phoneNumber}
+        vendorType={data?.vendorType}
+        cover={data?.cover.path} />
+};
 
 
 const VendorsEdit = () => {
     const { id } = useParams();
-    const dispatch = useDispatch<any>();
+
+    // State
     const [data, setData] = useState<Paginated<IVendor>>();
-    const [district, setDistrict] = useState<number>();
-    const [vendorType, setVendorType] = useState<number>();
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch<any>();
+    const [district, setDistrict] = useState();
+    const [vendorType, setVendorType] = useState();
+
+    // Selectors
     const selectDataList = createSelector(
         (state: any) => state.Ecommerce,
         (state) => ({
             dataList: state.vendors
         })
     );
-
     const { dataList } = useSelector(selectDataList);
-    const [loading, setLoading] = useState(false);
 
+    // reset form data
+    const resetFormData = (resetForm: any) => {
+        resetForm();
+        setVendorType(undefined);
+        setDistrict(undefined);
+    }
+    // map globa values 
+    // const mapGlobalValues = (globalName: string, value?: string) => {
+    //     if (value) return 1;
+    //     const list = globals?.find((e) => e.title === globalName)?.values;
+    //     const id = list?.find(e => e.name === value)?.value
+    //     return id;
+    // }
+    
     // validation
     const validation = useFormik({
         // enableReinitialize : use this flag when initial values needs to be changed
         enableReinitialize: true,
-
         initialValues: {
             name: data?.results?.name || "",
             description: data?.results?.description || "",
@@ -50,35 +82,45 @@ const VendorsEdit = () => {
             address: data?.results?.address || "",
             districId: data?.results?.districtId || 1,
             vendorType: 1,
-            userId: data?.results?.userId || "",
+            userId: data?.results?.userId || ""
         },
         validationSchema: Yup.object({
             name: Yup.string(),
             description: Yup.string(),
-            phoneNumber: iraqMobilePhoneSchema({ required: false }),
-            email: emailSchema({ required: false }),
+            phoneNumber: Yup.string(),
+            email: Yup.string(),
             address: Yup.string(),
             districId: Yup.number(),
             userId: Yup.string(),
             vendorType: Yup.number()
         }),
-        onSubmit: (values, { resetForm }) => {
+        onSubmit: async (values, { resetForm }) => {
+          
             setLoading(true);
             if (id) {
-                dispatch(onUpdateVendorList({
+                 const requestObject = { ...values };
+               
+                if (district)
+                    requestObject.districId = district as number;
+                if (vendorType)
+                    requestObject.vendorType = vendorType as number;
+
+    
+                await dispatch(onUpdateVendorList({
                     id: parseInt(id),
                     data: {
-                        address: values.address,
-                        description: values.description,
-                        email: values.email,
-                        name: values.name,
-                        phoneNumber: values.phoneNumber,
-                        userId: values.userId,
-                        districtId: values.districId,
-                        vendorType: values.vendorType
-                    }
-                }));
-                resetForm();
+                        address: requestObject.address,
+                        description: requestObject.description,
+                        email: requestObject.email,
+                        name: requestObject.name,
+                        phoneNumber: requestObject.phoneNumber,
+                        districtId: requestObject.districId,
+                        userId: requestObject.userId,
+                        vendorType: requestObject.vendorType
+                        }
+                    }));
+                resetFormData(resetForm);
+                await dispatch(onGetOneVendor({ id: parseInt(id) }))
                 setLoading(false);
             }
         },
@@ -89,30 +131,38 @@ const VendorsEdit = () => {
         if (id) {
             dispatch(onGetOneVendor({ id: parseInt(id) }));
         }
+        dispatch(onGetGlobals());
     }, [dispatch, id]);
 
+    // update state from server fetched data
     useEffect(() => {
         setDistrict(dataList?.results?.district?.id);
         setVendorType(dataList?.results?.vendorType);
         setData(dataList);
     }, [dataList]);
 
+
+    
     return (
         <React.Fragment>
             <BreadCrumb title='Edit' pageTitle='Vendors' />
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-5">
-                <div className="xl:col-span-9">
+                {/* Current Assets: mobile view */}
+                <div className="sm:block md:hidden xl:col-span-4">
+                  <VendorPreview data={data?.results}/>
+                </div>
+
+                <div className="xl:col-span-8">
                     <div className="card">
                         <div className="card-body">
                             <h6 className="mb-4 text-15">Edit Vendor</h6>
-
                             <form
-                                onSubmit={(e) => {
-                                    e.preventDefault()
+                                action="#!"
+                                onSubmit={ async (e) => {
+                                    e.preventDefault()                                    
                                     validation.handleSubmit();  // This line will trigger form submission
                                     return false;
                                 }}
-
                             >
                                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
                                     <div className="xl:col-span-6">
@@ -181,23 +231,18 @@ const VendorsEdit = () => {
                                             data && <DropdownData data="VendorType" title="Select Vendor Type" state={vendorType} setState={setVendorType} />
                                         }
                                     </div>
-
-
                                 </div>
-
-                                {/*                                  
-                                 <div className="flex justify-end gap-2 mt-4">
-                                    <button
-                                        type="submit"
-                                        className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
-                                        {loading ? "..." : "Edit Vendor"}
-                                    </button>
-                                </div> */}
-
+                               
+                          
                                 <LoadingButton loading={loading} type="submit" title="Edit Vendor" />
                             </form>
                         </div>
                     </div>
+                </div>
+
+                {/* Current Assets: desktop view */}
+                <div className="hidden md:block xl:col-span-4">
+                  <VendorPreview data={data?.results}/>
                 </div>
 
             </div>

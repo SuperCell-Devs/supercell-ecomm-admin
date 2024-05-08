@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 import { Dropdown } from "Common/Components/Dropdown";
 
 // Icon
-import { MoreHorizontal, FileEdit, Search, Plus } from 'lucide-react';
+import { MoreHorizontal, FileEdit, Search, Plus, View } from 'lucide-react';
 
 import TableContainer from "Common/TableContainer";
-// import DeleteModal from "Common/DeleteModal";
 
 // react-redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,16 +15,23 @@ import { createSelector } from 'reselect';
 
 import {
     getVendorList as onGetVendorsList,
-    // deleteProductList as onDeleteVendorList
 } from 'slices/thunk';
-import { ToastContainer } from "react-toastify";
 import { IVendor, Paginated } from "helpers/interface/api";
-// import filterDataBySearch from "Common/filterDataBySearch";
+import Modal from "Common/Components/Modal";
+import VendorPreviewCard from "../common/VendorPreviewCard";
+
 
 const VendorsListView = () => {
 
     const dispatch = useDispatch<any>();
     const [search, setSearch] = useState<string>("");
+    const [extraLargeModal, setExtraLargeModal] = useState<boolean>(false);
+    const [vendorPreviewData, setVendorPreviewData] = useState<IVendor>(); 
+    const vendorPreviewToggle = (data: IVendor) => {
+        setVendorPreviewData(data);
+        setExtraLargeModal(!extraLargeModal)
+    };
+
 
     const selectDataList = createSelector(
         (state: any) => state.Ecommerce,
@@ -37,7 +43,6 @@ const VendorsListView = () => {
     const { dataList } = useSelector(selectDataList);
 
     const [data, setData] = useState<Paginated<IVendor[]>>();
-    // const [eventData, setEventData] = useState<any>();
 
     // search vendors by name
     const dataSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,39 +53,11 @@ const VendorsListView = () => {
     // Get Data
     useEffect(() => {
         dispatch(onGetVendorsList({name: search}));
-    }, [dispatch]);
+    }, [dispatch, search]);
 
     useEffect(() => {
         setData(dataList);
     }, [dataList]);
-
-    // // Delete Modal
-    // const [deleteModal, setDeleteModal] = useState<boolean>(false);
-    // const deleteToggle = () => setDeleteModal(!deleteModal);
-
-    // // Delete Data
-    // const onClickDelete = (cell: any) => {
-    //     setDeleteModal(true);
-    //     if (cell.id) {
-    //         setEventData(cell);
-    //     }
-    // };
-
-    // const handleDelete = () => {
-    //     if (eventData) {
-    //         dispatch(onDeleteVendorList(eventData.id));
-    //         setDeleteModal(false);
-    //     }
-    // };
-
-    // // Search Data
-    // const filterSearchData = (e: any) => {
-    //     const search = e.target.value;
-    //     const keysToSearch = ['productCode', 'productName', '', 'status'];
-    //     filterDataBySearch(dataList, search, keysToSearch, setData);
-    // };
-
-
 
     const columns = useMemo(() => [
       
@@ -96,6 +73,10 @@ const VendorsListView = () => {
             accessorKey: "description",
             enableColumnFilter: false,
             enableSorting: false,
+            cell: (cell: any) => {
+                const descrition = cell.getValue();
+                return (<div className="w-80 overflow-x-hidden text-ellipsis ">{descrition}</div>);
+            } 
         },
         {
             header: "Email",
@@ -121,7 +102,7 @@ const VendorsListView = () => {
             enableColumnFilter: false,
             enableSorting: false,
         },
-              {
+        {
             header: "Action",
             accessorKey: "id",
             enableColumnFilter: false,
@@ -138,6 +119,17 @@ const VendorsListView = () => {
                                 className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 
                                 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 
                                 dark:focus:bg-zink-500 dark:focus:text-zink-200" to={`/vendors-edit/${cell.getValue()}`}><FileEdit className="inline-block size-3 ltr:mr-1 rtl:ml-1" /> <span className="align-middle">Edit</span></Link>
+                            </li>
+                           <li>
+                                <div
+                                    className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
+                                    onClick={() => {
+                                        const rowData: IVendor = cell.row.original;
+                                        vendorPreviewToggle(rowData)
+                                    }}>
+                                    <View className="inline-block size-3 ltr:mr-1 rtl:ml-1" />
+                                    <span className="align-middle">View</span>
+                                </div>
                             </li>
                             {/* <li>
                                 <Link className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" to="#!" onClick={() => {
@@ -156,8 +148,27 @@ const VendorsListView = () => {
     return (
         <React.Fragment>
             <BreadCrumb title='Vendors' pageTitle='List' />
-            {/* <DeleteModal show={deleteModal} onHide={deleteToggle} onDelete={handleDelete} /> */}
-            <ToastContainer closeButton={false} limit={1} />
+            <Modal show={extraLargeModal} onHide={vendorPreviewToggle} id="extraLargeModal" modal-center="true"
+                className="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4"
+                dialogClassName="w-screen lg:w-[55rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
+                <Modal.Header className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500"
+                    closeButtonClass="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+                    <Modal.Title className="text-16">Vendor preview</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+                    <VendorPreviewCard
+                        address={vendorPreviewData?.address}
+                        description={vendorPreviewData?.description}
+                        title={vendorPreviewData?.name}
+                        district={vendorPreviewData?.district?.nameAr}
+                        email={vendorPreviewData?.email}
+                        logo={vendorPreviewData?.logo?.path}
+                        phoneNumber={vendorPreviewData?.phoneNumber}
+                        vendorType={vendorPreviewData?.vendorType}
+                        cover={vendorPreviewData?.cover?.path}
+                    />
+                </Modal.Body>
+            </Modal>
             <div className="card" id="productListTable">
                 <div className="card-body">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-12">
@@ -178,7 +189,7 @@ const VendorsListView = () => {
                             isPagination={true}
                             columns={(columns || [])}
                             data={(data.results || [])}
-                            customPageSize={7}
+                            customPageSize={10}
                             divclassName="overflow-x-auto"
                             tableclassName="w-full whitespace-nowrap"
                             theadclassName="ltr:text-left rtl:text-right bg-slate-100 dark:bg-zink-600"

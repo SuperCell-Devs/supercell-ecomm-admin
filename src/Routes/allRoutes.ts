@@ -241,7 +241,7 @@ const authProtectedRoutes: Array<RouteObject> = [
   { path: "/products", component: ProductsListView },
   { path: "/products-add", component: ProductsAddNew },
   { path: "/products-edit/:id", component: ProductsEdit },
-  { path: "/products-overview/", component: ProductsOverview },
+  { path: "/products-overview/:id", component: ProductsOverview },
 
   // country
   { path: "/country", component: CountryListView },

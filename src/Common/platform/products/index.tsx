@@ -7,14 +7,12 @@ import { Dropdown } from "Common/Components/Dropdown";
 // Icon
 import {
     MoreHorizontal, Eye, FileEdit,
-    // Trash2,
     Search, Plus,
     CheckCircle2,
-    XCircle
+    XCircle,
 } from 'lucide-react';
 
 import TableContainer from "Common/TableContainer";
-// import DeleteModal from "Common/DeleteModal";
 
 // react-redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,12 +20,137 @@ import { createSelector } from 'reselect';
 
 import {
     getProductList as onGetProductList,
-    // deleteProductList as onDeleteProductList
 } from 'slices/thunk';
-import { ToastContainer } from "react-toastify";
-// import filterDataBySearch from "Common/filterDataBySearch";
-import { GeTProductsLight, Paginated } from "helpers/interface/api";
-import { getImagePath } from "../helpers/getImagePath";
+import { GeTProductsLight,  Paginated } from "helpers/interface/api";
+
+const productFeaturesColumns = [
+    {
+        header: "Name",
+        accessorKey: "name",
+        enableColumnFilter: false,
+        cell: (cell: any) => (
+            <span className="transition-all duration-150 ease-linear product_code text-custom-500 hover:text-custom-600">{cell.getValue()}</span>
+        ),
+    },
+    {
+        header: "Available",
+        accessorKey: "isAvailable",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cell: any) => (
+            <>
+                {cell.getValue() ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
+                        <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
+                        {cell.row.original.status}
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
+                        <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
+                        {cell.row.original.status}
+                    </span>
+                )
+                }
+
+            </>
+        ),
+    },
+    {
+        header: "isNew",
+        accessorKey: "New",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cell: any) => (
+            <>
+                {cell.getValue() ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
+                        <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
+                        {cell.row.original.status}
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
+                        <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
+                        {cell.row.original.status}
+                    </span>
+                )
+                }
+
+            </>
+        ),
+    },
+    {
+        header: "On Sale",
+        accessorKey: "isOnSale",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cell: any) => (
+            <>
+                {cell.getValue() ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
+                        <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
+                        {cell.row.original.status}
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
+                        <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
+                        {cell.row.original.status}
+                    </span>
+                )
+                }
+
+            </>
+        ),
+    },
+    {
+        header: "Bestseller",
+        accessorKey: "isBestSeller",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cell: any) => (
+            <>
+                {cell.getValue() ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
+                        <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
+                        {cell.row.original.status}
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
+                        <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
+                        {cell.row.original.status}
+                    </span>
+                )
+                }
+
+            </>
+        ),
+    },
+    {
+        header: "Action",
+        accessorKey: "id",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+            <Dropdown className="relative dropdown">
+                <Dropdown.Trigger className="flex items-center justify-center size-[30px] dropdown-toggle p-0 text-slate-500 btn bg-slate-100 hover:text-white hover:bg-slate-600 focus:text-white focus:bg-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:ring active:ring-slate-100 dark:bg-slate-500/20 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white dark:focus:bg-slate-500 dark:focus:text-white dark:active:bg-slate-500 dark:active:text-white dark:ring-slate-400/20" id="productAction1" data-bs-toggle="dropdown">
+                    <MoreHorizontal className="size-3" />
+                </Dropdown.Trigger>
+                <Dropdown.Content placement={cell.row.index ? "top-end" : "right-end"} className="absolute z-50 py-2 mt-1 ltr:text-left rtl:text-right list-none bg-white rounded-md shadow-md dropdown-menu min-w-[10rem] dark:bg-zink-600" aria-labelledby="productAction1">
+                    <li>
+                        <Link className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
+                            to={`/products-overview/${cell.getValue()}`}>
+                            <Eye className="inline-block size-3 ltr:mr-1 rtl:ml-1" />
+                            <span className="align-middle">Overview</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" to={`/products-edit/${cell.getValue()}`}><FileEdit className="inline-block size-3 ltr:mr-1 rtl:ml-1" /> <span className="align-middle">Edit</span></Link>
+                    </li>
+                </Dropdown.Content>
+            </Dropdown>
+        ),
+    }
+];
+
 
 const ProductsListView = () => {
 
@@ -46,7 +169,6 @@ const ProductsListView = () => {
     const [searchByName, setSearchByName] = useState("");
     const [fromDate, setFromDate] = useState<Date>();
     const [toDate, setToDate] = useState<Date>();
-    // const [eventData, setEventData] = useState<any>();
 
     // Get Data
     useEffect(() => {
@@ -57,193 +179,18 @@ const ProductsListView = () => {
         setData(dataList);
     }, [dataList]);
 
-    // Delete Modal
-    // const [deleteModal, setDeleteModal] = useState<boolean>(false);
-    // const deleteToggle = () => setDeleteModal(!deleteModal);
     const handleSearchDataByName = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchByName(value);
         dispatch(onGetProductList({ name: value }));
-    }
-    // // Delete Data
-    // const onClickDelete = (cell: any) => {
-    //     setDeleteModal(true);
-    //     if (cell.id) {
-    //         setEventData(cell);
-    //     }
-    // };
+    };
 
-    // const handleDelete = () => {
-    //     if (eventData) {
-    //         dispatch(onDeleteProductList(eventData.id));
-    //         setDeleteModal(false);
-    //     }
-    // };
-
-    // // Search Data
-    // const filterSearchData = (e: any) => {
-    //     const search = e.target.value;
-    //     const keysToSearch = ['productCode', 'productName', 'category', 'status'];
-    //     filterDataBySearch(dataList, search, keysToSearch, setData);
-    // };
-
-    // const Status = ({ item }: any) => {
-    //     switch (item) {
-    //         case "Publish":
-    //             return (<span className="status px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">{item}</span>);
-    //         case "Scheduled":
-    //             return (<span className="status px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-orange-100 border-transparent text-orange-500 dark:bg-orange-500/20 dark:border-transparent">{item}</span>);
-    //         case "Inactive":
-    //             return (<span className="status px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">{item}</span>);
-    //         default:
-    //             return (<span className="status px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">{item}</span>);
-    //     }
-    // };
-
-    const columns = useMemo(() => [
-        {
-            header: "Name",
-            accessorKey: "name",
-            enableColumnFilter: false,
-            cell: (cell: any) => (
-                <span className="transition-all duration-150 ease-linear product_code text-custom-500 hover:text-custom-600">{cell.getValue()}</span>
-            ),
-        },
-        {
-            header: "Available",
-            accessorKey: "isAvailable",
-            enableColumnFilter: false,
-            enableSorting: true,
-            cell: (cell: any) => (
-                <>
-                    {cell.getValue() ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
-                            <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
-                            {cell.row.original.status}
-                        </span>
-                    ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
-                            <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
-                            {cell.row.original.status}
-                        </span>
-                    )
-                    }
-
-                </>
-            ),
-        },
-        {
-            header: "isNew",
-            accessorKey: "New",
-            enableColumnFilter: false,
-            enableSorting: true,
-            cell: (cell: any) => (
-                <>
-                    {cell.getValue() ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
-                            <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
-                            {cell.row.original.status}
-                        </span>
-                    ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
-                            <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
-                            {cell.row.original.status}
-                        </span>
-                    )
-                    }
-
-                </>
-            ),
-        },
-        {
-            header: "On Sale",
-            accessorKey: "isOnSale",
-            enableColumnFilter: false,
-            enableSorting: true,
-            cell: (cell: any) => (
-                <>
-                    {cell.getValue() ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
-                            <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
-                            {cell.row.original.status}
-                        </span>
-                    ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
-                            <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
-                            {cell.row.original.status}
-                        </span>
-                    )
-                    }
-
-                </>
-            ),
-        },
-        {
-            header: "Bestseller",
-            accessorKey: "isBestSeller",
-            enableColumnFilter: false,
-            enableSorting: true,
-            cell: (cell: any) => (
-                <>
-                    {cell.getValue() ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
-                            <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
-                            {cell.row.original.status}
-                        </span>
-                    ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
-                            <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
-                            {cell.row.original.status}
-                        </span>
-                    )
-                    }
-
-                </>
-            ),
-        },
-        {
-            header: "Image",
-            accessorKey: "image.path",
-            enableColumnFilter: false,
-            enableSorting: false,
-            cell: (cell: any) => {
-                const path = cell.getValue();
-                return (<img
-                    src={getImagePath(path)}
-                    alt="logo"
-                    className="avatar-md rounded-circle img-thumbnail"
-                  />);
-            } 
-        },
-        {
-            header: "Action",
-            accessorKey: "id",
-            enableColumnFilter: false,
-            enableSorting: false,
-            cell: (cell: any) => (
-                <Dropdown className="relative dropdown">
-                    <Dropdown.Trigger className="flex items-center justify-center size-[30px] dropdown-toggle p-0 text-slate-500 btn bg-slate-100 hover:text-white hover:bg-slate-600 focus:text-white focus:bg-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:ring active:ring-slate-100 dark:bg-slate-500/20 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white dark:focus:bg-slate-500 dark:focus:text-white dark:active:bg-slate-500 dark:active:text-white dark:ring-slate-400/20" id="productAction1" data-bs-toggle="dropdown">
-                        <MoreHorizontal className="size-3" />
-                    </Dropdown.Trigger>
-                    <Dropdown.Content placement={cell.row.index ? "top-end" : "right-end"} className="absolute z-50 py-2 mt-1 ltr:text-left rtl:text-right list-none bg-white rounded-md shadow-md dropdown-menu min-w-[10rem] dark:bg-zink-600" aria-labelledby="productAction1">
-                        <li>
-                            <Link className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" to="/products-overview"><Eye className="inline-block size-3 ltr:mr-1 rtl:ml-1" /> <span className="align-middle">Overview</span></Link>
-                        </li>
-                        <li>
-                            <Link className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200" to={`/products-edit/${cell.getValue()}`}><FileEdit className="inline-block size-3 ltr:mr-1 rtl:ml-1" /> <span className="align-middle">Edit</span></Link>
-                        </li>
-                    </Dropdown.Content>
-                </Dropdown>
-            ),
-        }
-    ], []
-    );
+    const columns = useMemo(() => productFeaturesColumns, []);
 
     return (
         <React.Fragment>
             <BreadCrumb title='Products' pageTitle='List' />
-            {/* <DeleteModal show={deleteModal} onHide={deleteToggle} onDelete={handleDelete} /> */}
-            <ToastContainer closeButton={false} limit={1} />
+          
             <div className="card" id="productListTable">
                 <div className="card-body">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-12">
@@ -272,7 +219,7 @@ const ProductsListView = () => {
                         </div>
                         <div className="xl:col-span-2">
                         <div>
-                                <Flatpickr
+                             <Flatpickr
                                     className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                                     value={toDate}
                                     options={{

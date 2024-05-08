@@ -116,7 +116,7 @@ export const deleteSellers = (data: any) => api.delete(url.DELETE_SELLERS, { hea
 // Products
 export const getProductList = (props?: IGetProductProps) => productsApi.get(url.GET_PRODUCT_LIST, props);
 export const addProductList = (data: IPostProduct) => productsApi.create(url.ADD_PRODUCT_LIST, data);
-export const updateProductList = (data: any) => productsApi.update(url.UPDATE_PRODUCT_LIST, data);
+export const updateProductList = (data: any) => productsApi.put(url.UPDATE_PRODUCT_LIST, data);
 export const deleteProductList = (data: any) => productsApi.delete(url.DELETE_PRODUCT_LIST, { headers: { data } });
 export const getOneProduct = (props: IGetOneProductProps) => productsApi.get(`${url.GET_PRODUCT_LIST}/${props.id}`, null);
 
