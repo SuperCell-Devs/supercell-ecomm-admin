@@ -44,11 +44,14 @@ import {
     addCategoryList as addCategoryListApi,
     getCategoryList as getCategoryListApi,
     updateCategoryList as updateCategoryListApi,
-    getOneCategory as getOneCategoryApi 
+    getOneCategory as getOneCategoryApi,
+    addHomeManager as addHomeManagerApi,
+    getHomeList as getHomeApi,
+    updateHomeManager as updateHomeManagerApi
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProductProps, IGetOneProvinceProps, IGetOneVendor, IGetProductProps, IPostDistrict, IPostProduct, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps } from "helpers/interface/api";
+import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetHomeManagerProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProductProps, IGetOneProvinceProps, IGetOneVendor, IGetProductProps, IPostDistrict, IPostProduct, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps, UpdateHomeManager } from "helpers/interface/api";
 
 
 // Globals
@@ -501,6 +504,41 @@ export const deleteProvinceList = createAsyncThunk("ecommerce/deleteProvinceList
         return response;
     } catch (error) {
         toast.error("Data deleted Failed", { autoClose: 2000 });
+        return error;
+    }
+});
+
+
+// Home manager
+export const postHomeManager = createAsyncThunk("ecommerce/addHomeManager", async (event: any) => {
+    try {
+        const response = addHomeManagerApi(event);
+        toast.success("Data added Successfully", { autoClose: 2000 });
+        return response;
+    } catch (error) {
+        toast.error("Data add Failed", { autoClose: 2000 });
+        return error;
+    }
+});
+
+
+export const getHomeManager = createAsyncThunk("ecommerce/getHomeManager", async (props? : IGetHomeManagerProps) => {
+    try {
+        const response = await getHomeApi(props);
+        return response;
+    } catch (error) {
+        return error;
+    }
+});
+
+export const updateHomeManager = createAsyncThunk("ecommerce/updateHomeManager", async (event: UpdateHomeManager) => {
+    try {
+        const response = await updateHomeManagerApi(event);
+        const data = response;
+        toast.success("Home manager updated Successfully", { autoClose: 2000 });
+        return data;
+    } catch (error) {
+        toast.error("Operation has Failed", { autoClose: 2000 });
         return error;
     }
 });

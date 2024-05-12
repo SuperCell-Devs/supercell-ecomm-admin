@@ -1,5 +1,5 @@
 import React from "react";
-import { Award, LibraryBig ,MapIcon, LandPlot, MapPinIcon, CalendarDays, CircuitBoard, Codesandbox, FileText, LifeBuoy, LocateFixed, Mail, Map, MessageSquare, MonitorDot, PackagePlus, PictureInPicture2, PieChart, RadioTower, ScrollText, Share2, ShoppingBag, Table, Trophy, UserRound } from "lucide-react";
+import { Award, LibraryBig ,MapIcon, LandPlot, MapPinIcon, CalendarDays, CircuitBoard, Codesandbox, FileText, LifeBuoy, LocateFixed, Mail, Map, MessageSquare, MonitorDot, PackagePlus, PictureInPicture2, PieChart, RadioTower, ScrollText, Share2, ShoppingBag, Table, Trophy, UserRound, Home } from "lucide-react";
 
 const menuData: any = [
     {
@@ -11,6 +11,13 @@ const menuData: any = [
         label: 'Products',
         icon: <ShoppingBag />,
         link: '/products',
+        parentId: 2
+    },
+    {
+        id: 'home-manager',
+        label: 'Home Manager',
+        icon: <Home />,
+        link: '/home-manager',
         parentId: 2
     },
     {

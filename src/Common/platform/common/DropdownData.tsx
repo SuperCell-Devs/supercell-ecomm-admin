@@ -15,10 +15,10 @@ import {
 import { capitalizeFirstLetter } from '../helpers/capitzlizeFirstLetter';
 
 interface IProps {
-    data:  'category' | 'brands' | 'products' | 'province' | 'districts' | 'country' | 'vendors' | 'VendorType' | 'FileImageTypeEnum' | 'AspectRatio';
-    state: any,
-    setState: React.Dispatch<React.SetStateAction<any>>
-    title?: string
+    data: 'category' | 'brands' | 'products' | 'province' | 'districts' | 'country' | 'vendors' | 'VendorType' | 'FileImageTypeEnum' | 'AspectRatio' | 'ItemTypeEnum' | 'ShowTypeEnum';
+    state: any;
+    setState: React.Dispatch<React.SetStateAction<any>>;
+    title?: string;
 }
 
 /**
@@ -29,12 +29,12 @@ interface IProps {
 const GlobalsDropDownData = (props: IProps) => {
 
  const dispatch = useDispatch<any>();
-    const selectDataList = createSelector(
+const selectDataList = createSelector(
         (state: any) => state.Ecommerce,
         (state) => ({
             dataList: state.globals
         })
-    );
+);
 
     const { dataList } = useSelector(selectDataList);
 
@@ -54,11 +54,12 @@ const GlobalsDropDownData = (props: IProps) => {
 
     return (
         <select 
-            // global values are {name: string, value: number} type. return value by matching name string value 
+        // global values are {name: string, value: number} type. return value by matching name string value 
         value={props.state === "Initial" ? "Initial" : props.state && targetedGlobalValueList?.find((e) => e.name === capitalizeFirstLetter(props.state))?.value}
         onChange={
-            (e) => {
-                 props.setState(e.target.value)
+            (e) => {            
+                const value = e.target.value;               
+                props.setState(value);
             }
         } 
         className="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
@@ -66,7 +67,7 @@ const GlobalsDropDownData = (props: IProps) => {
             {
                 targetedGlobalValueList?.map((e: any, i: number) => (<option key={i} value={(e as GlobalsValue).value}>{(e as GlobalsValue).name}</option>))
             }
-    </select>
+        </select>
   )
 }
 
@@ -167,7 +168,12 @@ const DynamicDataDropdown = (props: IProps) => {
  */
 const DropdownData = (props: IProps) => {  
        
-    if (props.data === 'AspectRatio' || props.data === 'FileImageTypeEnum' || props.data === 'VendorType') {
+    if (
+        props.data === 'AspectRatio'
+        || props.data === 'FileImageTypeEnum'
+        || props.data === 'VendorType'
+        || props.data === 'ItemTypeEnum'
+        || props.data === 'ShowTypeEnum') {
         return <GlobalsDropDownData {...props} />
     }
     return <DynamicDataDropdown {...props} />

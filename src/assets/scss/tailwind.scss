@@ -24,3 +24,25 @@ File: tailwind scss File
    animation-iteration-count: 2;
    stroke-dasharray: 10;
 }
+
+/* width */
+.custom-scrollbar::-webkit-scrollbar {
+   width: 8px;
+}
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar-track {
+   background: #faf9f9;
+   border-radius: 5px;
+}
+
+/* Handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+   background: #e9e6e6;
+   border-radius: 5px;
+}
+
+/* Handle on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+   background: #cac5c5;
+}
