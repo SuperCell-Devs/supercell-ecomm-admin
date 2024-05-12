@@ -18,19 +18,30 @@ interface IProps {
 const VendorPreviewCard = (props: IProps) => {
     const { cover, description, logo, title, email, address, district, phoneNumber, vendorType } = props;
     const hasMetaInfo = Object.values(props).length > 0;
-    console.log(hasMetaInfo, Object.values(props));
-    
+
     return (
         <div className="block overflow-hidden transition card group/card hover:shadow-lg">
             <div className="relative">
                 {
-                    cover ? <img className="transition-transform duration-500 ease-in-out group-hover/card:scale-105 rounded-t-md" src={getImagePath(cover)} alt={title} /> : <ImageOff size={32}/>
+                    cover
+                        ?
+                        <img className="transition-transform duration-500 ease-in-out group-hover/card:scale-105 rounded-t-md" src={getImagePath(cover)} alt={title} />
+                        :
+                        <div className='flex items-center justify-center  p-4'>
+                            <div><ImageOff size={32} /></div>
+                        </div>
                 }
             </div>
             <div className="card-body">
                 <h6 className="mb-4 text-15 flex items-center gap-x-4">
                     {
-                        logo ? <div className='felx items-center justify-center'> <img src={getImagePath(logo)} alt="logo" className="h-10 rounded-full border" /></div> : <ImageOff size={16}/>
+                        logo ?
+                            <div className='felx items-center justify-center'>
+                                <img src={getImagePath(logo)} alt="logo" className="h-10 rounded-full border" />
+                            </div> :
+                            <div className='felx items-center justify-center'>
+                                <ImageOff size={16} />
+                            </div>
                     }
                     { title }
                 </h6>

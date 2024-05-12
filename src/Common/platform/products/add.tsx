@@ -4,7 +4,7 @@ import Flatpickr from 'react-flatpickr';
 import * as Yup from 'yup';
 import {
     uploadFile as onfileUpload,
-    addProductList as onAddProductList
+    addProductList as onAddProductList,
 } from "slices/thunk";
 import { useFormik } from "formik";
 import DropdownData from "../common/DropdownData";

@@ -13,14 +13,14 @@ const root = ReactDOM.createRoot(
 );
 const store = configureStore({ reducer: rootReducer, devTools: true });
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
          <ToastContainer closeButton={false} limit={1} />
         <App />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  // {/* </React.StrictMode> */}
 );
 
 // If you want to start measuring performance in your app, pass a function

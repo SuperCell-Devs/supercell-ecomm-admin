@@ -42,7 +42,10 @@ import {
     getCategoryList,
     updateCategoryList,
     getOneCategory,
-    getOneProduct
+    getOneProduct,
+    postHomeManager,
+    getHomeManager,
+    updateHomeManager
 } from './thunk';
 
 
@@ -57,6 +60,7 @@ export const initialState = {
     reviews: [],
     globals: [],
     category: [],
+    homeManager: [],
     errors: {}
 };
 
@@ -135,6 +139,20 @@ const EcommerceSlice = createSlice({
         // builder.addCase(updateBrandsList.fulfilled, (state: any, action: any) => {
         //     state.brands = { ...state.brands, results: action.payload }
         // });
+
+        // Home manager
+        builder.addCase(postHomeManager.fulfilled, (state: any, action: any) => {
+            state.homeManager = {...state.homeManager, result: action.payload}
+        });
+        builder.addCase(getHomeManager.fulfilled, (state: any, action: any) => {
+            state.homeManager = action.payload;
+        });
+
+               
+        builder.addCase(updateHomeManager.fulfilled, (state: any, action: any) => {
+            state.homeManager = { ...state.homeManager, results: action.payload }
+        });
+        
         
 
         // brands
@@ -290,7 +308,10 @@ const EcommerceSlice = createSlice({
                 addCategoryList.rejected,
                 getCategoryList.rejected,
                 updateCategoryList.rejected,
-                getOneCategory.rejected
+                getOneCategory.rejected,
+                postHomeManager.rejected,
+                getHomeManager.rejected,
+                updateHomeManager.rejected,
                 
             ].includes(action.type);
             },

@@ -28,12 +28,12 @@ const VendorPreview = (props: IVendorPreviewProps) => {
         address={data?.address}
         description={data?.description}
         title={data?.name}
-        district={data?.district.nameAr}
+        district={data?.district?.nameAr}
         email={data?.email}
         logo={data?.logo.path}
         phoneNumber={data?.phoneNumber}
         vendorType={data?.vendorType}
-        cover={data?.cover.path} />
+        cover={data?.cover?.path} />
 };
 
 

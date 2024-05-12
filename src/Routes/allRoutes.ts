@@ -227,6 +227,7 @@ import ProvinceEdit from "Common/platform/province/edit";
 import CategoryListView from "Common/platform/category";
 import CategoryEdit from "Common/platform/category/edit";
 import CategoryAddNew from "Common/platform/category/add";
+import HomeManager from "Common/platform/home-manager";
 
 interface RouteObject {
   path: string;
@@ -272,6 +273,9 @@ const authProtectedRoutes: Array<RouteObject> = [
   { path: "/province", component: ProvinceListView },
   { path: "/province-add", component: ProvinceAddNew },
   { path: "/province-edit/:id", component: ProvinceEdit },
+
+  // home manager
+  { path: "/home-manager", component: HomeManager },
 
   // System routes end here
 

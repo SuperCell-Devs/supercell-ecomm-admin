@@ -318,3 +318,74 @@ export interface GeTProductsLight {
   isAvailable: boolean;
   id: number;
 }
+
+/**
+ * Home manager
+ */
+
+
+interface FilterAction {
+  categoryFilter: {
+        parentId: 0
+      },
+      productFilter: {
+        isPublished: boolean,
+        isFeatured: boolean,
+        isNew: boolean,
+        isOnSale: boolean,
+        isBestSeller: boolean,
+        isAvailable: boolean,
+        vendorId: number,
+        brandId: number
+      },
+      vendorFilter: {},
+      sliderFilter: {}
+};
+export interface CreateHome {
+  index: number;
+  itemType: number; 
+  limit: number,
+  redirect: string,
+  title: string,
+  showType: number,
+  backGround: string,
+  filterActions: FilterAction[],
+  isPreview: boolean
+};
+
+export interface IGetHomeManagerProps {
+  itemType?: number;
+  showType?: number;
+  isPreview?: boolean;
+  isDeleted?: boolean;
+}
+
+
+export interface HomeItem    {
+  id: number;
+  redirect?: string;
+  title?: string;
+  image?: string;
+  description?: string;
+  backGround?: string;
+};
+export interface GetHomeManager   {
+      index: number;
+      itemType: string;
+      limit: number;
+      redirect: string;
+      title: string;
+      showType: string;
+      backGround: string;
+      items: HomeItem[];
+      isPreview: boolean;
+  id: number;
+};
+
+interface UpdateHomeManagerPayload  {
+  id: number;
+  index: number;
+};
+export interface UpdateHomeManager {
+  newIndexes: UpdateHomeManagerPayload[];
+};

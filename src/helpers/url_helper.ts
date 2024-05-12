@@ -76,6 +76,11 @@ export const ADD_PROVINCE_LIST = "/Province";
 export const UPDATE_PROVINCE_LIST = "/Province";
 export const DELETE_PROVINCE_LIST = "/Province";
 
+// Home manager
+export const GET_HOME_LIST = "/Home";
+export const ADD_HOME_LIST = "/Home";
+export const PUT_HOME_LIST = "/Home";
+
 // Districts
 export const GET_DISTRICT_LIST = "/District";
 export const ADD_DISTRICT_LIST = "/District";

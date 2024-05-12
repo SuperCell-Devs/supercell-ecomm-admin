@@ -1,6 +1,6 @@
 import { User } from "slices/thunk";
 import { APIClient, AuthenticationAPIClient } from "./api_helper";
-import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps, IGetAllVendorProps, IPutVendor, IGetProductProps, IPostProduct, IGetOneProductProps } from "./interface/api";
+import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps, IGetAllVendorProps, IPutVendor, IGetProductProps, IPostProduct, IGetOneProductProps, CreateHome, IGetHomeManagerProps, UpdateHomeManager } from "./interface/api";
 import * as url from "./url_helper";
 
 const globalsApi = new APIClient();
@@ -13,6 +13,7 @@ const provinceApi = new APIClient();
 const fileApi = new APIClient();
 const categoryApi = new APIClient();
 const authApi = new AuthenticationAPIClient();
+const homeApi = new APIClient();
 
 const api = new APIClient();
 // Gets the logged in user data from local session
@@ -134,6 +135,12 @@ export const getOneProvince = (props: IGetOneProvinceProps) => provinceApi.get(`
 export const addProvinceList = (data: IProvincePost) => provinceApi.create(url.ADD_PROVINCE_LIST, data);
 export const updateProvinceList = (body: IUpdateProvinceProps) => provinceApi.put(`${url.UPDATE_PROVINCE_LIST}/${body.id}`, body.data);
 export const deleteProvinceList = (data: any) => provinceApi.delete(url.DELETE_PROVINCE_LIST, { headers: { data } });
+
+
+// Home manager
+export const addHomeManager = (props: CreateHome) => homeApi.create(url.ADD_HOME_LIST, props);
+export const getHomeList = (props?: IGetHomeManagerProps) => homeApi.get(`${url.GET_HOME_LIST}`, props);
+export const updateHomeManager = (props: UpdateHomeManager) => homeApi.put(`${url.ADD_HOME_LIST}/index`, props);
 
 // Globals
 export const getGlobalsList = () => globalsApi.get(url.GLOBALS_GET);
