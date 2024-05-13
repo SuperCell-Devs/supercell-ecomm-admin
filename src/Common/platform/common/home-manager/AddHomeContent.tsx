@@ -102,31 +102,31 @@ const AddHomeContent = (props: IProps) => {
 });
     
 return (
-    <div className="mx-auto md:max-w-lg">
-        <form action="#!" onSubmit={(event: any) => {
-                event.preventDefault();
-                handleSubmit()
+
+        <form action="#!" className='w-full p-10 border' onSubmit={(event: any) => {
+            event.preventDefault();
+            handleSubmit();
         }}>
-            <div className="grid grid-cols-1 gap-x-5 xl:grid-cols-2 gap-y-6">
-                    {/* Item type */}
-                    <div className="xl:col-span-6">
+        
+               {/* Item type */}
+                    <div>
                         <label className="mr-2 inline-block mb-2 text-base font-medium">Select Item type</label>
                         <DropdownData data='ItemTypeEnum' title='Item type' state={itemType} setState={setItemtype}/>
                     </div>
-                
-                        {/* Filter actions */}
-                    <div className='xl:col-span-6'>
+                    {/* Filter actions */}
+                    <div>
                         <SelectFilterAction filterAction={filterAction} setFilterAction={setFilterAction} itemType={itemType} category={category} setCategory={setCategory} />
                     </div>
+
                     {/* Show Type */}
-                    <div className="xl:col-span-6">
-                        <label className="mr-2 inline-block mb-2 text-base font-medium">Select Show type</label>
-                    <DropdownData data='ShowTypeEnum' title='Show type' state={showType} setState={setShowType}/>
+                    <div>
+                        <label className="mr-2 inline-block my-2 text-base font-medium">Select Show type</label>
+                       <DropdownData data='ShowTypeEnum' title='Show type' state={showType} setState={setShowType}/>
                     </div>
 
                     {/* Title */}
-                    <div className="xl:col-span-6">
-                        <label htmlFor="title" className="inline-block mb-2 text-base font-medium">Title</label>
+                    <div>
+                        <label htmlFor="title" className="inline-block my-2 text-base font-medium">Title</label>
                         <input
                             type="text"
                             name="title"
@@ -142,10 +142,9 @@ return (
                                 : null
                         }
                     </div>
-
                     {/* Redirect */}
                     <div className="mb-4">
-                        <label htmlFor="redirect" className="inline-block mb-2 text-base font-medium">Redirect</label>
+                        <label htmlFor="redirect" className="inline-block my-2 text-base font-medium">Redirect</label>
                         <input
                             type="text"
                             name="redirect"
@@ -163,8 +162,8 @@ return (
                     </div>
 
                     {/* Background */}
-                    <div className="mb-4">
-                        <label htmlFor="background" className="inline-block mb-2 text-base font-medium">Background</label>
+                    <div className="mb-4 w-1/2">
+                        <label htmlFor="background" className="inline-block my-2 text-base font-medium">Background</label>
                         <input
                             type="color"
                             name="background"
@@ -178,30 +177,33 @@ return (
                                 <p id="lastName" className="mt-1 text-sm text-red-500">{errors.background}</p>
                                 : null
                         }
-                </div>
-                
+                    
+                        <div className="my-4">
+                            <input
+                                 id="isPreview"
+                                 className="size-4 border rounded-sm appearance-none bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400"
+                                 type="checkbox"
+                                 checked={values.isPreview}
+                                 onChange={handleChange}/>
+                            <label htmlFor="termsCondition" className="text-sm align-top text-slate-400"> Preview </label>
+                                {
+                                    touched.isPreview && errors.isPreview ?
+                                        <p id="isPreview" className="mt-1 text-sm text-red-500">{errors.isPreview}</p>
+                                            :
+                                        null
+                                }
+                        </div>
+                    </div>
 
-            </div>
-            <div className="mb-4">
-                <input
-                    id="isPreview"
-                    className="size-4 border rounded-sm appearance-none bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400"
-                    type="checkbox"
-                    checked={values.isPreview}
-                    onChange={handleChange}/>
-                <label htmlFor="termsCondition" className="text-sm align-top text-slate-400"> Preview </label>
-                    {
-                        touched.isPreview && errors.isPreview ?
-                            <p id="isPreview" className="mt-1 text-sm text-red-500">{errors.isPreview}</p>
-                            : null
-                    }
-            </div>
-                <div className="flex justify-end gap-2 mt-5">
+              
+                <div className="flex justify-start gap-2 mt-5">
                     <button onClick={props.close} type="button" className="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><X className="inline-block size-4" /> <span className="align-middle">Cancel</span></button>
                     <button type="submit" className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">Submit</button>
                 </div>
-            </form>
-        </div>
+
+
+     
+        </form>
     );
 }
 

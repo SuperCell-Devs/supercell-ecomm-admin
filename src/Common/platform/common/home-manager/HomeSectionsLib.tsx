@@ -46,9 +46,8 @@ const ItemsList = (props: IItemsList) => {
                     {
                         hasList ?
                             <div>
-                                {props.data?.map((e) => {
-                                    return <>
-                                        <div className='flex justify-start gap-x-6 flex-wrap gap-y-2 w-full'>
+                                {props.data?.map((e, index) => {
+                                    return <div key={index} className='flex justify-start gap-x-6 flex-wrap gap-y-2 w-full'>
                                          <div className="card w-full">
                                             <div className="card-body">
                                                 <ul className="space-y-5 list-disc list-inside rounded-md marker:text-red-500">
@@ -90,7 +89,6 @@ const ItemsList = (props: IItemsList) => {
                                             </div>
                                         </div>
                                         </div>
-                                    </>
                                 })}
                             </div> :
                             <div>
@@ -120,6 +118,19 @@ interface IDnd {
 interface CardsState {
     cards: GetHomeManager[]
 }
+
+function getStyle(backGround: string) { 
+    const noBg = backGround === null;
+    const bg = !noBg && backGround;
+    let cardBgStyle = "card-body rounded-t-md";
+    if (bg)  {
+        cardBgStyle = cardBgStyle + " bg-[" + bg +"]";
+      };
+    if (noBg) {
+        cardBgStyle = cardBgStyle + " border";
+      };
+    return cardBgStyle;
+};
 const DND = (props: IDnd) => {
     const { leftState, setLeftState, rightState, setRightState } = props;
     const reorder = (list: any, startIndex: number, endIndex: number) => {
@@ -206,10 +217,8 @@ const DND = (props: IDnd) => {
                             <h6 className='mb-6'>Available System Items</h6>
                                 {
                                     leftState && leftState?.cards?.map((e, index) => {
-                                        const noBg = e.backGround === null;
-                                        const bg = !noBg && e.backGround;
-                                        const cardBgStyle = `${bg && `bg-[${bg}]`} bg- ${noBg && "border"} card-body rounded-t-md`;
-                                        
+                                        const cardBgStyle = getStyle(e.backGround);
+                                   
                                           return <Draggable
                                                     draggableId={String(e.id)}
                                                     index={index}
@@ -271,10 +280,7 @@ const DND = (props: IDnd) => {
                             <h6 className='mb-6'>New Ordered Items</h6>
                                 {
                                     rightState && rightState.cards?.map((e, index) => {
-                                          const noBg = e.backGround === null;
-                                        const bg = !noBg && e.backGround;
-                                        const cardBgStyle = `${bg && `bg-[${bg}]`} bg- ${noBg && "border"} card-body rounded-t-md`;
-                                        
+                                          const cardBgStyle = getStyle(e.backGround);
                                           return <Draggable
                                                     draggableId={String(e.id)}
                                                     index={index}
@@ -388,8 +394,6 @@ export const HomeSectionsLib = (props: IProps) => {
     useEffect(() => { 
        
         if (data) {
-            console.log(data);
-            
             props.setIsEmpty(false);
             Array.isArray(data.results) ? setLeftState({ cards: data.results }) : setLeftState({ cards: [] }); 
             setRightState({ cards: [] });
@@ -397,10 +401,11 @@ export const HomeSectionsLib = (props: IProps) => {
     }, [data]);
 
     return (
-        <div>
+        <div className='mt-10'>
             <div className='flex gap-x-4 mb-6'>
                   <button
-                type="button"
+                    type="button"
+                    autoFocus
                 onClick={handleAddContent}
                 className="text-custom-500 btn bg-custom-100 hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100 dark:bg-custom-500/20 dark:text-custom-500 dark:hover:bg-custom-500 dark:hover:text-white dark:focus:bg-custom-500 dark:focus:text-white dark:active:bg-custom-500 dark:active:text-white dark:ring-custom-400/20">
                 Add New Item

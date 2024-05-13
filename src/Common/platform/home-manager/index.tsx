@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
 import AddHomeContent from '../common/home-manager/AddHomeContent';
-import EmptyHomeContent from '../common/home-manager/EmptyHomeContent';
+// import EmptyHomeContent from '../common/home-manager/EmptyHomeContent';
 import { HomeSectionsLib } from '../common/home-manager/HomeSectionsLib';
 
 const HomeManager = () => {
     const [isEmpty, setIsEmpty] = useState(true);
     const [openAddForm, setOpenAddForm] = useState(false);
 
-    const handleAddContent = () => {
-        setIsEmpty(false);
-        setOpenAddForm(true);
-    };
+
     const handleCloseAddContent = () => {
         setIsEmpty(true);
         setOpenAddForm(false);
