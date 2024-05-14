@@ -345,7 +345,9 @@ const DND = (props: IDnd) => {
 interface IProps {
     setIsEmpty: React.Dispatch<React.SetStateAction<boolean>>
     openAddForm: boolean;
+    openMobilePreview: boolean;
     setOpenAddForm: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenMobilePreview: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export const HomeSectionsLib = (props: IProps) => {
     
@@ -367,6 +369,11 @@ export const HomeSectionsLib = (props: IProps) => {
         props.setIsEmpty(false);
         props.setOpenAddForm(true);
     };
+
+    const handleMobilePreview = () => { 
+        props.setOpenAddForm(false);
+        props.setOpenMobilePreview(true);
+    }; 
     const handleSubmitChanges = async () => {
       try {
           await dispatch(onUpdateHomeManager({ newIndexes: newOrderedList.cards?.map((e, index) => ({ id: e.id, index: index })) }));
@@ -401,24 +408,33 @@ export const HomeSectionsLib = (props: IProps) => {
     }, [data]);
 
     return (
-        <div className='mt-10'>
-            <div className='flex gap-x-4 mb-6'>
-                  <button
+        <div className='h-full'>
+            <div className='flex gap-x-4 mb-6 justify-between'>
+                <div className='flex gap-x-4 mx-8'>
+                    <button
+                        type="button"
+                        autoFocus
+                        onClick={handleAddContent}
+                        className="text-custom-500 btn bg-custom-100 hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100 dark:bg-custom-500/20 dark:text-custom-500 dark:hover:bg-custom-500 dark:hover:text-white dark:focus:bg-custom-500 dark:focus:text-white dark:active:bg-custom-500 dark:active:text-white dark:ring-custom-400/20">
+                          Add New Item
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleMobilePreview}
+                        className="text-white bg-orange-500 border-orange-500 btn hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-600 focus:border-orange-600 focus:ring focus:ring-orange-100 active:text-white active:bg-orange-600 active:border-orange-600 active:ring active:ring-orange-100 dark:ring-orange-400/10">
+                        Preview
+                    </button>
+                </div>
+            
+                <button
+                    onClick={handleSubmitChanges}
                     type="button"
-                    autoFocus
-                onClick={handleAddContent}
-                className="text-custom-500 btn bg-custom-100 hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100 dark:bg-custom-500/20 dark:text-custom-500 dark:hover:bg-custom-500 dark:hover:text-white dark:focus:bg-custom-500 dark:focus:text-white dark:active:bg-custom-500 dark:active:text-white dark:ring-custom-400/20">
-                Add New Item
-            </button>
-            <button
-                onClick={handleSubmitChanges}
-                type="button"
-                className="text-green-500 bg-green-100 btn hover:text-white hover:bg-green-600 focus:text-white focus:bg-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:ring active:ring-green-100 dark:bg-green-500/20 dark:text-green-400 dark:hover:bg-green-500 dark:hover:text-white dark:focus:bg-green-500 dark:focus:text-white dark:active:bg-green-500 dark:active:text-white dark:ring-green-400/20">
-                Submit Changes
-            </button>
+                    className="mx-8 text-green-500 bg-green-100 btn hover:text-white hover:bg-green-600 focus:text-white focus:bg-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:ring active:ring-green-100 dark:bg-green-500/20 dark:text-green-400 dark:hover:bg-green-500 dark:hover:text-white dark:focus:bg-green-500 dark:focus:text-white dark:active:bg-green-500 dark:active:text-white dark:ring-green-400/20">
+                    Submit Changes
+                </button>
       
             </div>
-            <div className="rounded-lg p-4 h-screen">
+            <div className="rounded-lg p-4 h-full">
                 {
                     data && data.results && data.results.length > 0 && <DND setNewOrderedList={setNewOrderedList} leftState={leftState} setLeftState={setLeftState} rightState={rightState} setRightState={setRightState} />
                 }

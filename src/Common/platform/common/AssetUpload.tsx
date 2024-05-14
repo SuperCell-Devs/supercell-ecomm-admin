@@ -47,7 +47,7 @@ const AssetUpload = (props: IProps) => {
 
     return (
         <div className="card p-3 my-3">
-            <div className="xl:col-span-4">
+            <div className="xl:col-span-12">
                 <div className="card p-2">
                     <div className="xl:col-span-12">
                         <label className="mr-2 inline-block mb-2 text-base font-medium">{props.title}</label>
@@ -55,8 +55,6 @@ const AssetUpload = (props: IProps) => {
                             maxFiles={5}
                             multiple={multiple}
                             onDrop={(files) => {
-                                console.log("onDrop" ,files);
-                                
                                 handleAcceptImageFiles(files);
                             }}
                             >

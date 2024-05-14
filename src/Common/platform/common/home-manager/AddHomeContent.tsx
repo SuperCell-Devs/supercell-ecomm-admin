@@ -103,7 +103,7 @@ const AddHomeContent = (props: IProps) => {
     
 return (
 
-        <form action="#!" className='w-full p-10 border' onSubmit={(event: any) => {
+        <form action="#!" className='w-full p-10' onSubmit={(event: any) => {
             event.preventDefault();
             handleSubmit();
         }}>

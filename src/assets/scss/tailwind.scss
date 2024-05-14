@@ -46,3 +46,25 @@ File: tailwind scss File
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
    background: #cac5c5;
 }
+
+ /* width */
+ .no-scrollbar::-webkit-scrollbar {
+    width: 8px;
+ }
+
+ /* Track */
+ .no-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+ }
+
+ /* Handle */
+ .no-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 5px;
+ }
+
+ /* Handle on hover */
+ .no-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+ }

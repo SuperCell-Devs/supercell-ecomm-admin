@@ -25,10 +25,16 @@ import {
 // import filterDataBySearch from "Common/filterDataBySearch";
 import { IBrand, Paginated } from "helpers/interface/api";
 import { getImagePath } from "../helpers/getImagePath";
+import { PaginationState } from "@tanstack/react-table";
 
 const BrandListView = () => {
 
     const dispatch = useDispatch<any>();
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 1,
+    pageSize: 10,
+  })
 
     const [search, setSearch] = useState<string>("");
 
@@ -46,8 +52,13 @@ const BrandListView = () => {
     
     // Get Data
     useEffect(() => {
-        dispatch(onGetBrandsList());
-    }, [dispatch]);
+        dispatch(onGetBrandsList(
+            {
+                page: pagination.pageIndex < 1 ? 1 : pagination.pageIndex,
+                pageSize: pagination.pageSize
+            }
+        ));
+    }, [dispatch, pagination.pageIndex, pagination.pageSize]);
 
     useEffect(() => {     
         setData(dataList);
@@ -56,7 +67,11 @@ const BrandListView = () => {
     const handleDataSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearch(value);
-        dispatch(onGetBrandsList({name: value}));
+        dispatch(onGetBrandsList({
+            name: value,
+                page: pagination.pageIndex < 1 ? 1 : pagination.pageIndex,
+                pageSize: pagination.pageSize
+            }));
     }
 
     // Delete Modal
@@ -223,26 +238,22 @@ const BrandListView = () => {
                     </div>
                 </div>
                 <div className="!pt-1 card-body">
-                    {data && data.results && data.results.length > 0 ?
+                    {data && data.results &&
                         <TableContainer
+                            pageIndex={pagination.pageIndex}
+                            pageSize={pagination.pageSize}
+                            setPagination={setPagination}
                             isPagination={true}
                             columns={(columns || [])}
                             data={(data.results || [])}
-                            customPageSize={7}
+                            customPageSize={10}
                             divclassName="overflow-x-auto"
                             tableclassName="w-full whitespace-nowrap"
                             theadclassName="ltr:text-left rtl:text-right bg-slate-100 dark:bg-zink-600"
                             thclassName="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500"
                             tdclassName="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"
                             PaginationClassName="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row"
-                        />
-                        :
-                        (<div className="noresult">
-                            <div className="py-6 text-center">
-                                <Search className="size-6 mx-auto mb-3 text-sky-500 fill-sky-100 dark:fill-sky-500/20" />
-                                <h5 className="mt-2 mb-1">Sorry! No Result Found</h5>
-                            </div>
-                        </div>)}
+                        />}
                 </div>
             </div>
         </React.Fragment>

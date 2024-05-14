@@ -207,13 +207,13 @@ const VendorAddNew = () => {
                                     </div>
                                 </div>
 
-                                {/* Vendor Cover image */}
-                                <AssetUpload title="Upload vendor cover image" aspectRatio={coverAspectRatio} setAspectRatio={setCoverAspectRatio} imageFileType={coverImageFileType} setImageFileType={setCovergImageFileType} selectImagefiles={selectCoverImagefiles} setselectImagefiles={setselectCoverImagefiles}/>
-                               
-                                {/* Vendor logo image */}
-                                <AssetUpload title="Upload vendor logo" aspectRatio={logoAspectRatio} setAspectRatio={setLogoAspectRatio} imageFileType={logoImageFileType} setImageFileType={setLogoImageFileType} selectImagefiles={selectLogoImagefiles} setselectImagefiles={setselectLogoImagefiles}/>
-                          
-                                
+                                <div className="grid grid-cols-2 gap-3">
+                                        {/* Vendor Cover image */}
+                                        <AssetUpload title="Upload vendor cover image" aspectRatio={coverAspectRatio} setAspectRatio={setCoverAspectRatio} imageFileType={coverImageFileType} setImageFileType={setCovergImageFileType} selectImagefiles={selectCoverImagefiles} setselectImagefiles={setselectCoverImagefiles}/>
+                                        {/* Vendor logo image */}
+                                        <AssetUpload title="Upload vendor logo" aspectRatio={logoAspectRatio} setAspectRatio={setLogoAspectRatio} imageFileType={logoImageFileType} setImageFileType={setLogoImageFileType} selectImagefiles={selectLogoImagefiles} setselectImagefiles={setselectLogoImagefiles}/>                                
+                                </div>
+
 
 
                                 <LoadingButton title="Create Venodr" loading={loading} type="submit" />

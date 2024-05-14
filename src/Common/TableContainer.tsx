@@ -11,7 +11,8 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  flexRender
+  flexRender,
+  PaginationState
 } from '@tanstack/react-table';
 
 import { rankItem } from '@tanstack/match-sorter-utils';
@@ -89,6 +90,9 @@ interface TableContainerProps {
   isPagination: boolean;
   PaginationClassName?: string;
   SearchPlaceholder?: string;
+  pageIndex?: number;
+  pageSize?: number;
+  setPagination?: React.Dispatch<React.SetStateAction<PaginationState>>
 }
 
 const TableContainer = ({
@@ -107,68 +111,54 @@ const TableContainer = ({
   customPageSize,
   isGlobalFilter,
   PaginationClassName,
-  SearchPlaceholder
+  SearchPlaceholder,
+  pageIndex,
+  pageSize,
+  setPagination
 }: TableContainerProps) => {
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [globalFilter, setGlobalFilter] = useState('');
+  // const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  // const [globalFilter, setGlobalFilter] = useState('');
 
-  const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-    const itemRank = rankItem(row.getValue(columnId), value);
-    addMeta({
-      itemRank
-    });
-    return itemRank.passed;
-  };
+  // const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  //   const itemRank = rankItem(row.getValue(columnId), value);
+  //   addMeta({
+  //     itemRank
+  //   });
+  //   return itemRank.passed;
+  // };
 
+  
   const table = useReactTable({
-    columns,
     data,
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
+    columns,
+    // pageCount: dataQuery.data?.pageCount ?? -1, //you can now pass in `rowCount` instead of pageCount and `pageCount` will be calculated internally (new in v8.13.0)
+    // rowCount: dataQuery.data?.rowCount, // new in v8.13.0 - alternatively, just pass in `pageCount` directly
     state: {
-      columnFilters,
-      globalFilter,
+      pagination: { 
+        pageIndex: pageIndex || 1,
+        pageSize: pageSize || 1
+      },
     },
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: fuzzyFilter,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel()
-  });
-
-  const {
-    getHeaderGroups,
-    getFooterGroups,
-    getRowModel,
-    getPageOptions,
-    setPageIndex,
-    setPageSize,
-    getState,
-    getCanPreviousPage,
-    getCanNextPage,
-    nextPage,
-    previousPage,
-  } = table;
-
-  useEffect(() => {
-    Number(customPageSize) && setPageSize(Number(customPageSize));
-  }, [customPageSize, setPageSize]);
-
+    manualPagination: true, //we're doing manual "server-side" pagination
+    // getPaginationRowModel: getPaginationRowModel(), // If only doing manual pagination, you don't need this
+    debugTable: true,
+  })
+  console.log(data);
+  
   return (
     <Fragment>
 
-      <div className="grid grid-cols-12 lg:grid-cols-12 gap-3">
-        {
+      {/* <div className="grid grid-cols-12 lg:grid-cols-12 gap-3"> */}
+        {/* {
           isSelect &&
           <div className="self-center col-span-12 lg:col-span-6">
             <label>Show
               <select name="basic_tables_length" aria-controls="basic_tables"
                 className="px-3 py-2 form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 inline-block w-auto"
-                onClick={(event: any) => setPageSize(event.target.value)}>
+                onClick={(event: any) => table.setPageSize(event.target.value)}>
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -176,9 +166,9 @@ const TableContainer = ({
               </select>
             </label>
           </div>
-        }
+        } */}
 
-        <div className="self-center col-span-12 lg:col-span-6 lg:place-self-end">
+        {/* <div className="self-center col-span-12 lg:col-span-6 lg:place-self-end">
           {isGlobalFilter &&
             <label>Search: <DebouncedInput
               value={globalFilter ?? ''}
@@ -188,13 +178,13 @@ const TableContainer = ({
             />
             </label>
           }
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
 
       <div className={divclassName}>
         <table className={tableclassName}>
           <thead className={theadclassName}>
-            {getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id} className={trclassName}>
                 {headerGroup.headers.map(header => {
                   return (
@@ -230,7 +220,7 @@ const TableContainer = ({
           </thead>
 
           <tbody className={tbodyclassName}>
-            {getRowModel().rows.map(row => {
+            {table.getRowModel().rows.map(row => {
               return (
                 <tr key={row.id} className={trclassName}>
                   {row.getVisibleCells().map(cell => {
@@ -248,9 +238,9 @@ const TableContainer = ({
             })}
           </tbody>
 
-          {isTfoot && <tfoot>
+          {/* {isTfoot && <tfoot>
             {
-              getFooterGroups()?.map((footer: any, tfKey: number) => (
+              table.getFooterGroups()?.map((footer: any, tfKey: number) => (
                 <tr key={tfKey}>
                   {
                     footer.headers?.map((tf: any, key: number) => (
@@ -265,38 +255,27 @@ const TableContainer = ({
                 </tr>
               ))
             }
-          </tfoot>}
+          </tfoot>} */}
         </table>
       </div>
 
       {
         isPagination && (
-          <div className={PaginationClassName}>
-            <div className="mb-4 grow md:mb-0">
-              <div className="text-slate-500 dark:text-zink-200">Showing
-                <b> {getState().pagination.pageSize}</b> of
-                <b> {data.length}</b> Results</div>
-            </div>
-            <ul className="flex flex-wrap items-center gap-2 shrink-0">
-              <li>
-                <Link to="#!" className={`inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto ${!getCanPreviousPage() && "disabled"}`} onClick={previousPage}>
-                  <ChevronLeft className="size-4 mr-1 rtl:rotate-180"></ChevronLeft> Prev</Link>
-              </li>
-              {getPageOptions().map((item: any, key: number) => (
-                <React.Fragment key={key}>
-                  <li>
-                    <Link to="#" className={`inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-100 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-white dark:[&.active]:text-white [&.active]:bg-custom-500 dark:[&.active]:bg-custom-500 [&.active]:border-custom-500 dark:[&.active]:border-custom-500 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto ${getState().pagination.pageIndex === item && "active"}`} onClick={() => setPageIndex(item)}>{item + 1}</Link>
-                  </li>
-                </React.Fragment>
-              ))}
-              <li>
-                <Link to="#!" className={`inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto 
-                ${!getCanNextPage() && ""}`} onClick={() => getCanNextPage() && nextPage()}>
-                  Next <ChevronRight className="size-4 ml-1 rtl:rotate-180"></ChevronRight> </Link>
-              </li>
-            </ul>
-          </div>
-        )
+
+          <div className="flex justify-center items-center gap-2 mt-4">
+            <span className="flex items-center gap-1">
+              Go to page:
+              <input
+                type="number"
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={e => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0
+                  table.setPageIndex(page)
+                }}
+                className="border p-1 rounded w-16"
+              />
+            </span>
+          </div>)
       }
     </Fragment>
   );
