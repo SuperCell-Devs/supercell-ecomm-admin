@@ -14,6 +14,10 @@ import { ProductImage } from "helpers/interface/api";
 import AssetUpload from "../common/AssetUpload";
 
 const ProductsAddNew = () => {
+
+    const [productFeaturedAspectRatio, setProductFeaturedAspectRatio] = useState(1);
+    const [productFeaturedImageFileType, setProductFeaturedImageFileType] = useState(2);
+    const [selectProductFeaturedImagefiles, setSelectProductFeaturedImagefiles] = useState<any[]>([]);
     const [selectProductImagefiles, setSelectProductImagefiles] = useState<any[]>([]);
     const [productAspectRatio, setProductAspectRatio] = useState<number>();
     const [productImageFileType, setProductgImageFileType] = useState<number>();
@@ -99,8 +103,14 @@ const ProductsAddNew = () => {
                     aspectRatio: productAspectRatio || 1
                 }));
 
+                const thumbnailImgOperations = selectProductFeaturedImagefiles.map((file) => imageUploadRequest(file));
+                const thumbnails =  (await Promise.all(thumbnailImgOperations)).map((e: string) => ({
+                    path: e,
+                    imageType: productImageFileType,
+                    aspectRatio: productAspectRatio
+                }));
                 
-                productFinalValues.images = images;
+                productFinalValues.images = [...images, ...thumbnails];
             } catch (error) {
                 console.error(error);
                 toast.error("Image files upload failed.", { autoClose: 3000 });
@@ -353,9 +363,31 @@ const ProductsAddNew = () => {
                 {/* Product image */}
                 <div className="xl:col-span-4">
                     <div className="card p-2">
+
                         <div className="xl:col-span-12">
                             {/* <label className="mr-2 inline-block mb-2 text-base font-medium">Upload Product featured image:</label> */}
-                            <AssetUpload title="Upload Product featured image" aspectRatio={productAspectRatio} imageFileType={productImageFileType} setAspectRatio={setProductAspectRatio} setImageFileType={setProductgImageFileType} selectImagefiles={selectProductImagefiles} setselectImagefiles={setSelectProductImagefiles} multiple/>
+                            <AssetUpload
+                                title="Upload Product featured image"
+                                aspectRatio={productFeaturedAspectRatio}
+                                imageFileType={productFeaturedImageFileType}
+                                setAspectRatio={setProductFeaturedAspectRatio}
+                                setImageFileType={setProductFeaturedImageFileType}
+                                selectImagefiles={selectProductFeaturedImagefiles}
+                                setselectImagefiles={setSelectProductFeaturedImagefiles}
+                                noAspect
+                                noImageType
+                            />
+                        </div>
+                        <div className="xl:col-span-12">
+                            {/* <label className="mr-2 inline-block mb-2 text-base font-medium">Upload Product featured image:</label> */}
+                            <AssetUpload
+                                title="Upload Product images"
+                                aspectRatio={productAspectRatio}
+                                imageFileType={productImageFileType}
+                                setAspectRatio={setProductAspectRatio}
+                                setImageFileType={setProductgImageFileType}
+                                selectImagefiles={selectProductImagefiles}
+                                setselectImagefiles={setSelectProductImagefiles} multiple />
                         </div>
                     </div>
                 </div>

@@ -58,8 +58,8 @@ const productFeaturesColumns = [
         ),
     },
     {
-        header: "isNew",
-        accessorKey: "New",
+        header: "New",
+        accessorKey: "isNew",
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cell: any) => (

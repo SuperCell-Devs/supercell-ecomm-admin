@@ -12,6 +12,8 @@ interface IProps {
     setselectImagefiles: React.Dispatch<React.SetStateAction<any[]>>;
     title?: string;
     multiple?: boolean;
+    noAspect?: boolean;
+    noImageType?: boolean;
 }
 
 const AssetUpload = (props: IProps) => {
@@ -102,8 +104,12 @@ const AssetUpload = (props: IProps) => {
                     </div>
                 </div>
 
-                <DropdownData data="AspectRatio" title="Aspect Ratio" setState={setAspectRatio} state={aspectRatio} />
-                <DropdownData data="FileImageTypeEnum" title="Image File Type" setState={setImageFileType} state={imageFileType} />
+                {
+                   !props.noAspect  && <DropdownData data="AspectRatio" title="Aspect Ratio" setState={setAspectRatio} state={aspectRatio} />
+                }
+                {
+                   !props.noImageType && <DropdownData data="FileImageTypeEnum" title="Image File Type" setState={setImageFileType} state={imageFileType} />
+                }
             </div>
         </div>
     )
