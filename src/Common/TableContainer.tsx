@@ -1,22 +1,201 @@
-import React, { Fragment, useEffect, useState } from "react";
+import Reac, { Fragment, useEffect, useState } from 'react'
+import {
+  PaginationState,
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+} from '@tanstack/react-table'
+import { Paginated } from 'helpers/interface/api'
+
+
+
+
+/**
+ * 
+ * Ignore import statements below this line 
+ * 
+ */
+
 import { Link } from "react-router-dom";
 
 import {
   Column,
   Table as ReactTable,
-  ColumnFiltersState,
-  FilterFn,
-  useReactTable,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  flexRender,
-  PaginationState
 } from '@tanstack/react-table';
+import React from 'react';
 
-import { rankItem } from '@tanstack/match-sorter-utils';
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
+/**
+ * 
+ */
+interface IProps {
+  columns: any[];
+  data: Paginated<any>;
+  pagination: PaginationState;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+};
+export const PaginatedTableContainer = (props: IProps) => {
+  const theadclassName = "ltr:text-left rtl:text-right bg-slate-100 dark:bg-zink-600"
+    , tableclassName="w-full whitespace-nowrap"
+    , tdclassName = "px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"
+    , tbodyclassName="divide-y divide-slate-200 dark:divide-zink-500"
+    , thclassName = "p-3 group-[.bordered]:border group-[.bordered]:border-slate-200 group-[.bordered]:dark:border-zink-500 sorting px-3 py-4 text-slate-900 bg-slate-200/50 font-semibold text-left dark:text-zink-50 dark:bg-zink-600 dark:group-[.bordered]:border-zink-500 sorting_asc"
+    , trclassName = "group-[.stripe]:even:bg-slate-50 group-[.stripe]:dark:even:bg-zink-600 transition-all duration-150 ease-linear group-[.hover]:hover:bg-slate-50 dark:group-[.hover]:hover:bg-zink-600 [&.selected]:bg-custom-500 dark:[&.selected]:bg-custom-500 [&.selected]:text-custom-50 dark:[&.selected]:text-custom-50";
+  const rerender = React.useReducer(() => ({}), {})[1]
+  const dataQuery = props.data;
+
+  const defaultData = React.useMemo(() => [], [])
+
+  const table = useReactTable({
+    data: dataQuery.results ?? defaultData,
+    columns: props.columns,
+    // pageCount: dataQuery.data?.pageCount ?? -1, //you can now pass in `rowCount` instead of pageCount and `pageCount` will be calculated internally (new in v8.13.0)
+    rowCount: dataQuery.rowCount, // new in v8.13.0 - alternatively, just pass in `pageCount` directly
+    state: {
+      pagination: {pageIndex: props.pagination.pageIndex, pageSize: props.pagination.pageSize},
+    },
+    onPaginationChange: props.setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true, //we're doing manual "server-side" pagination
+    // getPaginationRowModel: getPaginationRowModel(), // If only doing manual pagination, you don't need this
+    debugTable: true,
+  });
+
+  return (
+    <div className="p-2">
+      <div className="h-2" />
+      <table className={tableclassName}>
+          <thead className={theadclassName}>
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id} className={trclassName}>
+                {headerGroup.headers.map(header => {
+                  return (
+                    <th key={header.id} colSpan={header.colSpan}
+                      {...{
+                        className: `${header.column.getCanSort()} ${thclassName}`,
+                        onClick: header.column.getToggleSortingHandler(),
+                      }}>
+                      {header.isPlaceholder ? null : (
+                        <React.Fragment>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                          {{
+                            asc: ' ',
+                            desc: ' ',
+                          }[header.column.getIsSorted() as string] ?? null}
+                        </React.Fragment>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+          <tbody className={tbodyclassName}>
+            {table.getRowModel().rows.map(row => {
+              return (
+                <tr key={row.id} className={trclassName}>
+                  {row.getVisibleCells().map(cell => {
+                    return (
+                      <td key={cell.id} className={tdclassName}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+      </table>
+
+      <div className="mt-4 flex justify-center items-center gap-2">
+        <button
+          className="border rounded p-1"
+          onClick={() => table.firstPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<<'}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<'}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>'}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.lastPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>>'}
+        </button>
+        <span className="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of{' '}
+            {table.getPageCount().toLocaleString()}
+          </strong>
+        </span>
+        <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            defaultValue={table.getState().pagination.pageIndex + 1}
+            onChange={e => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              table.setPageIndex(page)
+            }}
+            className="border p-1 rounded w-16"
+          />
+        </span>
+        <select
+          value={table.getState().pagination.pageSize}
+          onChange={e => {
+            table.setPageSize(Number(e.target.value))
+          }}
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+        
+      </div>
+      <div className='mt-4 flex justify-center' >
+        Showing {table.getRowModel().rows.length.toLocaleString()} of{' '}
+        {dataQuery?.rowCount.toLocaleString()} Rows
+      </div>
+  
+    </div>
+  )
+};
+
+
+
+/***
+ * 
+ * 
+ * 
+ * 
+ * 
+ * do not use component below this line 
+ */
+
+
 
 // Column Filter
 const Filter = ({

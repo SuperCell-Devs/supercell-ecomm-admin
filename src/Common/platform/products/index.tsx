@@ -12,7 +12,6 @@ import {
     XCircle,
 } from 'lucide-react';
 
-import TableContainer from "Common/TableContainer";
 
 // react-redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +22,8 @@ import {
 } from 'slices/thunk';
 import { GeTProductsLight,  Paginated } from "helpers/interface/api";
 import { PaginationState } from "@tanstack/react-table";
+import { PaginatedTableContainer } from "Common/TableContainer";
+
 
 const productFeaturesColumns = [
     {
@@ -103,8 +104,77 @@ const productFeaturesColumns = [
         ),
     },
     {
-        header: "Bestseller",
+        header: "Best seller",
         accessorKey: "isBestSeller",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cell: any) => (
+            <>
+                {cell.getValue() ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
+                        <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
+                        {cell.row.original.status}
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
+                        <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
+                        {cell.row.original.status}
+                    </span>
+                )
+                }
+
+            </>
+        ),
+    },
+    {
+        header: "Published",
+        accessorKey: "isPublished",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cell: any) => (
+            <>
+                {cell.getValue() ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
+                        <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
+                        {cell.row.original.status}
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
+                        <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
+                        {cell.row.original.status}
+                    </span>
+                )
+                }
+
+            </>
+        ),
+    },
+    {
+        header: "Featured",
+        accessorKey: "isFeatured",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cell: any) => (
+            <>
+                {cell.getValue() ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">
+                        <CheckCircle2 className="size-3 ltr:mr-1 rtl:ml-1"></CheckCircle2>
+                        {cell.row.original.status}
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">
+                        <XCircle className="size-3 ltr:mr-1 rtl:ml-1"></XCircle>
+                        {cell.row.original.status}
+                    </span>
+                )
+                }
+
+            </>
+        ),
+    },
+       {
+        header: "Variable",
+        accessorKey: "isVariable",
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cell: any) => (
@@ -154,13 +224,12 @@ const productFeaturesColumns = [
 
 
 const ProductsListView = () => {
+    const [pagination, setPagination] = React.useState<PaginationState>({
+        pageIndex: 1,
+        pageSize: 10,
+    });
 
     const dispatch = useDispatch<any>();
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 1,
-    pageSize: 10,
-  })
-
     const selectDataList = createSelector(
         (state: any) => state.Ecommerce,
         (state) => ({
@@ -251,23 +320,15 @@ const ProductsListView = () => {
                     </div>
                 </div>
                 <div className="!pt-1 card-body">
-                    {data && data.results &&
-                        <TableContainer
+                    {
+                        data && data.results &&
+                        <PaginatedTableContainer 
+                            columns={columns}
+                            data={data}
+                            pagination={pagination}
                             setPagination={setPagination}
-                            pageIndex={pagination.pageIndex}
-                            pageSize={pagination.pageSize}
-                            isPagination={true}
-                            columns={(columns || [])}
-                            data={(data.results || [])}
-                            customPageSize={10}
-                            divclassName="overflow-x-auto"
-                            tableclassName="w-full whitespace-nowrap"
-                            theadclassName="ltr:text-left rtl:text-right bg-slate-100 dark:bg-zink-600"
-                            thclassName="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500"
-                            tdclassName="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"
-                            PaginationClassName="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row"
                         />
-                        }
+                    }
                 </div>
             </div>
         </React.Fragment>

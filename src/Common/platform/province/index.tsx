@@ -12,7 +12,6 @@ import { MoreHorizontal,
     Search, Plus, 
     } from 'lucide-react';
 
-import TableContainer from "Common/TableContainer";
 // import DeleteModal from "Common/DeleteModal";
 
 // react-redux
@@ -27,6 +26,8 @@ import {
 // import filterDataBySearch from "Common/filterDataBySearch";
 import { Paginated, Province } from "helpers/interface/api";
 import DropdownData from "../common/DropdownData";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginatedTableContainer } from "Common/TableContainer";
 
 // import Select from "react-select/dist/declarations/src/Select";
 
@@ -64,6 +65,12 @@ const ProvinceListView = () => {
         setData(provinceDataList);
     }, [provinceDataList]);
 
+
+    const [pagination, setPagination] = React.useState<PaginationState>({
+        pageIndex: 1,
+        pageSize: 10,
+    });
+
     const handleDataSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearch(value);
@@ -78,6 +85,8 @@ const ProvinceListView = () => {
         if(country)
             dispatch(onGetProvinceList({ countryId: country }));
     }, [country]);
+
+
 
 
     // Delete Modal
@@ -215,26 +224,15 @@ const ProvinceListView = () => {
                     </div>
                 </div>
                 <div className="!pt-1 card-body">
-                    {data && data.results && data.results.length > 0 ?
-                        <TableContainer
-                            isPagination={true}
-                            columns={(columns || [])}
-                            data={(data.results || [])}
-                            customPageSize={7}
-                            divclassName="overflow-x-auto"
-                            tableclassName="w-full whitespace-nowrap"
-                            theadclassName="ltr:text-left rtl:text-right bg-slate-100 dark:bg-zink-600"
-                            thclassName="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500"
-                            tdclassName="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"
-                            PaginationClassName="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row"
+                         {
+                        data && data.results &&
+                        <PaginatedTableContainer 
+                            columns={columns}
+                            data={data}
+                            pagination={pagination}
+                            setPagination={setPagination}
                         />
-                        :
-                        (<div className="noresult">
-                            <div className="py-6 text-center">
-                                <Search className="size-6 mx-auto mb-3 text-sky-500 fill-sky-100 dark:fill-sky-500/20" />
-                                <h5 className="mt-2 mb-1">Sorry! No Result Found</h5>
-                            </div>
-                        </div>)}
+                    }
                 </div>
             </div>
         </React.Fragment>

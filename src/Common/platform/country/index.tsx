@@ -8,7 +8,6 @@ import { Dropdown } from "Common/Components/Dropdown";
 // Icon
 import { MoreHorizontal, FileEdit, Search, Plus } from 'lucide-react';
 
-import TableContainer from "Common/TableContainer";
 // import DeleteModal from "Common/DeleteModal";
 
 // react-redux
@@ -21,10 +20,16 @@ import {
 } from 'slices/thunk';
 import { ToastContainer } from "react-toastify";
 import { ICountry, Paginated } from "helpers/interface/api";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginatedTableContainer } from "Common/TableContainer";
 // import filterDataBySearch from "Common/filterDataBySearch";
 
 const CountryListView = () => {
 
+    const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 1,
+    pageSize: 10,
+  })
     const dispatch = useDispatch<any>();
     const [, setSearch] = useState("");
     const selectDataList = createSelector(
@@ -148,26 +153,14 @@ const CountryListView = () => {
                     </div>
                 </div>
                 <div className="!pt-1 card-body">
-                    {data && data.results && data.results.length > 0 ?
-                        <TableContainer
-                            isPagination={true}
-                            columns={(columns || [])}
-                            data={(data.results || [])}
-                            customPageSize={7}
-                            divclassName="overflow-x-auto"
-                            tableclassName="w-full whitespace-nowrap"
-                            theadclassName="ltr:text-left rtl:text-right bg-slate-100 dark:bg-zink-600"
-                            thclassName="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500"
-                            tdclassName="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"
-                            PaginationClassName="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row"
+                    {data && data.results &&
+                        <PaginatedTableContainer
+                            columns={columns}
+                            data={data}
+                            pagination={pagination}
+                            setPagination={setPagination}
                         />
-                        :
-                        (<div className="noresult">
-                            <div className="py-6 text-center">
-                                <Search className="size-6 mx-auto mb-3 text-sky-500 fill-sky-100 dark:fill-sky-500/20" />
-                                <h5 className="mt-2 mb-1">Sorry! No Result Found</h5>
-                            </div>
-                        </div>)}
+                    }
                 </div>
             </div>
         </React.Fragment>

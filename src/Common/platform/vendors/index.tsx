@@ -19,7 +19,7 @@ import {
 import { IVendor, Paginated } from "helpers/interface/api";
 import Modal from "Common/Components/Modal";
 import VendorPreviewCard from "../common/VendorPreviewCard";
-import TableContainer from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/TableContainer";
 import { PaginationState } from "@tanstack/react-table";
 
 
@@ -61,7 +61,7 @@ const VendorsListView = () => {
     useEffect(() => {        
         dispatch(onGetVendorsList({
             name: search,
-            page: pagination.pageIndex < 1 ? 1 : pagination.pageIndex,
+            page: pagination.pageIndex > 0 ? pagination.pageIndex : 1,
             pageSize: pagination.pageSize
         }));
     }, [dispatch, search, pagination.pageIndex, pagination.pageSize]);
@@ -197,21 +197,11 @@ const VendorsListView = () => {
                 <div className="!pt-1 card-body">
                     {
                         data && data.results &&
-                        <TableContainer
+                        <PaginatedTableContainer
+                            columns={columns || []}
+                            data={data}
+                            pagination={pagination}
                             setPagination={setPagination}
-                            pageIndex={pagination.pageIndex}
-                            pageSize={pagination.pageSize}
-                            isPagination={true}
-                            SearchPlaceholder="Search Vendors"
-                            columns={(columns || [])}
-                            data={(data.results || [])}
-                            customPageSize={10}
-                            divclassName="overflow-x-auto"
-                            tableclassName="w-full whitespace-nowrap"
-                            theadclassName="ltr:text-left rtl:text-right bg-slate-100 dark:bg-zink-600"
-                            thclassName="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500"
-                            tdclassName="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"
-                            PaginationClassName="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row"
                         />
                        }
                 </div>
