@@ -23,6 +23,7 @@ import {
 import { GeTProductsLight,  Paginated } from "helpers/interface/api";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginatedTableContainer } from "Common/TableContainer";
+import { getImagePath } from "../helpers/getImagePath";
 
 
 const productFeaturesColumns = [
@@ -195,6 +196,20 @@ const productFeaturesColumns = [
             </>
         ),
     },
+    {
+            header: "Image",
+            accessorKey: "image.path",
+            enableColumnFilter: false,
+            enableSorting: false,
+            cell: (cell: any) => {
+                const path = cell.getValue().path;
+                return (<img
+                    src={getImagePath(path)}
+                    alt="image"
+                    className="avatar-md rounded-circle img-thumbnail"
+                  />);
+            } 
+        },
     {
         header: "Action",
         accessorKey: "id",
