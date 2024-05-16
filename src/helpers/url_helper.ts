@@ -81,6 +81,12 @@ export const GET_HOME_LIST = "/Home";
 export const ADD_HOME_LIST = "/Home";
 export const PUT_HOME_LIST = "/Home";
 
+// Slider manager
+export const GET_SLIDER_LIST = "/Slider";
+export const ADD_SLIDER_LIST = "/Slider";
+export const PUT_SLIDER_LIST = "/Slider";
+export const DELETE_SLIDER_LIST = "/Slider";
+
 // Districts
 export const GET_DISTRICT_LIST = "/District";
 export const ADD_DISTRICT_LIST = "/District";

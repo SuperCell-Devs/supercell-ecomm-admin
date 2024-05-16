@@ -47,11 +47,14 @@ import {
     getOneCategory as getOneCategoryApi,
     addHomeManager as addHomeManagerApi,
     getHomeList as getHomeApi,
-    updateHomeManager as updateHomeManagerApi
+    updateHomeManager as updateHomeManagerApi,
+    getSliderList as onGetSliderList,
+    addSliderManager as onAddSliderList,
+    removeSlider as removeSliderApi
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetHomeManagerProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProductProps, IGetOneProvinceProps, IGetOneVendor, IGetProductProps, IPostDistrict, IPostProduct, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps, UpdateHomeManager } from "helpers/interface/api";
+import { IGetAllBrandsProps, IGetAllCategoryProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetAllVendorProps, IGetHomeManagerProps, IGetOneBrandProps, IGetOneCategoryProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProductProps, IGetOneProvinceProps, IGetOneVendor, IGetProductProps, IPostDistrict, IPostProduct, IPostVendors, IProvincePost, IPutVendor, IUpdateCountryProps, PostSlider, UpdateHomeManager } from "helpers/interface/api";
 
 
 // Globals
@@ -539,6 +542,41 @@ export const updateHomeManager = createAsyncThunk("ecommerce/updateHomeManager",
         return data;
     } catch (error) {
         toast.error("Operation has Failed", { autoClose: 2000 });
+        return error;
+    }
+});
+
+
+// Slider
+
+
+export const getSliderList = createAsyncThunk("ecommerce/getSliderList", async (event?: any) => {
+    try {
+        const response = await onGetSliderList(event);
+        return response;
+    } catch (error) {
+        return error;
+    }
+});
+export const addSliderList = createAsyncThunk("ecommerce/addSliderList", async (event: PostSlider) => {
+    try {
+        const response = await onAddSliderList(event);
+        const data = response;
+        toast.success("Data Added Successfuly", { autoClose: 2000 });
+        return data;
+    } catch (error) {
+        toast.error("Operation has failed.", { autoClose: 2000 });
+        return error;
+    }
+});
+
+export const removeSliderList = createAsyncThunk("ecommerce/removeSliderList", async (event: {id: number}) => {
+    try {
+        const response = await removeSliderApi(event);
+         toast.success("Record was deleted Successfuly", { autoClose: 2000 });
+        return response;
+    } catch (error) {
+          toast.error("Operation has failed.", { autoClose: 2000 });
         return error;
     }
 });

@@ -228,6 +228,8 @@ import CategoryListView from "Common/platform/category";
 import CategoryEdit from "Common/platform/category/edit";
 import CategoryAddNew from "Common/platform/category/add";
 import HomeManager from "Common/platform/home-manager";
+import SliderManager from "Common/platform/slider-manager";
+import SlidersAdd from "Common/platform/slider-manager/sliders-add";
 
 interface RouteObject {
   path: string;
@@ -275,7 +277,16 @@ const authProtectedRoutes: Array<RouteObject> = [
   { path: "/province-edit/:id", component: ProvinceEdit },
 
   // home manager
-  { path: "/home-manager", component: HomeManager },
+  {
+    path: "/home-manager", component: HomeManager
+  },
+  {
+    path: "/slider-manager", component: SliderManager
+  },
+   {
+    path: "/sliders-add", component: SlidersAdd
+  },
+  
 
   // System routes end here
 

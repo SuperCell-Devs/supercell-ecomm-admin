@@ -1,6 +1,6 @@
 import { User } from "slices/thunk";
 import { APIClient, AuthenticationAPIClient } from "./api_helper";
-import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps, IGetAllVendorProps, IPutVendor, IGetProductProps, IPostProduct, IGetOneProductProps, CreateHome, IGetHomeManagerProps, UpdateHomeManager } from "./interface/api";
+import { IGetOneVendor, IGetAllBrandsProps, IGetAllCountryProps, IGetAllDistrictProps, IGetAllProvinceProps, IGetOneBrandProps, IGetOneCountryProps, IGetOneDistrictProps, IGetOneProvinceProps, IPostBrand, IPostDistrict, IPostVendors, IProvincePost, IUpdateBrandProps, IUpdateCountryProps, IUpdateDistrictProps, IUpdateProvinceProps, IPostCategory, IGetAllCategoryProps, IUpdateCategoryProps, IGetOneCategoryProps, IGetAllVendorProps, IPutVendor, IGetProductProps, IPostProduct, IGetOneProductProps, CreateHome, IGetHomeManagerProps, UpdateHomeManager, PostSlider, GetSlider } from "./interface/api";
 import * as url from "./url_helper";
 
 const globalsApi = new APIClient();
@@ -14,6 +14,8 @@ const fileApi = new APIClient();
 const categoryApi = new APIClient();
 const authApi = new AuthenticationAPIClient();
 const homeApi = new APIClient();
+const sliderApi = new APIClient();
+
 
 const api = new APIClient();
 // Gets the logged in user data from local session
@@ -141,6 +143,11 @@ export const deleteProvinceList = (data: any) => provinceApi.delete(url.DELETE_P
 export const addHomeManager = (props: CreateHome) => homeApi.create(url.ADD_HOME_LIST, props);
 export const getHomeList = (props?: IGetHomeManagerProps) => homeApi.get(`${url.GET_HOME_LIST}`, props);
 export const updateHomeManager = (props: UpdateHomeManager) => homeApi.put(`${url.ADD_HOME_LIST}/index`, props);
+
+
+export const addSliderManager = (props: PostSlider) => sliderApi.create(url.ADD_SLIDER_LIST, props);
+export const getSliderList = (props?: GetSlider) => sliderApi.get(`${url.GET_SLIDER_LIST}`, props);
+export const removeSlider = (props: {id: number}) => sliderApi.delete(`${url.DELETE_SLIDER_LIST}/${props.id}`, null)
 
 // Globals
 export const getGlobalsList = () => globalsApi.get(url.GLOBALS_GET);

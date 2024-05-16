@@ -41,7 +41,7 @@ export const PaginatedTableContainer = (props: IProps) => {
     , tbodyclassName="divide-y divide-slate-200 dark:divide-zink-500"
     , thclassName = "p-3 group-[.bordered]:border group-[.bordered]:border-slate-200 group-[.bordered]:dark:border-zink-500 sorting px-3 py-4 text-slate-900 bg-slate-200/50 font-semibold text-left dark:text-zink-50 dark:bg-zink-600 dark:group-[.bordered]:border-zink-500 sorting_asc"
     , trclassName = "group-[.stripe]:even:bg-slate-50 group-[.stripe]:dark:even:bg-zink-600 transition-all duration-150 ease-linear group-[.hover]:hover:bg-slate-50 dark:group-[.hover]:hover:bg-zink-600 [&.selected]:bg-custom-500 dark:[&.selected]:bg-custom-500 [&.selected]:text-custom-50 dark:[&.selected]:text-custom-50";
-  const rerender = React.useReducer(() => ({}), {})[1]
+
   const dataQuery = props.data;
 
   const defaultData = React.useMemo(() => [], [])
@@ -62,8 +62,7 @@ export const PaginatedTableContainer = (props: IProps) => {
   });
 
   return (
-    <div className="p-2">
-      <div className="h-2" />
+    <>
       <table className={tableclassName}>
           <thead className={theadclassName}>
             {table.getHeaderGroups().map(headerGroup => (
@@ -180,7 +179,7 @@ export const PaginatedTableContainer = (props: IProps) => {
         {dataQuery?.rowCount.toLocaleString()} Rows
       </div>
   
-    </div>
+    </>
   )
 };
 

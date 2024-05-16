@@ -216,7 +216,7 @@ const VendorAddNew = () => {
 
 
 
-                                <LoadingButton title="Create Venodr" loading={loading} type="submit" />
+                                <LoadingButton title="Create Vendor" loading={loading} type="submit" />
                             </form>
                         </div>
                     </div>

@@ -34,7 +34,7 @@ export const initialState: LayoutState = {
   layoutDirectionType: LAYOUT_DIRECTION.LTR,
   layoutContentWidthType: LAYOUT_CONTENT_WIDTH.FLUID,
   layoutSidebarSizeType: LEFT_SIDEBAR_SIZE_TYPES.DEFAULT,
-  layoutNavigationType: LEFT_NAVIGATION_TYPES.STICKY,
+  layoutNavigationType: LEFT_NAVIGATION_TYPES.HIDDEN,
   layoutSidebarColorType: LEFT_SIDEBAR_COLOR_TYPES.LIGHT,
   layoutTopbarColorType: LAYOUT_TOPBAR_THEME_TYPES.LIGHT,
 };

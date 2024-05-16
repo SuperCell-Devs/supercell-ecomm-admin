@@ -198,7 +198,7 @@ const productFeaturesColumns = [
     },
     {
             header: "Image",
-            accessorKey: "image.path",
+            accessorKey: "image",
             enableColumnFilter: false,
             enableSorting: false,
             cell: (cell: any) => {
@@ -206,6 +206,8 @@ const productFeaturesColumns = [
                 return (<img
                     src={getImagePath(path)}
                     alt="image"
+                    width={100}
+                    height={100}
                     className="avatar-md rounded-circle img-thumbnail"
                   />);
             } 

@@ -45,7 +45,10 @@ import {
     getOneProduct,
     postHomeManager,
     getHomeManager,
-    updateHomeManager
+    updateHomeManager,
+    addSliderList,
+    getSliderList,
+    removeSliderList
 } from './thunk';
 
 
@@ -61,6 +64,7 @@ export const initialState = {
     globals: [],
     category: [],
     homeManager: [],
+    sliders: [],
     errors: {}
 };
 
@@ -152,6 +156,15 @@ const EcommerceSlice = createSlice({
         builder.addCase(updateHomeManager.fulfilled, (state: any, action: any) => {
             state.homeManager = { ...state.homeManager, results: action.payload }
         });
+
+        // Slider manager
+        builder.addCase(addSliderList.fulfilled, (state: any, action: any) => {
+            state.sliders = {...state.sliders, result: action.payload}
+        });
+        builder.addCase(getSliderList.fulfilled, (state: any, action: any) => {
+            state.sliders = action.payload;
+        });
+        
         
         
 
@@ -312,6 +325,9 @@ const EcommerceSlice = createSlice({
                 postHomeManager.rejected,
                 getHomeManager.rejected,
                 updateHomeManager.rejected,
+                addSliderList.rejected,
+                getSliderList.rejected,
+                removeSliderList.rejected
                 
             ].includes(action.type);
             },

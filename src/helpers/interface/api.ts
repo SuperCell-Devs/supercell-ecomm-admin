@@ -389,3 +389,26 @@ interface UpdateHomeManagerPayload  {
 export interface UpdateHomeManager {
   newIndexes: UpdateHomeManagerPayload[];
 };
+
+// Sliders
+
+export interface Slider {
+  image: ImageAsset;
+  redirect: string;
+  title: string;
+  description: string;
+  backGround: string;
+  isPreview: boolean;
+};
+export interface GetSlider extends Slider { 
+  id: number;
+};
+
+export interface PostSlider {
+  image: ImageAsset;
+  redirect?: string;
+  title?: string;
+  description?: string;
+  backGround?: string;
+  isPreview?: boolean;
+};
