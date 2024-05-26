@@ -69,7 +69,7 @@ const Header = ({ handleToggleDrawer, handleDrawer }: any) => {
             } else {
                 dispatch(changeLeftsidebarSizeType("lg"));
 
-                // dispatch(changeLeftsidebarSizeType(layoutSidebarSizeType === "sm" ? "lg" : "sm"));
+                dispatch(changeLeftsidebarSizeType(layoutSidebarSizeType === "sm" ? "lg" : "sm"));
             }
         }
 

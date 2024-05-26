@@ -5,7 +5,7 @@ import moment from "moment";
 
 // Icons
 import { Search, Plus, Trash2, Pencil } from 'lucide-react';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 
 import { Link } from 'react-router-dom';
 import DeleteModal from 'Common/DeleteModal';

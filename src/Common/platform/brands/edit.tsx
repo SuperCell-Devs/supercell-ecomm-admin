@@ -25,6 +25,7 @@ import { useParams } from "react-router-dom";
 import FileUpload from "../common/FileUpload";
 import { toast } from "react-toastify";
 import LoadingButton from "../common/LoadingButton";
+import { getImagePath } from "../helpers/getImagePath";
 
 
 const BrandEdit = () => {
@@ -137,7 +138,7 @@ const BrandEdit = () => {
                                             placeholder="Brand Name english" />
                                         {validation.touched.nameEn && validation.errors.nameEn ? <p className="text-red-400">{validation.errors.nameEn}</p> : null}
                                     </div>
-                                    <div className="xl:col-span-4">
+                                    <div className="xl:col-span-6">
                                         <label htmlFor="webSite" className="inline-block mb-2 text-base font-medium">Website</label>
                                         <input
                                             onChange={validation.handleChange}
@@ -146,7 +147,7 @@ const BrandEdit = () => {
                                         {validation.touched.webSite && validation.errors.webSite ? <p className="text-red-400">{validation.errors.webSite}</p> : null}
 
                                     </div>
-                                    <div className="xl:col-span-4">
+                                    <div className="xl:col-span-6">
                                         <label htmlFor="description" className="inline-block mb-2 text-base font-medium">Description</label>
                                         <textarea
                                             onChange={validation.handleChange}
@@ -154,21 +155,20 @@ const BrandEdit = () => {
                                             id="description" className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Brand description" ></textarea>
                                         {validation.touched.description && validation.errors.description ? <p className="text-red-400">{validation.errors.description}</p> : null}
                                     </div>
-
-
+                                         {/* Logo image */}
+                                        {/* <div className="xl:col-span-4 shadow-md">
+                                            <div className="relative">
+                                                <label className="inline-block mb-2 text-base font-medium">Logo</label>
+                                                <img src={getImagePath(data?.results.logo.path as string)} alt="logo" className="rounded-md h-24 w-24" />
+                                            </div>
+                                        </div> */}
+                                        {/* file upload */}
+                                        <div className="xl:col-span-8 mt-10">
+                                            <FileUpload title="Upload new Logo image" setSelectedFiles={setSelectedFiles} />
+                                        </div>
                                 </div>
 
-                                {/* Logo image */}
-                                <div className="flex flex-wrap items-center gap-4">
-                                    <div className="relative">
-                                        <label className="inline-block mb-2 text-base font-medium">Logo</label>
-                                        <img src={avatar2} alt="logo" className="rounded-md h-24 w-24" />
-                                    </div>
-                                </div>
-                                {/* file upload */}
-                                <div className="xl:col-span-6 mt-10">
-                                    <FileUpload title="Upload new Logo image" setSelectedFiles={setSelectedFiles} />
-                                </div>
+                           
 
                                 {/* <div className="flex justify-end gap-2 mt-4">
                                     <button type="submit"

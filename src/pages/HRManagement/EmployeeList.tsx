@@ -8,7 +8,7 @@ import { Search, Plus, Trash2, Eye, Pencil, ImagePlus } from 'lucide-react';
 
 import dummyImg from "assets/images/users/user-dummy-img.jpg";
 
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import { Link } from 'react-router-dom';
 
 import DeleteModal from 'Common/DeleteModal';

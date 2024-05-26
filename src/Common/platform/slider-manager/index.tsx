@@ -23,7 +23,7 @@ import {
 } from 'slices/thunk';
 import {  GetSlider,  Paginated } from "helpers/interface/api";
 import { PaginationState } from "@tanstack/react-table";
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 import { getImagePath } from "../helpers/getImagePath";
 import DeleteModal from "Common/DeleteModal";
 
@@ -206,7 +206,7 @@ const SliderManager = () => {
         <React.Fragment>
             <BreadCrumb title='Sliders' pageTitle='List' />
           <DeleteModal show={deleteModal} onHide={deleteToggle} onDelete={handleDelete} />
-            <div className="card h-3/4" id="sliderstable">
+            <div className="card">
                 <div className="card-body">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-12 ">
                         <div className="lg:col-span-2 ltr:lg:text-right rtl:lg:text-left xl:col-span-2 xl:col-start-11">
@@ -214,7 +214,7 @@ const SliderManager = () => {
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                     {
                         data && data.results &&
                         <PaginatedTableContainer 

@@ -1,5 +1,5 @@
 import React from "react";
-import TableContainer from "Common/TableContainer";
+import TableContainer from "Common/platform/common/TableContainer";
 import { column } from "./index";
 import { reactTableData } from "Common/data";
 

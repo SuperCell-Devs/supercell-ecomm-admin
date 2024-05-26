@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { Provider } from "react-redux";
+import CssBaseline from '@mui/material/CssBaseline';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
@@ -16,8 +17,9 @@ root.render(
   // <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-         <ToastContainer closeButton={false} limit={1} />
-        <App />
+          <ToastContainer closeButton={false} limit={1} autoClose={3000} />
+       <CssBaseline />    
+      <App />
       </BrowserRouter>
     </Provider>
   // {/* </React.StrictMode> */}

@@ -7,7 +7,7 @@ import { Dropdown } from "Common/Components/Dropdown";
 // Icon
 import { MoreHorizontal, Eye, FileEdit, Trash2, Search, Plus } from 'lucide-react';
 
-import TableContainer from "Common/TableContainer";
+import TableContainer from "Common/platform/common/TableContainer";
 import DeleteModal from "Common/DeleteModal";
 
 // react-redux

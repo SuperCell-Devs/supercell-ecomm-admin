@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import BreadCrumb from 'Common/BreadCrumb';
 import { Dropdown } from 'Common/Components/Dropdown';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import Flatpickr from "react-flatpickr";
 import moment from "moment";
 

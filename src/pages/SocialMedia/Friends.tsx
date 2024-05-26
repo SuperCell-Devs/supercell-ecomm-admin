@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import BreadCrumb from 'Common/BreadCrumb';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'Common/Components/Dropdown';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 
 // Icons
 import { Plus, UserRoundX, BadgeCheck, Home, UserRound, CalendarDays, Clapperboard, ShoppingCart, Settings, ChevronDown, Search } from 'lucide-react';

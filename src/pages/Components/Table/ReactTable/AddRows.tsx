@@ -1,6 +1,6 @@
 import React from "react";
 import { column } from "./index";
-import TableContainer from "Common/TableContainer";
+import TableContainer from "Common/platform/common/TableContainer";
 
 interface stateType {
     id: number | string; Column1: string; Column2: string; Column3: string; Column4: string; Column5: string;

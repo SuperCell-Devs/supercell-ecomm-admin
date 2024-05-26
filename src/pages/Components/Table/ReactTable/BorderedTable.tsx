@@ -1,6 +1,6 @@
 import React from "react";
 import { column } from "./index";
-import TableContainer from "Common/TableContainer";
+import TableContainer from "Common/platform/common/TableContainer";
 import { reactTableData } from "Common/data";
 
 const BorderedTable = () => {

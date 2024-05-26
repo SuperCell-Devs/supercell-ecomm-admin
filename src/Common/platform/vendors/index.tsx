@@ -19,7 +19,7 @@ import {
 import { IVendor, Paginated } from "helpers/interface/api";
 import Modal from "Common/Components/Modal";
 import VendorPreviewCard from "../common/VendorPreviewCard";
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 import { PaginationState } from "@tanstack/react-table";
 
 
@@ -194,7 +194,7 @@ const VendorsListView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                     {
                         data && data.results &&
                         <PaginatedTableContainer

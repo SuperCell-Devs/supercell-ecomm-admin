@@ -21,7 +21,7 @@ import {
 } from 'slices/thunk';
 // import filterDataBySearch from "Common/filterDataBySearch";
 import { ICategory, Paginated } from "helpers/interface/api";
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 import { PaginationState } from "@tanstack/react-table";
 
 const CategoryListView = () => {
@@ -192,7 +192,7 @@ const CategoryListView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                     {data && data.results &&
                         <PaginatedTableContainer
                         columns={columns}

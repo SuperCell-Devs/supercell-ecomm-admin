@@ -5,7 +5,7 @@ import CountUp from 'react-countup';
 
 // Icons
 import { Search, Check, X, UsersRound, UserRoundX, UserRoundCheck, Briefcase, CalendarRange } from 'lucide-react';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import { Link } from 'react-router-dom';
 import Modal from 'Common/Components/Modal';
 

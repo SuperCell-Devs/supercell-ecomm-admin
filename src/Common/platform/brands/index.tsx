@@ -11,7 +11,7 @@ import { MoreHorizontal,
     // Trash2,
      Search, Plus } from 'lucide-react';
 
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 // import DeleteModal from "Common/DeleteModal";
 
 // react-redux
@@ -29,7 +29,7 @@ import { PaginationState } from "@tanstack/react-table";
 
 const BrandListView = () => {
 
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch<any>(); 
     const [pagination, setPagination] = React.useState<PaginationState>({
         pageIndex: 1,
         pageSize: 10,
@@ -236,7 +236,7 @@ const BrandListView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                     {
                         data && data.results &&
                         <PaginatedTableContainer 

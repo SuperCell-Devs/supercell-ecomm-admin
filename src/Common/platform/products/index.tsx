@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
-import Flatpickr from 'react-flatpickr';
+import Slider from '@mui/material/Slider';
 import { Link } from "react-router-dom";
 import { Dropdown } from "Common/Components/Dropdown";
 
@@ -22,8 +22,10 @@ import {
 } from 'slices/thunk';
 import { GeTProductsLight,  Paginated } from "helpers/interface/api";
 import { PaginationState } from "@tanstack/react-table";
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 import { getImagePath } from "../helpers/getImagePath";
+import Modal from "Common/Components/Modal";
+import DropdownData from "../common/DropdownData";
 
 
 const productFeaturesColumns = [
@@ -245,7 +247,6 @@ const ProductsListView = () => {
         pageIndex: 1,
         pageSize: 10,
     });
-
     const dispatch = useDispatch<any>();
     const selectDataList = createSelector(
         (state: any) => state.Ecommerce,
@@ -253,19 +254,94 @@ const ProductsListView = () => {
             dataList: state.products
         })
     );
-
     const { dataList } = useSelector(selectDataList);
-
     const [data, setData] = useState<Paginated<GeTProductsLight[]>>();
+    // Search state hooks
     const [searchByName, setSearchByName] = useState("");
-    const [fromDate, setFromDate] = useState<Date>();
-    const [toDate, setToDate] = useState<Date>();
+    const [price, setPrice] = React.useState<number[]>([0, 1000000]);
+    const [extraLargeModal, setExtraLargeModal] = useState<boolean>(false);
+    const [brand, setBrand] = useState();
+    const [vendor, setVendor] = useState();
+    const [productFeats, setProductFeats] = useState({
+        isPublished: false,
+        isOnSale: false,
+        isBestSeller: false,
+        isNew: false,
+        isFeatured: false,
+        isAvailable: false
+    });
+    // Serach handlers
+    const openSearchToggle = (e?: any) => {
+    setExtraLargeModal(!extraLargeModal)
+    };
+    const handlePriceChange = (event: Event, newValue: number | number[]) => {
+        setPrice(newValue as number[]);
+    };
+    const handleSearchDataByName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchByName(value);
+    dispatch(onGetProductList({
+        name: value,
+        page: pagination.pageIndex,
+        pageSize: pagination.pageSize,
+        fromPrice: price[0],
+        toPrice: price[1],
+        isPublished: productFeats.isPublished,
+        isOnSale:productFeats.isOnSale,
+        isBestSeller:productFeats.isBestSeller,
+        isNew: productFeats.isNew,
+        isFeatured:productFeats.isFeatured,
+        isAvailable:productFeats.isAvailable,
+    }));
+    };
+    function valuetext(value: number) {
+        return `${value}IQD`;
+    }
+    const handleFeatsChange = (e: any) => setProductFeats({ ...productFeats, [e.target.name]: e.target.checked });
+
+    const handleResetSearch = () => { 
+        setPrice([0, 1000000]);
+        setProductFeats({
+             isPublished: false,
+             isOnSale: false,
+             isBestSeller: false,
+             isNew: false,
+             isFeatured: false,
+             isAvailable: false
+         });
+        openSearchToggle()
+    };
+    const handleSubmitSearch = () => { 
+        openSearchToggle();
+        dispatch(onGetProductList({
+                name: searchByName,
+                page: pagination.pageIndex < 1 ? 1 : pagination.pageIndex,
+                pageSize: pagination.pageSize,
+                fromPrice: price[0],
+                toPrice: price[1],
+                isPublished: productFeats.isPublished,
+                isOnSale:productFeats.isOnSale,
+                isBestSeller:productFeats.isBestSeller,
+                isNew:productFeats.isNew,
+                isFeatured:productFeats.isFeatured,
+            isAvailable: productFeats.isAvailable,
+        }));
+    };
 
     // Get Data
     useEffect(() => {
         dispatch(onGetProductList({
-            page: pagination.pageIndex < 1 ? 1 : pagination.pageIndex,
-            pageSize: pagination.pageSize
+                name: searchByName,
+                page: pagination.pageIndex < 1 ? 1 : pagination.pageIndex,
+                pageSize: pagination.pageSize,
+                fromPrice: price[0],
+                toPrice: price[1],
+                isPublished: productFeats.isPublished,
+                isOnSale:productFeats.isOnSale,
+                isBestSeller:productFeats.isBestSeller,
+                isNew:productFeats.isNew,
+                isFeatured:productFeats.isFeatured,
+            isAvailable: productFeats.isAvailable,
         }));
     }, [dispatch, pagination.pageIndex, pagination.pageSize]);
 
@@ -273,22 +349,135 @@ const ProductsListView = () => {
         setData(dataList);
     }, [dataList]);
 
-    const handleSearchDataByName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearchByName(value);
-        dispatch(onGetProductList({
-            name: value,
-            page: pagination.pageIndex,
-            pageSize: pagination.pageSize  }));
-    };
 
     const columns = useMemo(() => productFeaturesColumns, []);
-
+    const SearchModal = (<Modal
+        show={extraLargeModal}
+        onHide={openSearchToggle}
+        modal-center="true"
+        className="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4"
+        dialogClassName="w-screen lg:w-[55rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
+            <Modal.Header className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500"
+                    closeButtonClass="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+                    <Modal.Title className="text-16">Products Advanced Search</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+                    <div className="w-1/2 mx-auto py-8">
+                        <label className="inline-block mb-2 text-base font-medium"><span className="font-bold">Price Range(IQD)</span>: <span className="text-lg">{price[0]}</span> - <span className="text-lg">{price[1]}</span></label>
+                        <Slider
+                            getAriaLabel={() => 'Price range'}
+                            value={price}
+                            defaultValue={0}
+                            onChange={handlePriceChange}
+                            valueLabelDisplay="auto"
+                            getAriaValueText={valuetext}
+                />
+                    
+                    <label className="inline-block mb-2 text-base font-medium">Select Brand</label>
+                    <DropdownData data="brands" setState={setBrand} state={brand} title="Select Brand" />
+                    <div className="my-6"></div>
+                    <label className="inline-block mb-2 text-base font-medium">Select Vendor</label>
+                    <DropdownData data="vendors" setState={setVendor} state={vendor} title="Select Vendor" />
+                        <label className="inline-block mb-2 text-base font-medium mt-8">Product features</label>
+                        <div className="flex  flex-wrap justify-start items-center gap-4">
+                            <input
+                                id="checkboxOutline14"
+                                className="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-sky-500 checked:border-sky-500 dark:after:text-sky-500 dark:checked:border-sky-800"
+                                type="checkbox"
+                            name="isPublished"
+                            onChange={handleFeatsChange}
+                                checked={productFeats["isPublished"]}
+                                />
+                                <label htmlFor="checkboxOutline14" className="align-middle">
+                                        Published
+                                </label>
+                        
+                        <input
+                                id="checkboxOutline14"
+                                className="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-sky-500 checked:border-sky-500 dark:after:text-sky-500 dark:checked:border-sky-800"
+                            type="checkbox"
+                            onChange={handleFeatsChange}
+                                name="isNew"
+                                checked={productFeats["isNew"]}
+                                />
+                                    <label htmlFor="checkboxOutline14" className="align-middle">
+                                        New
+                        </label>
+                        
+                        <input
+                            onChange={handleFeatsChange}
+                                id="checkboxOutline14"
+                                className="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-sky-500 checked:border-sky-500 dark:after:text-sky-500 dark:checked:border-sky-800"
+                                type="checkbox"
+                                name="isFeatured"
+                                checked={productFeats["isFeatured"]}
+                                />
+                                    <label htmlFor="checkboxOutline14" className="align-middle">
+                                        Featured
+                        </label>
+                        
+                        <input
+                            onChange={handleFeatsChange}
+                                id="checkboxOutline14"
+                                className="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-sky-500 checked:border-sky-500 dark:after:text-sky-500 dark:checked:border-sky-800"
+                                type="checkbox"
+                                name="isBestSeller"
+                                checked={productFeats["isBestSeller"]}
+                                />
+                                    <label htmlFor="checkboxOutline14" className="align-middle">
+                                        Best Seller
+                        </label>
+                        
+                        <input
+                            onChange={handleFeatsChange}
+                                id="checkboxOutline14"
+                                className="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-sky-500 checked:border-sky-500 dark:after:text-sky-500 dark:checked:border-sky-800"
+                                type="checkbox"
+                                name="isOnSale"
+                                checked={productFeats["isOnSale"]}
+                                />
+                                    <label htmlFor="checkboxOutline14" className="align-middle">
+                                        On Sale
+                        </label>
+                        
+                        <input
+                            onChange={handleFeatsChange}
+                                id="checkboxOutline14"
+                                className="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-sky-500 checked:border-sky-500 dark:after:text-sky-500 dark:checked:border-sky-800"
+                                type="checkbox"
+                                name="isAvailable"
+                                checked={productFeats["isAvailable"]}
+                                />
+                                    <label htmlFor="checkboxOutline14" className="align-middle">
+                                        Available
+                                    </label>
+                        </div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer className="flex items-center justify-between p-4 mt-auto border-t border-slate-200 dark:border-zink-500">
+                    <div className="flex gap-x-3">
+                        <button
+                    type="button"
+                        onClick={handleResetSearch}
+                            className="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:bg-zink-700 dark:hover:bg-red-500 dark:ring-red-400/20 dark:focus:bg-red-500">
+                            Cancel
+                        </button>
+                <button
+                            onClick={handleSubmitSearch}
+                            type="button"
+                            className="bg-white text-slate-500 btn border-slate-500 hover:text-white hover:bg-slate-600 hover:border-slate-600 focus:text-white focus:bg-slate-600 focus:border-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:border-slate-600 active:ring active:ring-slate-100 dark:bg-zink-700 dark:hover:bg-slate-500 dark:ring-slate-400/20 dark:focus:bg-slate-500">
+                            Search
+                         </button>
+                    </div>
+                </Modal.Footer>
+            </Modal>);
+    
+    
     return (
         <React.Fragment>
             <BreadCrumb title='Products' pageTitle='List' />
-          
-            <div className="card" id="productListTable">
+            {SearchModal}
+            <div className="card">
                 <div className="card-body">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-12">
                         <div className="xl:col-span-3">
@@ -297,49 +486,22 @@ const ProductsListView = () => {
                                 <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600" />
                             </div>
                         </div>
-                        <div className="xl:col-span-2">
-                            <div>
-                                <Flatpickr
-                                    className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                    value={fromDate}
-                                    options={{
-                                        dateFormat: "d M, Y",
-                                        mode: "single"
-                                    }}
-                                    placeholder='From date'
-                                    onChange={(e) => {
-                                        const value = e[0];
-                                        setFromDate(value);
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className="xl:col-span-2">
-                        <div>
-                             <Flatpickr
-                                    className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                    value={toDate}
-                                    options={{
-                                        dateFormat: "d M, Y",
-                                        mode: "single",
-                                    }}
-                                    placeholder='To date'
-                                    onChange={(e) => {
-                                        const value = e[0];
-                                        setToDate(value);
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className="lg:col-span-2 ltr:lg:text-right rtl:lg:text-left xl:col-span-2 xl:col-start-11">
+                    
+                        <div className="lg:col-span-3 ltr:lg:text-right rtl:lg:text-left xl:col-span-3 xl:col-start-10 flex gap-x-3">
                             <Link to="/products-add" type="button" className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><Plus className="inline-block size-4" /> <span className="align-middle">Add Product</span></Link>
+                            <button
+                                type="button"
+                                onClick={openSearchToggle}
+                                className="text-white bg-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/10">
+                                Advanced Search
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                     {
                         data && data.results &&
-                        <PaginatedTableContainer 
+                        <PaginatedTableContainer
                             columns={columns}
                             data={data}
                             pagination={pagination}

@@ -387,7 +387,8 @@ const ProductsAddNew = () => {
                                 setAspectRatio={setProductAspectRatio}
                                 setImageFileType={setProductgImageFileType}
                                 selectImagefiles={selectProductImagefiles}
-                                setselectImagefiles={setSelectProductImagefiles} multiple />
+                                setselectImagefiles={setSelectProductImagefiles}
+                                multiple />
                         </div>
                     </div>
                 </div>

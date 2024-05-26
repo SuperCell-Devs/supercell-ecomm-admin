@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import AssetUpload from '../common/AssetUpload';
 import { toast } from 'react-toastify';
 import LoadingButton from '../common/LoadingButton';
+import BreadCrumb from 'Common/BreadCrumb';
 
 const initialValues = {
     redirect: "",
@@ -81,7 +82,9 @@ const SlidersAdd = () => {
 });
     
 return (
-
+    <React.Fragment>
+        <BreadCrumb title='Sliders' pageTitle='Add' />
+          
         <form action="#!" className='w-3/4 p-10 mx-auto' onSubmit={(event: any) => {
             event.preventDefault();
             handleSubmit();
@@ -198,6 +201,7 @@ return (
 
       
         </form>
+    </React.Fragment>
     );
 }
 

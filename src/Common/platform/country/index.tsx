@@ -21,7 +21,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import { ICountry, Paginated } from "helpers/interface/api";
 import { PaginationState } from "@tanstack/react-table";
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 // import filterDataBySearch from "Common/filterDataBySearch";
 
 const CountryListView = () => {
@@ -152,7 +152,7 @@ const CountryListView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                     {data && data.results &&
                         <PaginatedTableContainer
                             columns={columns}

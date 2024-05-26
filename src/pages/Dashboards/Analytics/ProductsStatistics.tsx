@@ -1,4 +1,4 @@
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import React, { useMemo, useState } from 'react';
 import { ProductsStatisticsData } from "Common/data";
 import { CheckCircle2, Search, XCircle } from 'lucide-react';

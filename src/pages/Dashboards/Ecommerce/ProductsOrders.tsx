@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import { ProductOrdersData } from "Common/data";
 import { Link } from 'react-router-dom';
 import { MoreHorizontal, Search, Eye, FileEdit, Trash2 } from 'lucide-react';

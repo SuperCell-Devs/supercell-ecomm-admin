@@ -27,7 +27,7 @@ import {
 import { Paginated, Province } from "helpers/interface/api";
 import DropdownData from "../common/DropdownData";
 import { PaginationState } from "@tanstack/react-table";
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 
 // import Select from "react-select/dist/declarations/src/Select";
 
@@ -223,7 +223,7 @@ const ProvinceListView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                          {
                         data && data.results &&
                         <PaginatedTableContainer 

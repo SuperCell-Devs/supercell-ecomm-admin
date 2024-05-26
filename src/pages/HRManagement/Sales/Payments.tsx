@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import BreadCrumb from 'Common/BreadCrumb';
 import { Link } from 'react-router-dom';
 import Flatpickr from 'react-flatpickr';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import Select from 'react-select';
 // Icons
 import { Search } from 'lucide-react';

@@ -22,7 +22,7 @@ import {
 // import filterDataBySearch from "Common/filterDataBySearch";
 import { IDistrict, Paginated } from "helpers/interface/api";
 import { PaginationState } from "@tanstack/react-table";
-import { PaginatedTableContainer } from "Common/TableContainer";
+import { PaginatedTableContainer } from "Common/platform/common/TableContainer";
 // import DropdownData from "../common/DropdownData";
 
 const DistrictListView = () => {
@@ -192,7 +192,7 @@ const DistrictListView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="!pt-1 card-body">
+                <div className="card-body">
                         {
                         data && data.results &&
                         <PaginatedTableContainer 

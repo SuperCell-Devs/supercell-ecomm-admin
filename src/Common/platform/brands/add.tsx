@@ -70,7 +70,7 @@ const BrandAddNew = () => {
 
             resetForm();
             setLoading(false);
-        },
+        }
     });
 
 

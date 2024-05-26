@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import BreadCrumb from 'Common/BreadCrumb';
 import Flatpickr from 'react-flatpickr';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import CountUp from 'react-countup';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';

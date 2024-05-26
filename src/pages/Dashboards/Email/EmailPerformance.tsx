@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import TableContainer from 'Common/TableContainer';
+import TableContainer from 'Common/platform/common/TableContainer';
 import { Search } from 'lucide-react';
 import { EmailPerformanceData } from "Common/data";
 import filterDataBySearch from 'Common/filterDataBySearch';

@@ -302,6 +302,12 @@ export interface IGetProductProps {
   toPrice?: number;
   page?: number;
   pageSize?: number;
+  isPublished?: boolean;
+  isOnSale?: boolean;
+  isBestSeller?: boolean;
+  isNew?: boolean;
+  isFeatured?: boolean;
+  isAvailable?: boolean;
 }
 
 export interface IGetOneProductProps {

@@ -8,7 +8,7 @@ import moment from "moment";
 import { Boxes, PackagePlus, Loader, Search, Truck, PackageCheck, PackageX, Plus, RefreshCcw, MoreHorizontal, Trash2, Eye, FileEdit } from 'lucide-react';
 import { OrdersOverviewChart } from "./charts";
 import { Link } from "react-router-dom";
-import TableContainer from "Common/TableContainer";
+import TableContainer from "Common/platform/common/TableContainer";
 
 import { Dropdown } from "Common/Components/Dropdown";
 import DeleteModal from "Common/DeleteModal";
