@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const Pages404 = () => {
 
-    document.title = "404 | Tailwick - React Admin & Dashboard Template";
+    document.title = "404 |  Suppercell E-Commerce App";
 
     React.useEffect(() => {
         const bodyElement = document.body;

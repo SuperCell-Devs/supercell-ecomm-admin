@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 
 const Login = (props: any) => {
 
-    document.title = "Login | Tailwick - React Admin & Dashboard Template";
+    document.title = "Login |  Suppercell E-Commerce App";
     const [rememberMe, setRememberMe] = useState(false);
     const dispatch = useDispatch<any>();
 
