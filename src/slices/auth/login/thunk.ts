@@ -3,7 +3,6 @@ import { loginError, loginSuccess, logoutSuccess } from "./reducer";
 import { ThunkAction } from "redux-thunk";
 import { Action, Dispatch } from "redux";
 import { RootState } from "slices";
-import { getFirebaseBackend } from "helpers/firebase_helper";
 
 interface User {
     email: string;
@@ -15,8 +14,6 @@ export const loginUser = (
     history: any
 ): ThunkAction<void, RootState, unknown, Action<string>> => async (dispatch: Dispatch) => {
     try {
-        // let response: any;
-        // if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
 
         const response = await postLogin({
             email: user.email,
@@ -35,7 +32,7 @@ export const loginUser = (
 
         // if (response) {
             dispatch(loginSuccess(response));
-            history("/dashboard");
+            history("/");
         // }
     } catch (error) {
 
@@ -60,25 +57,3 @@ export const logoutUser = () => async (dispatch: Dispatch) => {
     }
 }
 
-
-export const socialLogin = (type: any, history: any) => async (dispatch: any) => {
-    try {
-        let response: any;
-
-        if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-            const fireBaseBackend = getFirebaseBackend();
-            response = fireBaseBackend.socialLoginUser(type);
-        }
-
-        const socialData = await response;
-
-        if (socialData) {
-            sessionStorage.setItem("authUser", JSON.stringify(socialData));
-            dispatch(loginSuccess(socialData));
-            history('/dashboard');
-        }
-
-    } catch (error) {
-        dispatch(loginError(error));
-    }
-}
