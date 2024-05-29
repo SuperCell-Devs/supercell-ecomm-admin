@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    getOrders,
-    addOrders,
-    updateOrders,
-    deleteOrders,
-    getSellers,
-    addSellers,
-    updateSellers,
-    deleteSellers,
+    // getOrders,
+    // addOrders,
+    // updateOrders,
+    // deleteOrders,
+    // getSellers,
+    // addSellers,
+    // updateSellers,
+    // deleteSellers,
     getProductList,
     addProductList,
     updateProductList,
@@ -74,58 +74,11 @@ const EcommerceSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
 
-        // globals
+        // // globals
         builder.addCase(getGlobals.fulfilled, (state: any, action: any) => {
             state.globals = action.payload;
         });
-        
-        // Orders
-        builder.addCase(getOrders.fulfilled, (state: any, action: any) => {
-            state.orders = action.payload;
-        });
-     
-        builder.addCase(addOrders.fulfilled, (state: any, action: any) => {
-            state.orders.unshift(action.payload);
-        });
-       
-        builder.addCase(updateOrders.fulfilled, (state: any, action: any) => {
-            state.orders = state.orders.map((orders: any) =>
-                orders.id === action.payload.id
-                    ? { ...orders, ...action.payload }
-                    : orders
-            );
-        });
-      
-        builder.addCase(deleteOrders.fulfilled, (state: any, action: any) => {
-            state.orders = state.orders.filter(
-                (orders: any) => orders.id.toString() !== action.payload.toString()
-            );
-        });
-     
 
-        // Sellers
-        builder.addCase(getSellers.fulfilled, (state: any, action: any) => {
-            state.sellers = action.payload;
-        });
-     
-        builder.addCase(addSellers.fulfilled, (state: any, action: any) => {
-            state.sellers.unshift(action.payload);
-        });
-    
-        builder.addCase(updateSellers.fulfilled, (state: any, action: any) => {
-            state.sellers = state.sellers.map((sellers: any) =>
-                sellers.id === action.payload.id
-                    ? { ...sellers, ...action.payload }
-                    : sellers
-            );
-        });
-    
-        builder.addCase(deleteSellers.fulfilled, (state: any, action: any) => {
-            state.sellers = state.sellers.filter(
-                (sellers: any) => sellers.id.toString() !== action.payload.toString()
-            );
-        });
-     
 
         // Products
         builder.addCase(getProductList.fulfilled, (state: any, action: any) => {
@@ -281,14 +234,14 @@ const EcommerceSlice = createSlice({
         builder.addMatcher(
             (action) => {
             return [
-                getOrders.rejected,
-                addOrders.rejected,
-                updateOrders.rejected,
-                deleteOrders.rejected,
-                getSellers.rejected,
-                addSellers.rejected,
-                updateSellers.rejected,
-                deleteSellers.rejected,
+                // getOrders.rejected,
+                // addOrders.rejected,
+                // updateOrders.rejected,
+                // deleteOrders.rejected,
+                // getSellers.rejected,
+                // addSellers.rejected,
+                // updateSellers.rejected,
+                // deleteSellers.rejected,
                 getProductList.rejected,
                 addProductList.rejected,
                 updateProductList.rejected,
