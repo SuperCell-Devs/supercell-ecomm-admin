@@ -1,5 +1,5 @@
 import { postLogin } from "helpers/fakebackend_helper";
-import { loginError, loginSuccess, logoutSuccess } from "./reducer";
+import { loginError, loginSuccess, } from "./reducer";
 import { ThunkAction } from "redux-thunk";
 import { Action, Dispatch } from "redux";
 import { RootState } from "slices";
@@ -39,21 +39,4 @@ export const loginUser = (
         dispatch(loginError(error));
     }
 };
-
-export const logoutUser = () => async (dispatch: Dispatch) => {
-    try {
-        localStorage.removeItem("authUser");
-
-        // const fireBaseBackend = await getFirebaseBackend();
-
-        // if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-            // const response = fireBaseBackend.logout;
-            // dispatch(logoutSuccess(response));
-        // } else {
-            dispatch(logoutSuccess(true));
-        // }
-    } catch (error) {
-        dispatch(loginError(error));
-    }
-}
 
