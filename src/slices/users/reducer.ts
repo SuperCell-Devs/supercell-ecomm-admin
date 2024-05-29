@@ -4,10 +4,6 @@ import {
     addUserList,
     updateUserList,
     deleteUserList,
-    getUserGrid,
-    addUserGrid,
-    updateUserGrid,
-    deleteUserGrid,
 } from './thunk';
 
 export const initialState = {
@@ -53,37 +49,6 @@ const UsersSlice = createSlice({
             state.error = action.payload.error || null;
         });
 
-        // Grid
-        builder.addCase(getUserGrid.fulfilled, (state: any, action: any) => {
-            state.userGrid = action.payload;
-        });
-        builder.addCase(getUserGrid.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        });
-        builder.addCase(addUserGrid.fulfilled, (state: any, action: any) => {
-            state.userGrid.unshift(action.payload);
-        });
-        builder.addCase(addUserGrid.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        });
-        builder.addCase(updateUserGrid.fulfilled, (state: any, action: any) => {
-            state.userGrid = state.userGrid.map((grid: any) =>
-                grid.id === action.payload.id
-                    ? { ...grid, ...action.payload }
-                    : grid
-            );
-        });
-        builder.addCase(updateUserGrid.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        });
-        builder.addCase(deleteUserGrid.fulfilled, (state: any, action: any) => {
-            state.userGrid = state.userGrid.filter(
-                (userGrid: any) => userGrid.id.toString() !== action.payload.toString()
-            );
-        });
-        builder.addCase(deleteUserGrid.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        });
     }
 });
 
