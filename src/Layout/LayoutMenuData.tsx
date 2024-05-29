@@ -10,7 +10,7 @@ const menuData: any = [
         id: 'products',
         label: 'Products',
         icon: <ShoppingBag />,
-        link: '/products',
+        link: '/',
         parentId: 2
     },
     {
