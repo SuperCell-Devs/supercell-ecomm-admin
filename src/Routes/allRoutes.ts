@@ -38,6 +38,7 @@ import CategoryAddNew from "Common/platform/category/add";
 import HomeManager from "Common/platform/home-manager";
 import SliderManager from "Common/platform/slider-manager";
 import SlidersAdd from "Common/platform/slider-manager/sliders-add";
+import Category from '../pages/Catygory';
 
 interface RouteObject {
   path: string;
@@ -94,6 +95,10 @@ const authProtectedRoutes: Array<RouteObject> = [
    {
     path: "/sliders-add", component: SlidersAdd
   },
+
+  {
+    path:"/categorysApp", component:Category
+  }
   
 
 
